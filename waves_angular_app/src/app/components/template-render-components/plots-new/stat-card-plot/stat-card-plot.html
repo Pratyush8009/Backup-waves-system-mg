@@ -1,0 +1,11 @@
+<div class="sc-card">
+  <div class="sc-label">{{ config?.metadata?.label }}</div>
+  <div class="sc-value" [style.color]="valueColor">
+    {{ displayValue }}<span class="sc-unit">{{ config?.metadata?.unit }}</span>
+  </div>
+  @if (trend) {
+    <div class="sc-trend" [class.sc-up]="trend > 0" [class.sc-down]="trend < 0">
+      {{ trend > 0 ? "▲" : "▼" }} {{ trend | number: "1.1-1" }}%
+    </div>
+  }
+</div>

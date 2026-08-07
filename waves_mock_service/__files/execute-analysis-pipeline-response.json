@@ -1,0 +1,46 @@
+{
+  "code": 200,
+  "message": "Analysis execution has been initiated.",
+  "data": {
+    "executionId": "EXEC-ANL-20260408-001",
+    "pipelineId": "PIP-ANL-denoise-001",
+    "entityType": "ANALYSIS",
+    "entityId": "ANL-770e8400-e29b-41d4-a716-446655440201",
+    "status": "INITIATED",
+    "message": "Analysis pipeline execution started",
+    "startTime": "2026-04-08T10:35:00Z",
+    "estimatedDuration": "60s",
+    "blocks": [
+      {
+        "blockId": "BKI-DENOISE-INPUT-001",
+        "status": "PENDING",
+        "order": 1
+      },
+      {
+        "blockId": "BKI-DENOISE-FILTER-001",
+        "status": "PENDING",
+        "order": 2
+      },
+      {
+        "blockId": "BKI-DENOISE-ANALYSIS-001",
+        "status": "PENDING",
+        "order": 3
+      },
+      {
+        "blockId": "BKI-DENOISE-OUTPUT-001",
+        "status": "PENDING",
+        "order": 4
+      }
+    ],
+    "notificationSettings": {
+      "notifyOnComplete": true,
+      "notifyOnError": true,
+      "channels": [
+        "IN_APP"
+      ]
+    }
+  },
+  "metadata": {},
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

@@ -1,0 +1,26 @@
+<div class="sgf-grid">
+  @for (plot of plots; track (plot.plotId + '-' + (plot.metadata?.label || plot.title))) {
+  @let comp = getPlotComponent(plot.chartType);
+  @let data = resolveData(plot.mappedField);
+
+  <nz-card class="sgf-card" [class.selected-card]="selectionService.activePlotId() === plot.plotId" [nzBordered]="true"
+    (click)="onPlotClick(plot.plotId, $event)">
+    <!-- Card header -->
+    <div class="sgf-card-header">
+      <span class="sgf-card-title">{{ plot.metadata?.label || plot.title }}</span>
+      <div class="sgf-card-actions">
+        <span nz-icon nzType="fullscreen" nzTheme="outline" class="sgf-action-icon"></span>
+        <span nz-icon nzType="more" nzTheme="outline" class="sgf-action-icon"></span>
+      </div>
+    </div>
+
+    <!-- Dynamic plot -->
+    @if (comp) {
+    <ng-container *ngComponentOutlet="comp; inputs: { config: plot, data: data }">
+    </ng-container>
+    } @else {
+    <nz-empty [nzNotFoundContent]="'No renderer for: ' + plot.chartType"></nz-empty>
+    }
+  </nz-card>
+  }
+</div>

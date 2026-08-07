@@ -1,0 +1,22 @@
+{
+    "code": 403,
+    "message": "System creation failed - subscription limit exceeded",
+    "errors": [
+        {
+            "field": "subscriptionValidation",
+            "errorCode": "SYSTEM_LIMIT_EXCEEDED",
+            "message": "Cannot create system. Maximum systems limit reached for current subscription plan.",
+            "severity": "ERROR",
+            "details": {
+                "subscriptionPlan": "PROFESSIONAL",
+                "maxSystemsAllowed": 20,
+                "currentSystemsCount": 20,
+                "remainingSlots": 0,
+                "upgradeRequired": true,
+                "suggestedPlan": "ENTERPRISE"
+            }
+        }
+    ],
+    "requestId": "req-create-sys-20260409-003",
+    "timestamp": "2026-04-09T14:40:00Z"
+}

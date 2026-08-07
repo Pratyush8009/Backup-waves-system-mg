@@ -1,0 +1,62 @@
+<div class="system-container">
+    <div *ngIf="loading" class="loading-container">
+        <nz-spin nzSimple></nz-spin>
+        <p>Loading system configuration...</p>
+    </div>
+
+    <div *ngIf="!loading">
+        <div class="header">
+            <h3>System Information</h3>
+            <div class="header-actions">
+                <div class="status-indicator active">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Online</span>
+                </div>
+                <button nz-button nzType="primary" (click)="editSystem()">
+                    <span nz-icon nzType="edit"></span> Edit
+                </button>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="info-section">
+                <p><strong>System Name:</strong> {{ system.name }}</p>
+                <p><strong>System ID:</strong> <code class="id-text">{{ system.id }}</code></p>
+                <p><strong>Created By:</strong> {{ system.createdBy }}</p>
+                <p><strong>Created At:</strong> {{ formatDate(system.createdAt) }}</p>
+                <p><strong>Unit ID:</strong> {{ system.unitId }}</p>
+            </div>
+
+            <div class="info-section">
+                <p><strong>Active Model:</strong> <nz-tag nzColor="blue">{{ system.activeModel }}</nz-tag></p>
+                <p><strong>Model Name:</strong> {{ system.modelName }}</p>
+                <p><strong>Model ID:</strong> <code class="id-text">{{ system.modelId }}</code></p>
+                <p><strong>Total Blocks:</strong> {{ system.totalBlock }}</p>
+                <p><strong>Total Flows:</strong> {{ system.totalFlow }}</p>
+            </div>
+        </div>
+
+        <nz-divider></nz-divider>
+
+        <div class="description-box">
+            <p><strong>Description:</strong></p>
+            <p class="desc-text">{{ system.description }}</p>
+        </div>
+    </div>
+
+    <nz-modal [(nzVisible)]="isModalVisible" nzTitle="Update System Details" (nzOnCancel)="handleCancel()"
+        (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+        <ng-template nzModalContent>
+            <div class="edit-form">
+                <div class="form-group">
+                    <label>System Name</label>
+                    <input nz-input [(ngModel)]="editData.name" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea nz-input [(ngModel)]="editData.description" rows="4"></textarea>
+                </div>
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

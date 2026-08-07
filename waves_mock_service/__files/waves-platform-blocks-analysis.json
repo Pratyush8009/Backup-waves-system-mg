@@ -1,0 +1,119 @@
+{
+  "code": 200,
+  "message": "Analysis related blocks has been fetched.",
+  "data": {
+    "applicableFor": "ANALYSIS",
+    "blocks": [
+      {
+        "id": "BLK-ANL-INPUT-001",
+        "blockKey": "analysis_input_block",
+        "name": "Analysis Input Block",
+        "description": "Loads data for analysis workflows",
+        "blockType": "INPUT",
+        "category": "I/O Blocks",
+        "version": "1.0.0",
+        "minInputs": 0,
+        "maxInputs": 0,
+        "minOutputs": 1,
+        "maxOutputs": 3,
+        "supportedDataSources": [
+          "FILE",
+          "DATABASE",
+          "API"
+        ],
+        "isActive": true
+      },
+      {
+        "id": "BLK-ANL-FILTER-001",
+        "blockKey": "signal_filtering_block",
+        "name": "Signal Filtering Block",
+        "description": "Apply various signal processing filters",
+        "blockType": "PROCESSOR",
+        "category": "Without ML processor blocks",
+        "version": "1.0.0",
+        "minInputs": 1,
+        "maxInputs": 1,
+        "minOutputs": 1,
+        "maxOutputs": 5,
+        "supportedFilters": [
+          "SMA",
+          "SAVGOL",
+          "BUTTER",
+          "KALMAN",
+          "MEDIAN"
+        ],
+        "isActive": true
+      },
+      {
+        "id": "BLK-ANL-STATS-001",
+        "blockKey": "statistical_analysis_block",
+        "name": "Statistical Analysis Block",
+        "description": "Perform statistical computations and comparisons",
+        "blockType": "PROCESSOR",
+        "category": "Without ML processor blocks",
+        "version": "1.0.0",
+        "minInputs": 1,
+        "maxInputs": 10,
+        "minOutputs": 1,
+        "maxOutputs": 1,
+        "capabilities": [
+          "DESCRIPTIVE",
+          "INFERENTIAL",
+          "CORRELATION",
+          "HYPOTHESIS_TESTING"
+        ],
+        "isActive": true
+      },
+      {
+        "id": "BLK-ANL-VIZ-001",
+        "blockKey": "visualization_block",
+        "name": "Visualization Block",
+        "description": "Create interactive plots and charts",
+        "blockType": "PROCESSOR",
+        "category": "Without ML processor blocks",
+        "version": "1.0.0",
+        "minInputs": 1,
+        "maxInputs": 5,
+        "minOutputs": 1,
+        "maxOutputs": 1,
+        "supportedCharts": [
+          "LINE",
+          "SCATTER",
+          "BAR",
+          "HISTOGRAM",
+          "HEATMAP",
+          "BOXPLOT"
+        ],
+        "isActive": true
+      },
+      {
+        "id": "BLK-ANL-OUTPUT-001",
+        "blockKey": "analysis_output_block",
+        "name": "Analysis Output Block",
+        "description": "Export analysis results to various formats",
+        "blockType": "OUTPUT",
+        "category": "I/O Blocks",
+        "version": "1.0.0",
+        "minInputs": 1,
+        "maxInputs": 5,
+        "minOutputs": 0,
+        "maxOutputs": 0,
+        "outputFormats": [
+          "CSV",
+          "XLSX",
+          "JSON",
+          "PDF"
+        ],
+        "isActive": true
+      }
+    ],
+    "total": 5,
+    "categories": [
+      "I/O Blocks",
+      "Without ML processor blocks"
+    ]
+  },
+  "metadata": {},
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

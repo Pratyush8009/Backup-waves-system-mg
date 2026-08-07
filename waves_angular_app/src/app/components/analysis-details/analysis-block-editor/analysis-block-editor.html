@@ -1,0 +1,79 @@
+<div class="page-container">
+    <div class="left-panel">
+        <div class="title">
+            <h3>Block Editor</h3>
+            <nz-divider />
+        </div>
+
+        <div class="nodes">
+            <nz-divider nzText="System" />
+            <div *ngFor="let node of systemNodes" class="library-node" [style.background-color]="node.uiLayout.color"
+                draggable="true" (dragstart)="onDragStart($event, node)">
+                <ng-container *ngFor="let port of node.ports">
+                    <span
+                        [ngClass]="{'endpoint': true, 'left': port.portType === 'INPUT', 'right': port.portType === 'OUTPUT'}"></span>
+                </ng-container>
+                {{ node.name }}
+            </div>
+
+            <nz-divider nzText="Custom Blocks" />
+            <div *ngFor="let node of blockNodes" class="library-node" [style.background-color]="node.uiLayout.color"
+                draggable="true" (dragstart)="onDragStart($event, node)">
+                <ng-container *ngFor="let port of node.ports">
+                    <span [ngClass]="{
+                        'endpoint': true, 
+                        'left': port.portType === 'INPUT', 
+                        'right': port.portType === 'OUTPUT',
+                        'port-1': port.portOrder === 1,
+                        'port-2': port.portOrder === 2
+                    }"></span>
+                </ng-container>
+                {{ node.name }}
+            </div>
+        </div>
+    </div>
+
+    <nz-splitter nzLayout="vertical" class="main-splitter">
+        <nz-splitter-panel nzMin="20%" [nzCollapsible]="true">
+            <div class="center-panel" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                <div class="top-bar">
+                    <nz-breadcrumb>
+                        <nz-breadcrumb-item>Analysis</nz-breadcrumb-item>
+                        <nz-breadcrumb-item>v1.2.0</nz-breadcrumb-item>
+                    </nz-breadcrumb>
+                    <div class="controlles">
+                        <button nz-button nzType="primary" (click)="saveCurrentFlow()">Save</button>
+                        <div class="screen-mode" (click)="toggleFullscreen()">
+                            <nz-icon [nzType]="isFullscreen ? 'fullscreen-exit' : 'fullscreen'" />
+                        </div>
+                    </div>
+                </div>
+
+                <div #container class="canvas">
+                    <div *ngFor="let node of flowNodes" [id]="node.instanceId" class="block-instance-node"
+                        [style.left.px]="node.uiLayout.canvasX" [style.top.px]="node.uiLayout.canvasY"
+                        [style.width.px]="node.uiLayout.canvasWidth" [style.height.px]="node.uiLayout.canvasHeight"
+                        [style.background-color]="node.uiLayout.color" (contextmenu)="openContextMenu($event, node)"
+                        (dblclick)="selectNode(node)">
+                        <div class="name-icon">
+                            <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"
+                                style="margin-right: 5px;"></nz-icon>
+                            {{ node.name }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-splitter-panel>
+    </nz-splitter>
+
+    <div class="right-panel">
+        <app-analysis-block-right-panel [blockData]="selectedNode"></app-analysis-block-right-panel>
+    </div>
+
+    <div class="context-menu" *ngIf="isContextMenuVisible" [style.top.px]="contextMenuPosition.y"
+        [style.left.px]="contextMenuPosition.x">
+        <div class="menu-item delete" (click)="deleteNode()">Delete</div>
+    </div>
+</div>
+
+<p class="flow-debug">{{showFlow}}</p>

@@ -1,0 +1,85 @@
+<div class="config-container">
+  <div class="header-section">
+    <h2 class="panel-title">Configuration</h2>
+    <div class="header-actions">
+      <div class="action-btn" nz-tooltip nzTooltipTitle="Info">
+        <nz-icon nzType="info" nzTheme="outline"></nz-icon>
+      </div>
+      <div class="action-btn" nz-tooltip nzTooltipTitle="Settings">
+        <nz-icon nzType="setting" nzTheme="outline"></nz-icon>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="blockData; else noSelection" class="content-section">
+    <div class="tab-header">
+      <div class="tab-item" [class.active]="activeTab === 0" (click)="activeTab = 0">info</div>
+      <div class="tab-item" [class.active]="activeTab === 1" (click)="activeTab = 1">scehmas</div>
+    </div>
+
+    <div class="tab-body" *ngIf="activeTab === 0">
+      <div class="form-group">
+        <label>Name</label>
+        <input nz-input [disabled]="true" [ngModel]="blockData.name" />
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <input nz-input [disabled]="true" [ngModel]="blockData.blockType" />
+      </div>
+      <div class="form-group">
+        <label>Category</label>
+        <input nz-input [disabled]="true" [ngModel]="blockData.category" />
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea nz-input [disabled]="true" rows="4" [ngModel]="blockData.description"></textarea>
+      </div>
+    </div>
+
+    <div class="tab-body" *ngIf="activeTab === 1">
+      <div class="ports-container">
+        <div *ngFor="let port of blockData.ports" class="port-card">
+
+          <ng-container *ngIf="port.schema?.properties; else emptyIcon">
+            <div *ngFor="let prop of port.schema.properties | keyvalue" class="schema-item-layout">
+              <div class="port-header">
+                <span class="port-title">{{ prop.key }}</span>
+                <nz-icon nzType="link" nzTheme="outline" class="link-icon"></nz-icon>
+              </div>
+
+              <div class="tags-row">
+                <div class="port-tag" [style.background-color]="getPortColor(port.portType)"
+                  [style.color]="getPortTextColor(port.portType)">
+                  {{ port.portType }}
+                </div>
+
+                <div class="port-tag" [style.background-color]="getDataTypeColor($any(prop.value).type)"
+                  [style.color]="getDataTypeTextColor($any(prop.value).type)">
+                  {{ $any(prop.value).type }}
+                </div>
+              </div>
+              <nz-divider />
+            </div>
+
+
+          </ng-container>
+
+          <ng-template #emptyIcon>
+            <div class="empty-port-icon-container">
+              <nz-icon nzType="inbox" nzTheme="outline" class="placeholder-icon"></nz-icon>
+              <span class="placeholder-text">No Schema</span>
+            </div>
+          </ng-template>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noSelection>
+    <div class="empty-state">
+      <nz-icon nzType="block" nzTheme="outline"></nz-icon>
+      <p>Select a block to configure</p>
+    </div>
+  </ng-template>
+</div>

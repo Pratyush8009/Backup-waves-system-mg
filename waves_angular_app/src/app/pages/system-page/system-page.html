@@ -1,0 +1,60 @@
+<nz-layout class="app-layout">
+    <nz-sider nzCollapsible nzWidth="256px" nzTheme="dark">
+        <div class="sidebar-header">
+            <button nz-button nzType="text" (click)="goBackToUnit()">
+                <span nz-icon nzType="arrow-left"></span>
+                <span>System</span>
+            </button>
+        </div>
+
+        <ul nz-menu nzMode="inline">
+            <li nz-menu-item [nzSelected]="currentPage === 'Overview'" (click)="systemOverviewPage()">
+                <span nz-icon nzType="pie-chart"></span>
+                <span>Overview</span>
+            </li>
+            <li nz-menu-item [nzSelected]="currentPage === 'Models'" (click)="viewModelPage()">
+                <span nz-icon nzType="appstore"></span>
+                <span>Models</span>
+            </li>
+            <li nz-menu-item [nzSelected]="currentPage === 'Analysis'" (click)="viewAnalysisPage()">
+                <span nz-icon nzType="line-chart"></span>
+                <span>Analysis</span>
+            </li>
+            <li nz-menu-item [nzSelected]="currentPage === 'Configure'" (click)="viewConfigurationPage()">
+                <span nz-icon nzType="edit"></span>
+                <span>Configure</span>
+            </li>
+            <li nz-menu-item [nzSelected]="currentPage === 'Template'" (click)="templateConfigurationPage()">
+                <span nz-icon nzType="profile"></span>
+                <span>Template</span>
+            </li>
+            <li nz-menu-item [nzSelected]="currentPage === 'Upload'" (click)="viewFileUploadPage()">
+                <span nz-icon nzType="upload"></span>
+                <span>File Upload</span>
+            </li>
+        </ul>
+    </nz-sider>
+
+    <nz-layout>
+        <nz-header class="top-bar">
+            <nz-breadcrumb>
+                <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+                <nz-breadcrumb-item>User</nz-breadcrumb-item>
+                <nz-breadcrumb-item>Unit</nz-breadcrumb-item>
+                <nz-breadcrumb-item>System</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Overview'">Overview</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Models'">Models</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Analysis'">Analysis</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Configure'">Configure</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Template'">Template</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Upload'">File Upload</nz-breadcrumb-item>
+            </nz-breadcrumb>
+        </nz-header>
+
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

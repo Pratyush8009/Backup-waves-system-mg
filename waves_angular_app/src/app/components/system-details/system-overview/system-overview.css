@@ -1,0 +1,271 @@
+:host {
+    display: block;
+    padding: 24px;
+    background-color: #fcfcfc;
+    min-height: 100vh;
+}
+
+/* 1. Main Layout: Left - Divider - Right */
+.main-layout {
+    display: flex;
+    gap: 0;
+    /* Gap is handled by the divider margins */
+    align-items: stretch;
+}
+
+.left-content {
+    flex: 1;
+    padding-right: 32px;
+}
+
+.main-vertical-divider {
+    width: 1px;
+    background-color: #e8e8e8;
+    margin: 0 10px;
+}
+
+.right-sidebar {
+    width: 380px;
+    padding-left: 32px;
+}
+
+/* 2. Models & Analysis Wrapper with Divider */
+.model-analysis-wrapper {
+    display: flex;
+    margin-top: 30px;
+    align-items: stretch;
+}
+
+.section-column {
+    flex: 1;
+}
+
+.inner-divider {
+    width: 1px;
+    background-color: #e8e8e8;
+    margin: 0 30px;
+}
+
+/* Card Styling */
+nz-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    margin-bottom: 20px;
+}
+
+.col-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+/* Card Internals */
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.card-name {
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.card-meta {
+    font-size: 13px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.blue-txt {
+    color: #1890ff;
+}
+
+.card-desc {
+    font-size: 12px;
+    color: #8c8c8c;
+    margin: 8px 0;
+}
+
+.card-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* System Details */
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.details-header h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.details-grid p {
+    margin-bottom: 12px;
+    font-size: 13px;
+}
+
+/* Right Sidebar Stats */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.stat-box {
+    height: 110px;
+    margin-bottom: 12px;
+}
+
+.stat-label {
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-val {
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.green {
+    color: #52c41a;
+}
+
+.dot {
+    height: 7px;
+    width: 7px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.red {
+    background: #ff4d4f;
+}
+
+.orange {
+    background: #faad14;
+}
+
+.alert-list p {
+    margin: 2px 0;
+    font-size: 11px;
+    font-weight: 500;
+    color: #595959;
+}
+
+/* Resource Usage */
+.usage-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.usage-card {
+    text-align: left;
+}
+
+.usage-title {
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.usage-val {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.usage-sub {
+    font-size: 10px;
+    color: #bfbfbf;
+}
+
+.circle-box {
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+/* Timeline */
+.timeline {
+    margin-top: 20px;
+    position: relative;
+    padding-left: 10px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 72px;
+    /* Center under icon */
+    top: 35px;
+    bottom: -35px;
+    width: 2px;
+    background: #f0f0f0;
+}
+
+.tm-time {
+    min-width: 45px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #8c8c8c;
+    padding-top: 6px;
+}
+
+.tm-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    z-index: 2;
+    font-size: 14px;
+}
+
+.tm-title {
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0;
+}
+
+.tm-sub {
+    font-size: 11px;
+    color: #bfbfbf;
+}
+
+.loader-wrap {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

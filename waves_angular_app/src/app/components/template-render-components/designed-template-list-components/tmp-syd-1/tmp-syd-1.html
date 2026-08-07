@@ -1,0 +1,44 @@
+<div class="tmpl-root">
+  <div class="tmpl-header">
+    <span nz-icon [nzType]="icon" nzTheme="outline" class="tmpl-icon"></span>
+    <div class="tmpl-heading">
+      <h2 class="tmpl-title">{{ name || badgeLabel }}</h2>
+      <nz-tag nzColor="processing">{{ badgeLabel }}</nz-tag>
+    </div>
+  </div>
+
+  @if (!sections || sections.length === 0) {
+  <nz-empty nzNotFoundContent="No sections configured for this template"></nz-empty>
+  } @else {
+  @for (section of sections; track section.sectionId) {
+  @let grid = getGridComponent(section.parentPlaceholderTemplate);
+
+  <section class="tmpl-section" class="tmpl-section"
+    [class.selected-section]="selectionService.activeSectionId() === section.sectionId"
+    (click)="onSectionClick(section.sectionId)">
+    <div class="tmpl-section-header">
+      <div class="tmpl-section-heading">
+        <h3 class="tmpl-section-title">{{ section.title }}</h3>
+      </div>
+      <p class="tmpl-section-desc" *ngIf="section.description">{{ section.description }}</p>
+    </div>
+
+    @if (section.categories && section.categories.length > 0) {
+    @for (categoryGroup of section.categories; track categoryGroup.category) {
+    <div class="tmpl-category-box">
+      <nz-tag nzColor="blue" class="tmpl-category-label">
+        {{ categoryGroup.category }} under {{ section.title }}
+      </nz-tag>
+      <ng-container *ngComponentOutlet="grid; inputs: { plots: categoryGroup.components, rawLiveData: rawLiveData }">
+      </ng-container>
+    </div>
+    }
+    } @else {
+    <div class="tmpl-section-empty">
+      <nz-empty nzNotFoundContent="No components configured in this section"></nz-empty>
+    </div>
+    }
+  </section>
+  }
+  }
+</div>

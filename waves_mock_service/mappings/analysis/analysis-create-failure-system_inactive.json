@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/api/v1/waves/unit/[a-zA-Z0-9-]+system/[a-zA-Z0-9-]+/analyses",
+    "queryParameters": {
+      "view": {
+        "equalTo": "inactive-system"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "model_analysis-creation-failed-system_inactive.json",
+    "transformers": [
+      "response-template"
+    ]
+  }
+}

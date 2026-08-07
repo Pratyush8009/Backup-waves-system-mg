@@ -1,0 +1,34 @@
+@for (plot of plots; track plot.plotId) {
+      @let data = resolveData(plot.mappedField);
+      @let cols = getColumns(plot, data);
+ 
+      <nz-card class="sgt-card" [nzBordered]="true">
+        <div class="sgt-header">
+          <span class="sgt-title">{{ plot.metadata?.label || plot.title }}</span>
+          <div class="sgt-actions">
+            <span nz-icon nzType="fullscreen" nzTheme="outline" class="sgt-action-icon" (click)="toggleFullscreen(plot.plotId, $event)"></span>
+            <span nz-icon nzType="more" nzTheme="outline" class="sgt-action-icon" (click)="toggleActionMenu(plot.plotId, $event)"></span>
+            <div class="sgt-action-menu" *ngIf="activeActionMenuPlotId === plot.plotId">
+              <button type="button" class="sgt-action-menu-item" (click)="openCollab(plot); activeActionMenuPlotId = null">Collab</button>
+              <button type="button" class="sgt-action-menu-item" (click)="toggleFullscreen(plot.plotId, $event); activeActionMenuPlotId = null">Fullscreen</button>
+            </div>
+          </div>
+        </div>
+        @if (data.length > 0) {
+          <div class="sgt-scroll">
+            <table class="sgt-table">
+              <thead>
+                <tr> @for (col of cols; track col) { <th>{{ col }}</th> } </tr>
+              </thead>
+              <tbody>
+                @for (row of data; track $index) {
+                  <tr> @for (col of cols; track col) { <td>{{ row[col] }}</td> } </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <nz-empty nzNotFoundContent="No data available"></nz-empty>
+        }
+      </nz-card>
+    }

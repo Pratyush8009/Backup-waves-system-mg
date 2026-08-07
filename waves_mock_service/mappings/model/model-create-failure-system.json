@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/api/v1/waves/unit/[a-zA-Z0-9-]+system/[a-zA-Z0-9-]+/models",
+    "queryParameters": {
+      "view": {
+        "equalTo": "system-not-exist"
+      }
+    }
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "model_analysis-creation-failed-system.json",
+    "transformers": [
+      "response-template"
+    ]
+  }
+}

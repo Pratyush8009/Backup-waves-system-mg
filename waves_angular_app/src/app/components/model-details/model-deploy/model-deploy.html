@@ -1,0 +1,73 @@
+<div class="deploy-page-layout">
+  <!-- Left Side: Main Deployment Section -->
+  <div class="deploy-card-wrapper">
+    <nz-card [nzBordered]="false" class="deploy-card">
+      <div class="header-section">
+        <div class="info-group">
+          <h2 class="title">Production Line 1 Model</h2>
+          <div class="info-row">
+            <span class="label">Version:</span>
+            <span class="value">{{ version }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Deployment ID:</span>
+            <span class="value font-mono">{{ deploymentId }}</span>
+          </div>
+          <div class="info-row status-row">
+            <span class="label">Status:</span>
+            <nz-tag [nzColor]="getStatusColor(status)" class="status-tag">
+              <ng-container [ngSwitch]="status">
+                <span *ngSwitchCase="'processing'"><i nz-icon nzType="loading"></i> Processing</span>
+                <span *ngSwitchCase="'live'"><i nz-icon nzType="check"></i> Live</span>
+                <span *ngSwitchCase="'failed'"><i nz-icon nzType="close"></i> Failed</span>
+                <span *ngSwitchCase="'idle'">Idle</span>
+              </ng-container>
+            </nz-tag>
+          </div>
+        </div>
+
+        <button nz-button nzType="primary" [nzLoading]="status === 'processing'"
+          [disabled]="status === 'processing'" (click)="onDeploy()" class="deploy-btn">
+          Deploy
+        </button>
+      </div>
+
+      <!-- Custom Log Component -->
+      <div class="logs-section">
+        <app-logs [logs]="currentLogs"></app-logs>
+      </div>
+    </nz-card>
+  </div>
+
+  <!-- Right Side: Deployment History Sidebar -->
+  <div class="history-sidebar">
+    <h3 class="history-title">Deployment History</h3>
+
+    <div class="history-list">
+      @for (item of deploymentHistory; track item.id) {
+        <div class="history-card">
+          <!-- Status Icon Badge -->
+          <div class="status-icon-wrapper" [class.success]="item.status === 'success'" [class.failed]="item.status === 'failed'">
+            <i nz-icon [nzType]="item.status === 'success' ? 'check' : 'close'"></i>
+          </div>
+
+          <!-- History Info Content -->
+          <div class="history-content">
+            <div class="history-model-title">{{ item.modelName }}</div>
+            <div class="history-info-line">
+              <span class="history-label">Deployment ID : </span>
+              <span class="history-value font-mono">{{ item.deploymentId }}</span>
+            </div>
+            <div class="history-info-line">
+              <span class="history-label">Versions : </span>
+              <span class="version-link">{{ item.version }}</span>
+            </div>
+            <div class="history-timestamp">
+              Deploy on {{ item.timestamp }}
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPathPattern": "/api/v1/waves/units/[a-zA-Z0-9-]+/systems/[a-zA-Z0-9-]+/deactivate"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    },
+    "jsonBody": {
+      "code": 200,
+      "message": "System deactivated successfully",
+      "data": {
+        "success": true,
+        "status": "INACTIVE"
+      },
+      "metadata": {
+        "requestDuration": "245ms",
+        "cacheHit": false
+      },
+      "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+      "timestamp": "2024-04-09T12:00:00Z"
+    }
+  }
+}

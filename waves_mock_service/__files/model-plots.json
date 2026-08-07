@@ -1,0 +1,326 @@
+{
+  "code": 200,
+  "message": "",
+  "data": {
+    "modelId": "MDL-660e8400-e29b-41d4-a716-446655440101",
+    "pipelineId": "PIP-MDL-ccpp-001",
+    "executionId": "EXEC-MDL-20260408-001",
+    "plotsByCategory": {
+      "MODEL_TRAINING": {
+        "heading": "Model Training Metrics",
+        "description": "Training and validation performance over epochs",
+        "plots": [
+          {
+            "plotId": "mdl-plot-002",
+            "title": "Training & Validation Loss",
+            "chartType": "multi-line-index",
+            "metadata": {
+              "label": "MSE Loss Over Epochs",
+              "xAxis": "Epoch",
+              "yAxis": "Mean Squared Error",
+              "series": [
+                "Training Loss",
+                "Validation Loss"
+              ],
+              "unit": "MSE"
+            },
+            "plotData": [
+              {
+                "epochs": 1,
+                "trainingLoss": 0.156,
+                "validationLoss": 0.168
+              },
+              {
+                "epochs": 2,
+                "trainingLoss": 0.089,
+                "validationLoss": 0.095
+              },
+              {
+                "epochs": 3,
+                "trainingLoss": 0.054,
+                "validationLoss": 0.062
+              },
+              {
+                "epochs": 4,
+                "trainingLoss": 0.038,
+                "validationLoss": 0.045
+              },
+              {
+                "epochs": 5,
+                "trainingLoss": 0.029,
+                "validationLoss": 0.035
+              },
+              {
+                "epochs": 10,
+                "trainingLoss": 0.021,
+                "validationLoss": 0.027
+              },
+              {
+                "epochs": 15,
+                "trainingLoss": 0.024,
+                "validationLoss": 0.028
+              },
+              {
+                "epochs": 20,
+                "trainingLoss": 0.023,
+                "validationLoss": 0.028
+              },
+              {
+                "epochs": 25,
+                "trainingLoss": 0.0234,
+                "validationLoss": 0.0278
+              }
+            ]
+          }
+        ]
+      },
+      "MODEL_EVALUATION": {
+        "heading": "Model Performance Evaluation",
+        "description": "Prediction accuracy and error analysis",
+        "plots": [
+          {
+            "plotId": "mdl-plot-001",
+            "title": "Power Output Prediction vs Actual",
+            "chartType": "scatter",
+            "metadata": {
+              "label": "Predicted vs Actual Power Output",
+              "xAxis": "Actual Power (MW)",
+              "yAxis": "Predicted Power (MW)",
+              "series": [
+                "Predictions"
+              ],
+              "unit": "MW",
+              "showRegressionLine": true,
+              "r2Score": 0.9285
+            },
+            "plotData": [
+              {
+                "actual": 420.26,
+                "predicted": 422.31
+              },
+              {
+                "actual": 445.75,
+                "predicted": 444.28
+              },
+              {
+                "actual": 438.76,
+                "predicted": 440.12
+              },
+              {
+                "actual": 453.09,
+                "predicted": 451.54
+              },
+              {
+                "actual": 462.14,
+                "predicted": 463.87
+              },
+              {
+                "actual": 471.45,
+                "predicted": 470.23
+              },
+              {
+                "actual": 479.34,
+                "predicted": 480.91
+              },
+              {
+                "actual": 482.76,
+                "predicted": 481.45
+              },
+              {
+                "actual": 491.28,
+                "predicted": 493.02
+              },
+              {
+                "actual": 495.76,
+                "predicted": 494.18
+              }
+            ]
+          },
+          {
+            "plotId": "mdl-plot-004",
+            "title": "Residual Distribution",
+            "chartType": "histogram",
+            "metadata": {
+              "label": "Prediction Error Distribution",
+              "xAxis": "Residual (Actual - Predicted)",
+              "yAxis": "Frequency",
+              "bins": 30,
+              "showNormalCurve": true
+            },
+            "plotData": [
+              {
+                "residuals": -2.05,
+                "binEdges": -3,
+                "frequencies": 2
+              },
+              {
+                "residuals": 1.47,
+                "binEdges": -2.5,
+                "frequencies": 5
+              },
+              {
+                "residuals": -1.36,
+                "binEdges": -2,
+                "frequencies": 12
+              },
+              {
+                "residuals": 1.55,
+                "binEdges": -1.5,
+                "frequencies": 24
+              },
+              {
+                "residuals": -1.73,
+                "binEdges": -1,
+                "frequencies": 45
+              },
+              {
+                "residuals": 1.22,
+                "binEdges": -0.5,
+                "frequencies": 67
+              },
+              {
+                "residuals": -1.57,
+                "binEdges": 0,
+                "frequencies": 89
+              },
+              {
+                "residuals": 1.31,
+                "binEdges": 0.5,
+                "frequencies": 72
+              },
+              {
+                "residuals": -1.74,
+                "binEdges": 1,
+                "frequencies": 51
+              },
+              {
+                "residuals": 1.58,
+                "binEdges": 1.5,
+                "frequencies": 28
+              },
+              {
+                "residuals": 0,
+                "binEdges": 2,
+                "frequencies": 16
+              },
+              {
+                "residuals": 0,
+                "binEdges": 2.5,
+                "frequencies": 7
+              },
+              {
+                "residuals": 0,
+                "binEdges": 3,
+                "frequencies": 3
+              }
+            ]
+          }
+        ]
+      },
+      "DATA_EXPLORATION": {
+        "heading": "Input Data Analysis",
+        "description": "Environmental factors and input trends",
+        "plots": [
+          {
+            "plotId": "mdl-plot-003",
+            "title": "Environmental Factors Trend",
+            "chartType": "multi-line-index",
+            "metadata": {
+              "label": "AT, AP, and RH Stability",
+              "xAxis": "Sample Index",
+              "yAxis": "Normalized Value",
+              "series": [
+                "AT",
+                "AP",
+                "RH"
+              ],
+              "unit": "Mixed",
+              "normalize": true
+            },
+            "plotData": [
+              {
+                "sampleIndex": 0,
+                "AT": 0.45,
+                "AP": 0.62,
+                "RH": 0.38
+              },
+              {
+                "sampleIndex": 100,
+                "AT": 0.52,
+                "AP": 0.58,
+                "RH": 0.42
+              },
+              {
+                "sampleIndex": 200,
+                "AT": 0.48,
+                "AP": 0.61,
+                "RH": 0.40
+              },
+              {
+                "sampleIndex": 300,
+                "AT": 0.55,
+                "AP": 0.59,
+                "RH": 0.44
+              },
+              {
+                "sampleIndex": 400,
+                "AT": 0.51,
+                "AP": 0.60,
+                "RH": 0.39
+              },
+              {
+                "sampleIndex": 500,
+                "AT": 0.49,
+                "AP": 0.63,
+                "RH": 0.41
+              },
+              {
+                "sampleIndex": 600,
+                "AT": 0.53,
+                "AP": 0.57,
+                "RH": 0.43
+              },
+              {
+                "sampleIndex": 700,
+                "AT": 0.50,
+                "AP": 0.61,
+                "RH": 0.40
+              },
+              {
+                "sampleIndex": 800,
+                "AT": 0.54,
+                "AP": 0.59,
+                "RH": 0.42
+              },
+              {
+                "sampleIndex": 900,
+                "AT": 0.47,
+                "AP": 0.62,
+                "RH": 0.39
+              },
+              {
+                "sampleIndex": 1000,
+                "AT": 0.51,
+                "AP": 0.60,
+                "RH": 0.41
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "totalPlots": 4,
+    "categories": [
+      "MODEL_TRAINING",
+      "MODEL_EVALUATION",
+      "DATA_EXPLORATION"
+    ]
+  },
+  "metadata": {
+    "requestDuration": "156ms",
+    "cacheHit": false,
+    "currentUtilization": 87.5
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

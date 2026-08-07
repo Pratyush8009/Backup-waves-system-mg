@@ -1,0 +1,36 @@
+{
+    "code": 403,
+    "message": "Model creation failed - subscription is not active",
+    "error": {
+        "type": "SUBSCRIPTION_ERROR",
+        "code": "SUBSCRIPTION_INACTIVE",
+        "message": "Cannot create model - unit subscription is not active or has expired",
+        "details": {
+            "unitId": "UNIT-550e8400",
+            "subscriptionId": "SUB-550e8400-e29b-41d4-a716-446655440001",
+            "subscriptionStatus": "EXPIRED",
+            "expiryDate": "2024-04-01T23:59:59Z",
+            "daysExpired": 8,
+            "currentDate": "2024-04-09T12:00:00Z",
+            "suggestion": "Renew or upgrade subscription plan"
+        },
+        "severity": "ERROR",
+        "isBlocking": true,
+        "resolutionSteps": [
+            "Contact unit owner or admin",
+            "Review subscription renewal options",
+            "Process subscription renewal",
+            "Verify subscription activation",
+            "Retry model creation"
+        ]
+    },
+    "metadata": {
+        "requestDuration": "42ms",
+        "cacheHit": false,
+        "currentUtilization": 68.2,
+        "validationsPerformed": 2,
+        "validationsFailed": 1
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00015",
+    "timestamp": "2024-04-09T12:00:00Z"
+}

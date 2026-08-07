@@ -1,0 +1,11 @@
+<div class="stg-section-title">{{ config?.metadata?.label }}</div>
+<div class="mk-grid">
+  @for (kpi of kpis; track kpi.label) {
+    <div class="mk-tile">
+      <div class="mk-tile-label">{{ kpi.label }}</div>
+      <div class="mk-tile-value" [style.color]="kpi.color">
+        {{ kpi.value }}<span class="mk-tile-unit">{{ kpi.unit }}</span>
+      </div>
+    </div>
+  }
+</div>

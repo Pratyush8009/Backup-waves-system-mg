@@ -1,0 +1,676 @@
+{
+  "code": 200,
+  "message": "Unit details retrieved successfully",
+  "data": {
+    "unitMetadata": {
+      "unitId": "UNIT-001",
+      "name": "Global Manufacturing Division",
+      "type": "MANUFACTURING",
+      "description": "Primary manufacturing operations division",
+      "location": "Plant A, Bengaluru, India",
+      "state": "ACTIVE",
+      "status": "ACTIVE",
+      "clientId": "CLIENT-550e8400-e29b-41d4-a716-446655440001",
+      "clientName": "Acme Manufacturing Corp",
+      "clientEmail": "admin@acmemfg.com",
+      "createdAt": "2024-01-15T10:00:00Z",
+      "createdBy": "USR-support-001",
+      "createdByName": "Support Agent Smith",
+      "updatedAt": "2024-04-09T10:30:00Z",
+      "updatedBy": "USR-support-005",
+      "updatedByName": "Support Agent Johnson",
+      "lastActivityAt": "2024-04-09T11:50:00Z",
+      "isActive": true,
+      "isArchived": false
+    },
+    "subscription": {
+      "subscriptionId": "SUB-550e8400-e29b-41d4-a716-446655440001",
+      "planType": "ENTERPRISE",
+      "planName": "Enterprise Manufacturing Plan",
+      "billingModel": "Annual",
+      "billingCycle": "January 1 - December 31",
+      "currency": "USD",
+      "amount": 50000,
+      "amountPerMonth": 4166.67,
+      "startDate": "2024-01-01T00:00:00Z",
+      "endDate": "2024-12-31T23:59:59Z",
+      "daysRemaining": 266,
+      "status": "ACTIVE",
+      "autoRenew": true,
+      "autoRenewDate": "2024-12-15",
+      "paymentMethod": "Credit Card (VISA ending in 4242)",
+      "features": {
+        "maxSystems": {
+          "limit": 50,
+          "used": 12,
+          "available": 38,
+          "utilizationPercentage": 24
+        },
+        "maxModels": {
+          "limit": 200,
+          "used": 45,
+          "available": 155,
+          "utilizationPercentage": 22.5
+        },
+        "maxAnalyses": {
+          "limit": 100,
+          "used": 28,
+          "available": 72,
+          "utilizationPercentage": 28
+        },
+        "maxUsers": {
+          "limit": 100,
+          "used": 35,
+          "available": 65,
+          "utilizationPercentage": 35
+        },
+        "maxApiCallsPerMonth": {
+          "limit": 10000000,
+          "used": 2500000,
+          "available": 7500000,
+          "utilizationPercentage": 25,
+          "currentMonthUsage": 2500000
+        },
+        "dataRetentionDays": 365,
+        "storageGB": {
+          "limit": 5000,
+          "used": 1250,
+          "available": 3750,
+          "utilizationPercentage": 25
+        },
+        "supportLevel": "24x7 Premium",
+        "concurrentConnections": {
+          "limit": 500,
+          "current": 145,
+          "utilizationPercentage": 29
+        },
+        "customIntegrations": true,
+        "advancedAnalytics": true,
+        "customDashboards": true
+      },
+      "billingDetails": {
+        "invoiceFrequency": "Monthly",
+        "lastInvoiceDate": "2024-04-01",
+        "lastInvoiceAmount": 4166.67,
+        "lastInvoiceStatus": "PAID",
+        "nextBillingDate": "2024-05-01",
+        "nextBillingAmount": 4166.67,
+        "discountApplied": "10% Early Payment Discount",
+        "discountValue": -416.67,
+        "totalPaid": 50000,
+        "totalDue": 0
+      }
+    },
+    "members": {
+      "totalMembers": 35,
+      "pagination": {
+        "page": 1,
+        "pageSize": 50,
+        "total": 35,
+        "hasMore": false
+      },
+      "membersList": [
+        {
+          "memberId": "MEM-001",
+          "userId": "USR-admin-001",
+          "name": "John Manager",
+          "email": "john.manager@acmemfg.com",
+          "role": "OWNER",
+          "roleColor": "gold",
+          "roleIcon": "crown",
+          "status": "ACTIVE",
+          "joinedAt": "2024-01-15T10:00:00Z",
+          "lastActivityAt": "2024-04-09T11:50:00Z",
+          "permissions": [
+            "MANAGE_UNIT",
+            "MANAGE_SYSTEMS",
+            "MANAGE_MODELS",
+            "MANAGE_ANALYSES",
+            "MANAGE_USERS",
+            "MANAGE_BILLING",
+            "MANAGE_CONFIGURATION",
+            "VIEW_AUDIT_LOGS"
+          ],
+          "isVerified": true,
+          "verificationDate": "2024-01-15T10:05:00Z"
+        },
+        {
+          "memberId": "MEM-002",
+          "userId": "USR-manager-005",
+          "name": "Jane Engineer",
+          "email": "jane.engineer@acmemfg.com",
+          "role": "MANAGER",
+          "roleColor": "blue",
+          "roleIcon": "briefcase",
+          "status": "ACTIVE",
+          "joinedAt": "2024-02-01T09:00:00Z",
+          "lastActivityAt": "2024-04-09T10:30:00Z",
+          "permissions": [
+            "MANAGE_SYSTEMS",
+            "MANAGE_MODELS",
+            "MANAGE_ANALYSES",
+            "VIEW_AUDIT_LOGS"
+          ],
+          "isVerified": true,
+          "verificationDate": "2024-02-01T09:15:00Z"
+        },
+        {
+          "memberId": "MEM-003",
+          "userId": "USR-operator-010",
+          "name": "Mike Operator",
+          "email": "mike.operator@acmemfg.com",
+          "role": "OPERATOR",
+          "roleColor": "green",
+          "roleIcon": "gears",
+          "status": "ACTIVE",
+          "joinedAt": "2024-02-15T08:00:00Z",
+          "lastActivityAt": "2024-04-09T11:45:00Z",
+          "permissions": [
+            "VIEW_SYSTEMS",
+            "VIEW_MODELS",
+            "EXECUTE_MODELS",
+            "VIEW_ANALYSES"
+          ],
+          "isVerified": true,
+          "verificationDate": "2024-02-15T08:20:00Z"
+        },
+        {
+          "memberId": "MEM-004",
+          "userId": "USR-viewer-015",
+          "name": "Sarah Analyst",
+          "email": "sarah.analyst@acmemfg.com",
+          "role": "VIEWER",
+          "roleColor": "gray",
+          "roleIcon": "eye",
+          "status": "ACTIVE",
+          "joinedAt": "2024-03-01T07:00:00Z",
+          "lastActivityAt": "2024-04-08T14:20:00Z",
+          "permissions": [
+            "VIEW_SYSTEMS",
+            "VIEW_MODELS",
+            "VIEW_ANALYSES",
+            "VIEW_DASHBOARDS"
+          ],
+          "isVerified": true,
+          "verificationDate": "2024-03-01T07:30:00Z"
+        },
+        {
+          "memberId": "MEM-005",
+          "userId": "USR-operator-020",
+          "name": "Tom Supervisor",
+          "email": "tom.supervisor@acmemfg.com",
+          "role": "SUPERVISOR",
+          "roleColor": "purple",
+          "roleIcon": "badge",
+          "status": "INACTIVE",
+          "joinedAt": "2024-03-15T08:30:00Z",
+          "lastActivityAt": "2024-03-28T16:45:00Z",
+          "inactiveReason": "On leave",
+          "permissions": [
+            "VIEW_SYSTEMS",
+            "MANAGE_OPERATIONS",
+            "EXECUTE_MODELS"
+          ],
+          "isVerified": true,
+          "verificationDate": "2024-03-15T08:45:00Z"
+        }
+      ],
+      "memberBreakdown": {
+        "OWNER": {
+          "count": 1,
+          "percentage": 2.86
+        },
+        "MANAGER": {
+          "count": 3,
+          "percentage": 8.57
+        },
+        "SUPERVISOR": {
+          "count": 5,
+          "percentage": 14.29
+        },
+        "OPERATOR": {
+          "count": 15,
+          "percentage": 42.86
+        },
+        "VIEWER": {
+          "count": 10,
+          "percentage": 28.57
+        },
+        "GUEST": {
+          "count": 1,
+          "percentage": 2.86
+        }
+      }
+    },
+    "systems": {
+      "totalSystems": 12,
+      "pagination": {
+        "page": 1,
+        "pageSize": 100,
+        "total": 12,
+        "hasMore": false
+      },
+      "systemsList": [
+        {
+          "systemId": "SYS-PROD-001",
+          "name": "Production Line 1",
+          "type": "PRODUCTION",
+          "status": "ACTIVE",
+          "criticality": "CRITICAL",
+          "operatingHours": "24x7",
+          "lastActivityAt": "2024-04-09T11:55:00Z",
+          "healthStatus": "HEALTHY",
+          "modelCount": 5,
+          "analysisCount": 3,
+          "runningModels": {
+            "count": 2,
+            "models": [
+              {
+                "modelId": "MDL-001",
+                "modelName": "Production Efficiency Model",
+                "status": "RUNNING",
+                "startTime": "2024-04-09T11:00:00Z",
+                "executionTime": "55 minutes",
+                "progress": 85
+              },
+              {
+                "modelId": "MDL-002",
+                "modelName": "Quality Analysis Model",
+                "status": "RUNNING",
+                "startTime": "2024-04-09T11:30:00Z",
+                "executionTime": "25 minutes",
+                "progress": 60
+              }
+            ]
+          },
+          "runningAnalyses": {
+            "count": 1,
+            "analyses": [
+              {
+                "analysisId": "ANL-001",
+                "analysisName": "Real-time Quality Analysis",
+                "status": "RUNNING",
+                "startTime": "2024-04-09T11:45:00Z",
+                "executionTime": "10 minutes",
+                "progress": 50
+              }
+            ]
+          },
+          "createdAt": "2024-01-15T10:00:00Z"
+        },
+        {
+          "systemId": "SYS-PROD-002",
+          "name": "Production Line 2",
+          "type": "PRODUCTION",
+          "status": "ACTIVE",
+          "criticality": "CRITICAL",
+          "operatingHours": "24x7",
+          "lastActivityAt": "2024-04-09T11:50:00Z",
+          "healthStatus": "HEALTHY",
+          "modelCount": 4,
+          "analysisCount": 2,
+          "runningModels": {
+            "count": 1,
+            "models": [
+              {
+                "modelId": "MDL-003",
+                "modelName": "Predictive Maintenance Model",
+                "status": "RUNNING",
+                "startTime": "2024-04-09T10:30:00Z",
+                "executionTime": "85 minutes",
+                "progress": 95
+              }
+            ]
+          },
+          "runningAnalyses": {
+            "count": 0,
+            "analyses": []
+          },
+          "createdAt": "2024-01-20T10:00:00Z"
+        },
+        {
+          "systemId": "SYS-TEST-001",
+          "name": "Quality Testing Lab",
+          "type": "TESTING",
+          "status": "ACTIVE",
+          "criticality": "HIGH",
+          "operatingHours": "08:00-18:00 Business Days",
+          "lastActivityAt": "2024-04-09T11:45:00Z",
+          "healthStatus": "HEALTHY",
+          "modelCount": 3,
+          "analysisCount": 4,
+          "runningModels": {
+            "count": 0,
+            "models": []
+          },
+          "runningAnalyses": {
+            "count": 2,
+            "analyses": [
+              {
+                "analysisId": "ANL-002",
+                "analysisName": "Material Quality Analysis",
+                "status": "RUNNING",
+                "startTime": "2024-04-09T11:00:00Z",
+                "executionTime": "55 minutes",
+                "progress": 75
+              },
+              {
+                "analysisId": "ANL-003",
+                "analysisName": "Test Results Analysis",
+                "status": "RUNNING",
+                "startTime": "2024-04-09T11:30:00Z",
+                "executionTime": "25 minutes",
+                "progress": 40
+              }
+            ]
+          },
+          "createdAt": "2024-01-18T10:00:00Z"
+        },
+        {
+          "systemId": "SYS-DATA-001",
+          "name": "IoT Data Collection Network",
+          "type": "DATA_COLLECTION",
+          "status": "ACTIVE",
+          "criticality": "CRITICAL",
+          "lastActivityAt": "2024-04-09T11:56:00Z",
+          "healthStatus": "HEALTHY",
+          "modelCount": 2,
+          "analysisCount": 1,
+          "runningModels": {
+            "count": 0,
+            "models": []
+          },
+          "runningAnalyses": {
+            "count": 0,
+            "analyses": []
+          },
+          "createdAt": "2024-02-01T10:00:00Z"
+        }
+      ],
+      "systemSummary": {
+        "activeCount": 12,
+        "inactiveCount": 0,
+        "maintenanceCount": 0,
+        "healthyCount": 12,
+        "warningCount": 0,
+        "errorCount": 0,
+        "totalModelsAcrossAllSystems": 45,
+        "totalAnalysesAcrossAllSystems": 28,
+        "runningModelsCount": 3,
+        "runningAnalysesCount": 3
+      }
+    },
+    "usageStats": {
+      "currentMonth": "April 2024",
+      "api": {
+        "totalCalls": 2500000,
+        "limit": 10000000,
+        "percentageUsed": 25,
+        "averageCallsPerDay": 312500,
+        "peakCallsInADay": 450000,
+        "peakCallsDate": "2024-04-05",
+        "callsByEndpoint": {
+          "/pipelines/execute": 800000,
+          "/models/execute": 600000,
+          "/analyses/execute": 500000,
+          "/systems/get": 300000,
+          "others": 300000
+        }
+      },
+      "dataStorage": {
+        "used": 1250,
+        "limit": 5000,
+        "unit": "GB",
+        "percentageUsed": 25,
+        "breakdown": {
+          "operationalData": 500,
+          "analyticalData": 450,
+          "archiveData": 250,
+          "backups": 50
+        }
+      },
+      "dataIngestion": {
+        "currentMonthIngested": 250,
+        "limit": 1000,
+        "unit": "GB",
+        "percentageUsed": 25,
+        "averageIngestedPerDay": 31.25,
+        "peakIngestedInADay": 45,
+        "peakIngestedDate": "2024-04-05"
+      },
+      "concurrentConnections": {
+        "current": 145,
+        "limit": 500,
+        "percentageUsed": 29,
+        "peak": 325,
+        "peakTime": "2024-04-09T11:30:00Z"
+      },
+      "computeUsage": {
+        "cpuHours": {
+          "used": 500,
+          "limit": 2000,
+          "percentageUsed": 25,
+          "unit": "CPU-Hours"
+        },
+        "memoryHours": {
+          "used": 1500,
+          "limit": 6000,
+          "percentageUsed": 25,
+          "unit": "GB-Hours"
+        }
+      },
+      "modelExecutions": {
+        "total": 5400,
+        "successful": 5250,
+        "failed": 100,
+        "running": 50,
+        "successRate": 97.22,
+        "averageExecutionTime": "2.5 minutes",
+        "peakExecutionsPerDay": 600,
+        "peakExecutionsDate": "2024-04-05"
+      },
+      "analysisExecutions": {
+        "total": 2800,
+        "successful": 2750,
+        "failed": 40,
+        "running": 10,
+        "successRate": 98.21,
+        "averageExecutionTime": "5.2 minutes",
+        "peakExecutionsPerDay": 350,
+        "peakExecutionsDate": "2024-04-08"
+      },
+      "systemHealth": {
+        "averageUptime": 99.8,
+        "averageResponseTime": "245ms",
+        "errorRate": 0.15,
+        "warningCount": 3,
+        "lastIncident": "2024-04-08T14:30:00Z",
+        "incidentDuration": "5 minutes"
+      },
+      "userActivity": {
+        "activeUsersThisMonth": 28,
+        "totalLogins": 1450,
+        "averageLoginsPerUser": 51.7,
+        "peakActiveUsersInADay": 32,
+        "averageSessionDuration": "45 minutes"
+      }
+    },
+    "paymentStatus": {
+      "currentPaymentStatus": "PAID",
+      "currentPaymentStatusColor": "green",
+      "subscriptionStatus": "ACTIVE",
+      "currentBilling": {
+        "billingPeriod": "April 1 - April 30, 2024",
+        "amount": 4166.67,
+        "currency": "USD",
+        "dueDate": "2024-05-01",
+        "status": "PENDING",
+        "statusColor": "orange",
+        "estimatedAmount": 4166.67,
+        "discountApplied": "10% Early Payment Discount",
+        "discountAmount": -416.67,
+        "finalAmount": 3750.00
+      },
+      "paymentHistory": {
+        "totalPayments": 4,
+        "pagination": {
+          "page": 1,
+          "pageSize": 50,
+          "total": 4,
+          "hasMore": false
+        },
+        "payments": [
+          {
+            "paymentId": "PAY-001",
+            "invoiceId": "INV-2024-04",
+            "invoicePeriod": "April 2024",
+            "amount": 4166.67,
+            "currency": "USD",
+            "paidAt": "2024-04-05T10:30:00Z",
+            "dueDate": "2024-05-01",
+            "status": "PAID",
+            "statusColor": "green",
+            "paymentMethod": "Credit Card (VISA ending in 4242)",
+            "transactionId": "TXN-2024-0401-001",
+            "discountApplied": "10% Early Payment Discount",
+            "discountAmount": -416.67,
+            "finalAmount": 3750.00,
+            "receiptUrl": "/receipts/PAY-001.pdf"
+          },
+          {
+            "paymentId": "PAY-002",
+            "invoiceId": "INV-2024-03",
+            "invoicePeriod": "March 2024",
+            "amount": 4166.67,
+            "currency": "USD",
+            "paidAt": "2024-03-08T09:15:00Z",
+            "dueDate": "2024-04-01",
+            "status": "PAID",
+            "statusColor": "green",
+            "paymentMethod": "Credit Card (VISA ending in 4242)",
+            "transactionId": "TXN-2024-0301-001",
+            "discountApplied": "10% Early Payment Discount",
+            "discountAmount": -416.67,
+            "finalAmount": 3750.00,
+            "receiptUrl": "/receipts/PAY-002.pdf"
+          },
+          {
+            "paymentId": "PAY-003",
+            "invoiceId": "INV-2024-02",
+            "invoicePeriod": "February 2024",
+            "amount": 4166.67,
+            "currency": "USD",
+            "paidAt": "2024-02-10T14:45:00Z",
+            "dueDate": "2024-03-01",
+            "status": "PAID",
+            "statusColor": "green",
+            "paymentMethod": "Credit Card (VISA ending in 4242)",
+            "transactionId": "TXN-2024-0201-001",
+            "discountApplied": "10% Early Payment Discount",
+            "discountAmount": -416.67,
+            "finalAmount": 3750.00,
+            "receiptUrl": "/receipts/PAY-003.pdf"
+          },
+          {
+            "paymentId": "PAY-004",
+            "invoiceId": "INV-2024-01",
+            "invoicePeriod": "January 2024",
+            "amount": 4166.67,
+            "currency": "USD",
+            "paidAt": "2024-01-20T11:20:00Z",
+            "dueDate": "2024-02-01",
+            "status": "PAID",
+            "statusColor": "green",
+            "paymentMethod": "Credit Card (VISA ending in 4242)",
+            "transactionId": "TXN-2024-0101-001",
+            "discountApplied": "10% Early Payment Discount",
+            "discountAmount": -416.67,
+            "finalAmount": 3750.00,
+            "receiptUrl": "/receipts/PAY-004.pdf"
+          }
+        ]
+      },
+      "invoices": {
+        "totalInvoices": 5,
+        "pagination": {
+          "page": 1,
+          "pageSize": 50,
+          "total": 5,
+          "hasMore": false
+        },
+        "invoicesList": [
+          {
+            "invoiceId": "INV-2024-05",
+            "invoicePeriod": "May 2024",
+            "amount": 4166.67,
+            "currency": "USD",
+            "issuedAt": "2024-05-01T00:00:00Z",
+            "dueDate": "2024-06-01",
+            "status": "NOT_YET_ISSUED",
+            "statusColor": "gray",
+            "invoiceUrl": "Not yet available"
+          },
+          {
+            "invoiceId": "INV-2024-04",
+            "invoicePeriod": "April 2024",
+            "amount": 4166.67,
+            "currency": "USD",
+            "issuedAt": "2024-04-01T00:00:00Z",
+            "dueDate": "2024-05-01",
+            "status": "ISSUED",
+            "statusColor": "blue",
+            "paidAt": "2024-04-05T10:30:00Z",
+            "invoiceUrl": "/invoices/INV-2024-04.pdf"
+          }
+        ]
+      },
+      "paymentMethod": {
+        "type": "Credit Card",
+        "brand": "VISA",
+        "lastFourDigits": "4242",
+        "expiryDate": "12/2026",
+        "cardHolderName": "John Manager",
+        "isDefault": true,
+        "isActive": true,
+        "addedAt": "2024-01-10T10:00:00Z"
+      },
+      "billingAddress": {
+        "name": "Acme Manufacturing Corp",
+        "street": "123 Factory Lane",
+        "city": "Bengaluru",
+        "state": "Karnataka",
+        "zipCode": "560010248201",
+        "country": "India",
+        "phone": "+91-313-555-0100",
+        "email": "billing@acmemfg.com"
+      },
+      "paymentSummary": {
+        "totalPaidToDate": 15000,
+        "totalDueAmount": 3750,
+        "nextPaymentDue": "2024-05-01",
+        "nextPaymentAmount": 4166.67,
+        "accountBalance": 0,
+        "creditBalance": 0,
+        "outstandingBalance": 0,
+        "paymentOverdueCount": 0,
+        "averagePaymentDays": 5,
+        "paymentTrend": "EXCELLENT"
+      },
+      "autoRenewal": {
+        "enabled": true,
+        "renewalDate": "2024-12-15",
+        "renewalAmount": 50000,
+        "renewalPeriod": "Annual"
+      }
+    }
+  },
+  "metadata": {
+    "requestDuration": "245ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "lastUpdated": "2024-04-09T11:55:00Z",
+    "dataFreshness": "Real-time"
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

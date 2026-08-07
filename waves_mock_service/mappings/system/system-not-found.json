@@ -1,0 +1,17 @@
+{
+  "priority": 10,
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/v1/waves/units/[a-zA-Z0-9-]+/systems/SYS-nonexistent.*"
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "error-404-not-found.json",
+    "transformers": [
+      "response-template"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/v1/waves/models/[a-zA-Z0-9-]+/pipelines/[a-zA-Z0-9-]+/"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    },
+    "bodyFileName": "pipeline-model-ccpp-ffnn.json"
+  }
+}

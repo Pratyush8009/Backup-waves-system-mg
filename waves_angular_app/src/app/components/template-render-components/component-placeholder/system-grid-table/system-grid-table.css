@@ -1,0 +1,12 @@
+:host { display: block; width: 100%;}
+    .sgt-card   { border-radius: 10px !important; margin-bottom: 16px; }
+    .sgt-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+    .sgt-actions { display: flex; gap: 8px; }
+    .sgt-action-icon { color: #9ca3af; cursor: pointer; font-size: 14px; }
+    .sgt-action-icon:hover { color: #1677ff; }
+    .sgt-title  { font-size: 14px; font-weight: 600; color: #111827; }
+    .sgt-scroll { overflow-x: auto; }
+    .sgt-table  { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .sgt-table th { background: #f9fafb; padding: 8px 12px; text-align: left; font-weight: 600; color: #374151; border-bottom: 1px solid #e5e7eb; }
+    .sgt-table td { padding: 8px 12px; border-bottom: 1px solid #f3f4f6; color: #4b5563; }
+    .sgt-table tr:hover td { background: #f9fafb; }

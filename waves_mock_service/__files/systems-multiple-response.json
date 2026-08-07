@@ -1,0 +1,55 @@
+{
+  "code": 200,
+  "message": "Systems list fetched successfully",
+  "data": {
+    "systems": [
+      {
+        "id": "SYS-550e8400-e29b-41d4-a716-446655440001",
+        "unitId": "UNIT-550e8400",
+        "name": "Manufacturing Unit ABC",
+        "description": "Primary manufacturing system for digital twin modeling",
+        "type": "MANUFACTURING",
+        "status": "ACTIVE",
+        "createdAt": "2024-01-15T10:30:00Z",
+        "updatedAt": "2024-03-20T14:45:00Z",
+        "modelCount": 2,
+        "analysisCount": 1
+      },
+      {
+        "id": "SYS-550e8400-e29b-41d4-a716-446655440002",
+        "unitId": "UNIT-550e8400",
+        "name": "Energy Monitoring System",
+        "description": "Real-time energy consumption and optimization system",
+        "type": "ENERGY",
+        "status": "ACTIVE",
+        "createdAt": "2024-02-01T08:00:00Z",
+        "updatedAt": "2024-03-25T09:15:00Z",
+        "modelCount": 3,
+        "analysisCount": 2
+      },
+      {
+        "id": "SYS-550e8400-e29b-41d4-a716-446655440003",
+        "unitId": "UNIT-550e8406",
+        "name": "Quality Control System",
+        "description": "Automated quality inspection and defect detection",
+        "type": "QUALITY",
+        "status": "INACTIVE",
+        "createdAt": "2023-11-10T12:00:00Z",
+        "updatedAt": "2024-01-s05T16:30:00Z",
+        "modelCount": 0,
+        "analysisCount": 0
+      }
+    ]
+  },
+  "metadata": {
+    "pagination": {
+      "total": 4,
+      "page": 1,
+      "pageSize": 20
+    },
+    "requestDuration": "245ms",
+    "cacheHit": false
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

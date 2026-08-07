@@ -1,0 +1,30 @@
+<div class="login-container">
+    <nz-card class="login-card" nzTitle="Unit Access">
+        <form nz-form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+            <!-- User ID Field (only field now) -->
+            <nz-form-item>
+                <nz-form-label nzRequired>User ID</nz-form-label>
+                <nz-form-control [nzErrorTip]="userIdError">
+                    <input nz-input formControlName="user_id" placeholder="Enter user ID">
+                    <ng-template #userIdError let-control>
+                        <span *ngIf="control.hasError('required')">User ID is required</span>
+                    </ng-template>
+                </nz-form-control>
+            </nz-form-item>
+
+            <!-- Optional: Display info about the user being validated -->
+
+
+            <!-- Error Message -->
+            <nz-alert *ngIf="errorMessage" nzType="error" [nzMessage]="errorMessage" nzShowIcon class="error-alert">
+            </nz-alert>
+            <p>6994521938cd90f90d351ad0</p>
+            <!-- Submit Button -->
+            <button nz-button nzType="primary" nzBlock [disabled]="!loginForm.valid" [nzLoading]="isLoading">
+                Access Unit
+            </button>
+
+        </form>
+    </nz-card>
+</div>

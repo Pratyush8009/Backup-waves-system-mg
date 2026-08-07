@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/api/v1/waves/units/[a-zA-Z0-9-]+/systems"
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    },
+    "bodyFileName": "system-created-response.json",
+    "transformers": [
+      "response-template"
+    ]
+  }
+}

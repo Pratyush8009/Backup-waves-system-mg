@@ -1,0 +1,34 @@
+{
+    "code": 400,
+    "message": "Model/analysis creation failed - validation errors",
+    "error": {
+        "type": "VALIDATION_ERROR",
+        "code": "INVALID_UNIT_STATUS",
+        "message": "Cannot create model/analysis - unit is not in ACTIVE state",
+        "details": {
+            "unitId": "UNIT-550e8400",
+            "unitName": "Global Manufacturing Division",
+            "unitStatus": "INACTIVE",
+            "expectedStatus": "ACTIVE",
+            "reason": "Unit must be ACTIVE to create models/analysis",
+            "suggestion": "Activate the unit first by contacting the unit owner"
+        },
+        "severity": "ERROR",
+        "isBlocking": true,
+        "resolutionSteps": [
+            "Check unit status in unit details",
+            "Contact unit owner to activate",
+            "Wait for activation approval",
+            "Retry model/analysis creation"
+        ]
+    },
+    "metadata": {
+        "requestDuration": "45ms",
+        "cacheHit": false,
+        "currentUtilization": 65.2,
+        "validationsPerformed": 1,
+        "validationsFailed": 1
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00011",
+    "timestamp": "2024-04-09T12:00:00Z"
+}

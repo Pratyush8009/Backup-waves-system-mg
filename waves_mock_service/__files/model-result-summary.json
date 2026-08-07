@@ -1,0 +1,97 @@
+{
+  "code": 200,
+  "message": "Model Summery Received",
+  "data": {
+    "modelId": "MDL-660e8400-e29b-41d4-a716-446655440101",
+    "pipelineId": "PIP-MDL-ccpp-001",
+    "executionId": "EXEC-MDL-20260408-001",
+    "executionStatus": "COMPLETED",
+    "summary": {
+      "trainingMetrics": {
+        "finalTrainingLoss": 0.0234,
+        "finalValidationLoss": 0.0278,
+        "totalEpochs": 25,
+        "trainingTime": "142s",
+        "earlyStoppingStopped": false
+      },
+      "evaluationMetrics": {
+        "r2Score": 0.9285,
+        "mse": 18.456,
+        "mae": 3.247,
+        "rmse": 4.296
+      },
+      "datasetInfo": {
+        "totalSamples": 9568,
+        "trainingSamples": 7654,
+        "testingSamples": 1914,
+        "features": 4,
+        "featureNames": [
+          "AT",
+          "V",
+          "AP",
+          "RH"
+        ]
+      },
+      "modelArchitecture": {
+        "type": "FFNN",
+        "layers": [
+          {
+            "type": "Input",
+            "neurons": 4
+          },
+          {
+            "type": "Dense",
+            "neurons": 8,
+            "activation": "relu"
+          },
+          {
+            "type": "Dense",
+            "neurons": 5,
+            "activation": "relu"
+          },
+          {
+            "type": "Output",
+            "neurons": 1,
+            "activation": "linear"
+          }
+        ],
+        "totalParameters": 93,
+        "trainableParameters": 93
+      },
+      "predictionRange": {
+        "min": 420.26,
+        "max": 495.76,
+        "mean": 454.365,
+        "std": 17.067
+      }
+    },
+    "completedAt": "2026-04-08T10:33:00Z",
+    "generatedArtifacts": [
+      {
+        "type": "MODEL_FILE",
+        "name": "ccpp_model.h5",
+        "size": "15.2 KB",
+        "url": "/api/models/MDL-660e8400-e29b-41d4-a716-446655440101/artifacts/model"
+      },
+      {
+        "type": "SCALER",
+        "name": "feature_scaler.pkl",
+        "size": "1.8 KB",
+        "url": "/api/models/MDL-660e8400-e29b-41d4-a716-446655440101/artifacts/scaler"
+      },
+      {
+        "type": "REPORT",
+        "name": "model_evaluation_report.pdf",
+        "size": "245 KB",
+        "url": "/api/models/MDL-660e8400-e29b-41d4-a716-446655440101/artifacts/report"
+      }
+    ]
+  },
+  "metadata": {
+    "requestDuration": "156ms",
+    "cacheHit": false,
+    "currentUtilization": 87.5
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

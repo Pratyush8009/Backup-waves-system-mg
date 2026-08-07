@@ -1,0 +1,374 @@
+.subsystem-container {
+    padding: 24px;
+    background: #f5f5f5;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.delete-icon {
+    color: #ff4d4f;
+}
+
+.delete-icon:hover {
+    opacity: 1;
+    background: #fff1f0;
+    transform: scale(1.1);
+}
+
+.header h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.actions button {
+    margin-left: 8px;
+}
+
+/* Card Styles */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+}
+
+.subsystem-card {
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.subsystem-card:hover {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+/* Status Indicator Styles */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background-color: #fff2f0;
+    transition: all 0.3s ease;
+    cursor: help;
+}
+
+.status-indicator.configured {
+    background-color: #e6f7e6;
+}
+
+.status-indicator nz-icon {
+    font-size: 16px;
+    color: #ff4d4f;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.status-indicator.configured nz-icon {
+    color: #52c41a;
+    animation: none;
+}
+
+.status-text {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ff4d4f;
+}
+
+.status-indicator.configured .status-text {
+    color: #52c41a;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+}
+
+.description {
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    min-height: 60px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f0f0f0;
+}
+
+.flow-count {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #666;
+    font-size: 14px;
+}
+
+.flow-count nz-icon {
+    color: #1890ff;
+}
+
+/* Modal Form Styles */
+.create-form {
+    padding: 16px 0;
+}
+
+.form-group {
+    margin-bottom: 24px;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: #333;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group label nz-icon {
+    color: #1890ff;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #d9d9d9;
+    transition: all 0.3s ease;
+}
+
+.form-group input:hover,
+.form-group textarea:hover {
+    border-color: #40a9ff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.form-group input.error {
+    border-color: #ff4d4f;
+}
+
+.form-group input.error:focus {
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+.error-message {
+    display: block;
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* Switch custom styling */
+::ng-deep .ant-switch {
+    min-width: 100px;
+}
+
+::ng-deep .ant-switch-checked {
+    background-color: #52c41a;
+}
+
+/* Modal customization */
+::ng-deep .ant-modal-header {
+    border-radius: 12px 12px 0 0;
+    padding: 20px 24px;
+}
+
+::ng-deep .ant-modal-title {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+::ng-deep .ant-modal-body {
+    padding: 24px;
+}
+
+::ng-deep .ant-modal-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #f0f0f0;
+}
+
+::ng-deep .ant-modal-footer button {
+    border-radius: 6px;
+}
+
+/* Add these styles to your existing CSS file */
+
+/* Delete Confirmation Modal Styles */
+.delete-confirmation {
+    text-align: center;
+    padding: 20px 0;
+}
+
+.warning-icon {
+    font-size: 48px;
+    color: #faad14;
+    margin-bottom: 16px;
+}
+
+.confirmation-message {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.warning-message {
+    font-size: 14px;
+    color: #ff4d4f;
+    background: #fff1f0;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-top: 16px;
+}
+
+.warning-message nz-icon {
+    margin-right: 8px;
+}
+
+/* Loading State */
+.loading-state {
+    text-align: center;
+    padding: 48px;
+    background: #fff;
+    border-radius: 12px;
+}
+
+.loading-state p {
+    margin-top: 16px;
+    color: #999;
+}
+
+/* Info Message in Create Form */
+.info-message {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #e6f7ff;
+    border: 1px solid #91d5ff;
+    border-radius: 8px;
+    color: #0050b3;
+    font-size: 13px;
+    margin-top: 16px;
+}
+
+.info-message nz-icon {
+    color: #1890ff;
+    font-size: 16px;
+}
+
+/* Switch Group Styles */
+.switch-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.switch-group label {
+    margin-bottom: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .subsystem-container {
+        padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .actions {
+        width: 100%;
+        display: flex;
+        gap: 8px;
+    }
+
+    .actions button {
+        margin-left: 0;
+        flex: 1;
+    }
+
+    .card-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .status-text {
+        display: none;
+    }
+
+    .status-indicator {
+        padding: 4px 8px;
+    }
+
+    .status-indicator nz-icon {
+        margin: 0;
+    }
+}
+
+/* Empty state styles */
+.empty-state {
+    text-align: center;
+    padding: 48px;
+    background: #fff;
+    border-radius: 12px;
+}
+
+.empty-state nz-icon {
+    font-size: 48px;
+    color: #d9d9d9;
+    margin-bottom: 16px;
+}
+
+.empty-state p {
+    color: #999;
+    font-size: 16px;
+}

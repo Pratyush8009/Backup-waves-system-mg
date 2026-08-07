@@ -1,0 +1,25 @@
+{
+    "priority": 5,
+    "request": {
+        "method": "GET",
+        "urlPattern": "/api/users/6994521938cd90f90d351ad0"
+    },
+    "response": {
+        "status": 200,
+        "headers": {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "Content-Type",
+            "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+        },
+        "jsonBody": {
+            "success": true,
+            "data": {
+                "_id": "6994521938cd90f90d351ad0",
+                "name": "Pratyush Mohanty",
+                "email": "pratyush@example.com",
+                "__v": 0
+            }
+        }
+    }
+}

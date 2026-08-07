@@ -1,0 +1,39 @@
+<div class="dt-root">
+  <div class="dt-header" *ngIf="name">
+    <h2 class="dt-title">{{ name }}</h2>
+  </div>
+
+  @if (!sections || sections.length === 0) {
+    <nz-empty nzNotFoundContent="No sections configured for this template"></nz-empty>
+  } @else {
+    @for (section of sections; track section.sectionId) {
+      @let grid = getGridComponent(section.parentPlaceholderTemplate);
+
+      <section class="dt-section">
+        <div class="dt-section-header">
+          <div class="dt-section-heading">
+            <h3 class="dt-section-title">{{ section.title }}</h3>
+          </div>
+          <p class="dt-section-desc" *ngIf="section.description">{{ section.description }}</p>
+        </div>
+
+        @if (section.categories && section.categories.length > 0) {
+          @for (categoryGroup of section.categories; track categoryGroup.category) {
+            <div class="dt-category-box">
+              <nz-tag class="dt-category-label" [nzColor]="'blue'">
+                {{ categoryGroup.category }} under {{ section.title }}
+              </nz-tag>
+              <ng-container
+                *ngComponentOutlet="grid; inputs: { plots: categoryGroup.components, rawLiveData: rawLiveData }">
+              </ng-container>
+            </div>
+          }
+        } @else {
+          <div class="dt-section-empty">
+            <nz-empty nzNotFoundContent="No components configured in this section"></nz-empty>
+          </div>
+        }
+      </section>
+    }
+  }
+</div>

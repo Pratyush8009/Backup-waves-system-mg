@@ -1,0 +1,36 @@
+{
+    "code": 429,
+    "message": "Model/Analysis creation failed - subscription limit exceeded",
+    "error": {
+        "type": "QUOTA_EXCEEDED",
+        "code": "MODEL_LIMIT_EXCEEDED",
+        "message": "Cannot create model/analysis - maximum models/analyses limit reached for subscription plan",
+        "details": {
+            "unitId": "UNIT-550e8400",
+            "subscriptionPlan": "PROFESSIONAL",
+            "modelLimit": 50,
+            "modelsCreated": 50,
+            "modelsAvailable": 0,
+            "currentUsage": "100%",
+            "retryAfter": "2024-04-16T12:00:00Z",
+            "suggestion": "Upgrade subscription plan or delete unused models/ analyses"
+        },
+        "severity": "ERROR",
+        "isBlocking": true,
+        "resolutionSteps": [
+            "Review current models/analyses and delete unused ones",
+            "Archive old models/analyses",
+            "Upgrade subscription plan to ENTERPRISE",
+            "Contact support for assistance"
+        ]
+    },
+    "metadata": {
+        "requestDuration": "78ms",
+        "cacheHit": false,
+        "currentUtilization": 75.2,
+        "validationsPerformed": 4,
+        "validationsFailed": 1
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00013",
+    "timestamp": "2024-04-09T12:00:00Z"
+}

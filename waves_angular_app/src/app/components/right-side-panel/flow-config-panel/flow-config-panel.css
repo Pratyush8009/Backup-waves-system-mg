@@ -1,0 +1,31 @@
+.config-panel h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.config-panel {
+    border-bottom: 1px solid rgb(163, 163, 163);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.icon-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #ffffff;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1px solid rgb(211, 211, 211);
+}

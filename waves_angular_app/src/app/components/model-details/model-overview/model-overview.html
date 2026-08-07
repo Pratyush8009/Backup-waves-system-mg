@@ -1,0 +1,257 @@
+<div class="model-overview-container">
+  @if (loading) {
+    <div class="loading-state">
+      <nz-spin nzSimple nzSize="large"></nz-spin>
+      <p>Syncing Digital Twin Context...</p>
+    </div>
+  }
+
+  @if (!loading && modelData) {
+    <div class="details-section">
+      <div class="header">
+        <div class="title-area">
+          <h3>{{ modelData.name }}</h3>
+          <div class="id-badges">
+            <span class="id-tag">Model ID: {{ modelData.id }}</span>
+          </div>
+        </div>
+        <div class="header-tags">
+          <nz-tag nzColor="blue" class="status-tag">{{ modelData.stage }}</nz-tag>
+          <nz-tag [nzColor]="modelData.status === 'ACTIVE' ? 'success' : 'default'" class="status-tag">
+            {{ modelData.status }}
+          </nz-tag>
+        </div>
+      </div>
+
+      <div class="description-block">
+        <p class="model-desc">{{ modelData.description }}</p>
+        <div class="active-version-callout">
+          <strong>Current Active Version:</strong> {{ modelData.version }}
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div class="info-item">
+          <span class="label">Owner</span>
+          <span class="val">{{ modelData.metadata?.owner || 'Unassigned' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Department</span>
+          <span class="val">{{ modelData.metadata?.department || 'N/A' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Created Date</span>
+          <span class="val">{{ formatDate(modelData.createdAt) }}</span>
+        </div>
+        <div class="info-item">
+          <span class="label">Last Configuration Sync</span>
+          <span class="val">{{ formatDate(modelData.updatedAt) }}</span>
+        </div>
+        <div class="info-item full-width">
+          <span class="label">Classification Tags</span>
+          <div class="tag-container">
+            @for (t of modelData.metadata?.tags; track t) {
+              <nz-tag nzColor="geekblue">{{ t }}</nz-tag>
+            } @empty {
+              <span class="val secondary">No tags defined</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    @if (modelSummary) {
+      <div class="section-header">
+        <nz-divider nzText="Model Performance & Training Summary" nzOrientation="left"></nz-divider>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metrics-card">
+          <div class="metrics-title">
+            <span nz-icon nzType="dashboard" nzTheme="outline"></span> Evaluation Metrics
+          </div>
+          <div class="metrics-content">
+            <div class="metric-item">
+              <span class="metric-label">R² Score</span>
+              <nz-progress [nzPercent]="getR2ScorePercent()" nzStatus="success" [nzStrokeWidth]="10"></nz-progress>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">MSE (Mean Squared Error)</span>
+              <span class="metric-value">{{ modelSummary.summary.evaluationMetrics.mse }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">RMSE</span>
+              <span class="metric-value">{{ modelSummary.summary.evaluationMetrics.rmse }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-card">
+          <div class="metrics-title">
+            <span nz-icon nzType="line-chart" nzTheme="outline"></span> Training Lifecycle
+          </div>
+          <div class="metrics-content">
+            <div class="metric-item">
+              <span class="metric-label">Final Training Loss</span>
+              <span class="metric-value">{{ modelSummary.summary.trainingMetrics.finalTrainingLoss }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Total Epochs</span>
+              <span class="metric-value">{{ modelSummary.summary.trainingMetrics.totalEpochs }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Execution Time</span>
+              <span class="metric-value">{{ modelSummary.summary.trainingMetrics.trainingTime }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-card">
+          <div class="metrics-title">
+            <span nz-icon nzType="database" nzTheme="outline"></span> Dataset Info
+          </div>
+          <div class="metrics-content">
+            <div class="metric-item">
+              <span class="metric-label">Total Samples</span>
+              <span class="metric-value">{{ modelSummary.summary.datasetInfo.totalSamples | number }}</span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Input Features</span>
+              <div class="feature-tags">
+                @for (f of modelSummary.summary.datasetInfo.featureNames; track f) {
+                  <nz-tag nzColor="cyan">{{ f }}</nz-tag>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-card">
+          <div class="metrics-title">
+            <span nz-icon nzType="stock" nzTheme="outline"></span> Prediction Statistics
+          </div>
+          <div class="metrics-content">
+            <div class="metric-item">
+              <span class="metric-label">Min / Max Range</span>
+              <span class="metric-value">
+                {{ modelSummary.summary.predictionRange.min }} — {{ modelSummary.summary.predictionRange.max }}
+              </span>
+            </div>
+            <div class="metric-item">
+              <span class="metric-label">Mean Output</span>
+              <span class="metric-value">{{ modelSummary.summary.predictionRange.mean }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <nz-divider nzText="Model Architecture" nzOrientation="left"></nz-divider>
+      </div>
+
+      <div class="architecture-card">
+        <div class="arch-header">
+          <div class="arch-type">
+            <nz-tag nzColor="purple">{{ modelSummary.summary.modelArchitecture.type }}</nz-tag>
+            <span class="param-count">
+              <strong>{{ modelSummary.summary.modelArchitecture.totalParameters }}</strong> Total Parameters
+            </span>
+          </div>
+        </div>
+        <div class="layers-container">
+          @for (layer of modelSummary.summary.modelArchitecture.layers; track $index) {
+            <div class="layer-item">
+              <div class="layer-type">{{ layer.type }}</div>
+              <div class="layer-details">
+                @if (layer.neurons) { <span>Neurons: {{ layer.neurons }}</span> }
+                @if (layer.activation) { <span>Act: {{ layer.activation }}</span> }
+              </div>
+              @if (!$last) {
+                <div class="layer-arrow">
+                  <span nz-icon nzType="arrow-right"></span>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="section-header">
+        <nz-divider nzText="Generated Artifacts" nzOrientation="left"></nz-divider>
+      </div>
+
+      <div class="artifacts-grid">
+        @for (artifact of modelSummary.generatedArtifacts; track artifact.url) {
+          <div class="artifact-card">
+            <div class="artifact-icon">
+              <span nz-icon [nzType]="artifact.type === 'MODEL_FILE' ? 'file-zip' : 'file-pdf'"></span>
+            </div>
+            <div class="artifact-info">
+              <div class="artifact-name">{{ artifact.name }}</div>
+              <div class="artifact-meta">{{ artifact.size }} • {{ artifact.type }}</div>
+            </div>
+            <button nz-button nzType="text" nzShape="circle" title="Download">
+              <span nz-icon nzType="download"></span>
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <div class="section-header">
+      <nz-divider nzText="Ingested Training Assets" nzOrientation="left"></nz-divider>
+    </div>
+    
+    <div class="table-card">
+      <nz-table #fileTable [nzData]="modelData.uploadedFiles || []" nzSize="middle" [nzShowPagination]="false">
+        <thead>
+          <tr>
+            <th>File Asset</th>
+            <th>Size</th>
+            <th>Data Point Count</th>
+            <th>Ingestion Date</th>
+            <th>Processing Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (file of fileTable.data; track file.fileId) {
+            <tr>
+              <td class="file-name"><span nz-icon nzType="file-text"></span> {{ file.fileName }}</td>
+              <td>{{ formatFileSize(file.fileSize) }}</td>
+              <td>{{ file.recordCount | number }} records</td>
+              <td>{{ formatDate(file.uploadedAt) }}</td>
+              <td>
+                <nz-badge 
+                  [nzStatus]="file.status === 'PROCESSED' ? 'success' : 'processing'" 
+                  [nzText]="file.status">
+                </nz-badge>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </nz-table>
+    </div>
+
+    <div class="section-header">
+      <nz-divider nzText="Version Timeline" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="version-row">
+      @for (v of modelData.versionHistory; track v.version) {
+        <div class="v-card-wrapper">
+          <nz-card class="history-card" [class.active-v]="v.version === modelData.version">
+            <div class="v-header">
+              <strong>v{{ v.version }}</strong>
+              <nz-tag [nzColor]="v.changeType === 'MAJOR' ? 'volcano' : 'orange'">{{ v.changeType }}</nz-tag>
+            </div>
+            <p class="v-changes">{{ v.changes }}</p>
+            <div class="v-footer">
+              <span nz-icon nzType="user"></span> {{ v.createdBy }} <br>
+              {{ formatDate(v.createdAt) }}
+            </div>
+          </nz-card>
+        </div>
+      }
+    </div>
+  }
+</div>

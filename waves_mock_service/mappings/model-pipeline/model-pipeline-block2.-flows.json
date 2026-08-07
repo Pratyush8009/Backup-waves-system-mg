@@ -1,0 +1,14 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/v1/waves/models/MDL-660e8400-e29b-41d4-a716-446655440101/pipelines/958769348796/block/BKI-CCPP-INPUT-001"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    },
+    "bodyFileName": "pipeline-model-block2-flows.json"
+  }
+}

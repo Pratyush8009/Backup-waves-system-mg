@@ -1,0 +1,35 @@
+{
+    "code": 400,
+    "message": "Model/Analysis creation failed - system is not active",
+    "error": {
+        "type": "VALIDATION_ERROR",
+        "code": "SYSTEM_NOT_ACTIVE",
+        "message": "Cannot create model/analysis for inactive system",
+        "details": {
+            "systemId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+            "systemName": "Manufacturing Unit ABC",
+            "systemStatus": "INACTIVE",
+            "expectedStatus": "ACTIVE",
+            "lastActivityAt": "2024-03-20T14:45:00Z",
+            "inactiveReason": "Manually triggered by user.",
+            "suggestion": "contact unit/system owner"
+        },
+        "severity": "ERROR",
+        "isBlocking": true,
+        "resolutionSteps": [
+            "Check system status details",
+            "Wait for maintenance window completion",
+            "Contact system owner to activate",
+            "Retry model/analysis creation after activation"
+        ]
+    },
+    "metadata": {
+        "requestDuration": "38ms",
+        "cacheHit": false,
+        "currentUtilization": 65.2,
+        "validationsPerformed": 3,
+        "validationsFailed": 1
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00016",
+    "timestamp": "2024-04-09T12:00:00Z"
+}

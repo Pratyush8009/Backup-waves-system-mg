@@ -1,0 +1,425 @@
+.page-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.page-container::-webkit-scrollbar {
+    display: none;
+}
+
+.main-splitter {
+    height: 100%;
+}
+
+
+::ng-deep .ant-splitter-content {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* ============LEFT PANEL STYLE============== */
+.left-panel .title h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1677ff;
+}
+
+.left-panel {
+    border-right: 1px solid #ddd;
+    width: 280px;
+    background: #fafafa;
+    padding: 10px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.left-panel::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.nodes {
+    margin-top: 10px;
+}
+
+.left-panel {
+    border-right: 1px solid #ddd;
+    width: 250px;
+    background: #fafafa;
+    padding: 10px;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+}
+
+.nodes {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.left-panel::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+.nodes {
+    margin-top: 10px;
+}
+
+
+
+/* ===== LIBRARY NODE STYLING IN LEFT PANEL ===== */
+
+.library-node {
+    width: 85%;
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    cursor: grab;
+    border: 1px solid #ccc;
+    text-align: center;
+    position: relative;
+    font-size: 15px;
+    font-weight: 500;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.endpoint {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #535353;
+    border-radius: 5px;
+}
+
+.endpoint.left {
+    left: -7px;
+}
+
+.endpoint.right {
+    right: -7px;
+}
+
+.category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    padding-top: 5px;
+}
+
+.category h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+/*=============== LEFT PANEL FLOW STYLES ===============*/
+
+.saved-flow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%
+}
+
+
+.active-flow {
+    background: #e6f4ff;
+    border-left: 4px solid #1677ff;
+    font-weight: 600;
+}
+
+.flow-delete-icon {
+    color: rgb(245, 102, 102);
+}
+
+.flow-delete-icon:hover {
+    color: red;
+    font-size: 16px;
+}
+
+.saved-flow:hover {
+    background: #f0f0f0;
+}
+
+.add-block-btn {
+    margin-top: 8px;
+}
+
+.flow-info {
+    flex: 1;
+}
+
+.flow-desc {
+    font-size: 12px;
+    color: #888;
+}
+
+.flow-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Wrapper spacing */
+.flow-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 8px;
+}
+
+/* Each field block */
+.flow-modal-content .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label styling */
+.flow-modal-content label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #595959;
+}
+
+/* Input & textarea styling */
+.flow-modal-content .ant-input,
+.flow-modal-content textarea.ant-input {
+    border-radius: 6px;
+    padding: 8px 12px;
+    transition: all 0.2s ease;
+}
+
+/* Focus effect */
+.flow-modal-content .ant-input:focus,
+.flow-modal-content textarea.ant-input:focus {
+    border-color: #1677ff;
+    box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.15);
+}
+
+/* Disabled field */
+.flow-modal-content .ant-input[disabled] {
+    background-color: #f5f5f5;
+    color: #8c8c8c;
+    cursor: not-allowed;
+}
+
+
+
+
+/* =============CENTER PANEL STYLE==============*/
+.center-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.top-bar {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+}
+
+.canvas {
+    position: relative;
+    flex: 1;
+    background: #ffffff;
+    overflow: auto;
+    min-height: 0;
+}
+
+.controlles {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.screen-mode {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #dfdfdf;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.logs-panel {
+    height: 100%;
+    overflow: auto;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.logs-panel::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* ================INSTANCE NDOE STYLE=============== */
+
+
+.block-instance-node {
+    position: absolute;
+    padding: 5px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    cursor: move;
+    min-width: 130px;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+}
+
+.name-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+/* ===== Context Menu ===== */
+
+.context-menu {
+    position: fixed;
+    background: #ffffff;
+    border: 1px solid #dcdcdc;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 6px;
+    width: 160px;
+    z-index: 9999;
+    padding: 5px 0;
+    animation: fadeIn 0.15s ease-in-out;
+}
+
+.menu-item {
+    padding: 8px 14px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.menu-item:hover {
+    background-color: #f5f5f5;
+}
+
+.menu-item.delete {
+    color: #d9534f;
+}
+
+.menu-item.delete:hover {
+    background-color: #ffecec;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+/* ============RIGHT PANNEL STYLE=========== */
+
+.right-panel {
+    width: 280px;
+    background: #fafafa;
+    padding: 10px;
+    border-left: 1px solid #ddd;
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.right-panel::-webkit-scrollbar {
+    display: none;
+}
+
+/* Keep all your existing styles... and add/update these: */
+
+.endpoint.right.top-port {
+    top: 25%;
+    right: -7px;
+    margin-top: -5px;
+    /* Half of height */
+}
+
+.endpoint.right.bottom-port {
+    top: 75%;
+    right: -7px;
+    margin-top: -5px;
+}
+
+/* Ensure instance nodes show their boundaries clearly */
+.block-instance-node {
+    position: absolute;
+    padding: 15px 5px;
+    /* Increased padding for better vertical spacing of dots */
+    font-size: 14px;
+    background: #b38338;
+    border: 1px solid #916a2d;
+    border-radius: 8px;
+    cursor: move;
+    min-width: 140px;
+    text-align: center;
+    color: white;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Prevent text selection while dragging */
+.canvas {
+    user-select: none;
+}
+
+/* jsPlumb specific endpoint styling to match your dots */
+::ng-deep .jtk-endpoint {
+    z-index: 10;
+    cursor: crosshair;
+}
+
+::ng-deep .jtk-connector {
+    z-index: 5;
+}

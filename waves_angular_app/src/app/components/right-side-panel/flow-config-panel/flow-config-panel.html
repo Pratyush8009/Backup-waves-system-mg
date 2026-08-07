@@ -1,0 +1,14 @@
+<div class="config-panel">
+    <h3>Configuration</h3>
+
+    <div class="icons">
+        <div class="icon-box" nz-tooltip nzTooltipTitle="Info">
+            <nz-icon nzType="info" nzTheme="outline"></nz-icon>
+        </div>
+        <div class="icon-box" nz-tooltip nzTooltipTitle="Setting">
+            <nz-icon nzType="setting" nzTheme="outline"></nz-icon>
+        </div>
+    </div>
+</div>
+
+<p *ngIf="selectedNode">{{selectedNode.name}}</p>

@@ -1,0 +1,25 @@
+<div class="log-wrapper">
+    <div class="log-header">
+        Deployment Logs
+    </div>
+
+    <div class="log-container" #logContainer>
+        <div *ngFor="let log of displayedLogs" class="log-row" [ngClass]="getLevelClass(log.level)">
+            <span class="log-time">
+                {{ log.timestamp | date:'HH:mm:ss' }}
+            </span>
+
+            <span class="log-level">
+                {{ log.level }}
+            </span>
+
+            <span class="log-message">
+                {{ log.message }}
+            </span>
+        </div>
+
+        <div *ngIf="displayedLogs.length === 0" class="no-logs">
+            Waiting for deployment...
+        </div>
+    </div>
+</div>

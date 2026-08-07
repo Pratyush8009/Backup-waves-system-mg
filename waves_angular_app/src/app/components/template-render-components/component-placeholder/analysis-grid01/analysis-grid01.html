@@ -1,0 +1,36 @@
+ <div class="ag01-grid">
+      @for (plot of plots; track plot.plotId) {
+        @let comp = getPlotComponent(plot.chartType);
+        @let data = resolveData(plot.mappedField);
+ 
+        @if (plot.chartType === 'stat-card') {
+          <!-- Stat cards render inline without a nz-card wrapper -->
+          <nz-card class="ag01-card ag01-card-metric">
+            @if (comp) {
+              <ng-container *ngComponentOutlet="comp; inputs: { config: plot, data: data }">
+              </ng-container>
+            }
+          </nz-card>
+        } @else {
+          <nz-card class="ag01-card" [nzBordered]="true">
+            <div class="ag01-card-header">
+              <span class="ag01-card-title">{{ plot.metadata?.label || plot.title }}</span>
+              <div class="ag01-card-actions">
+                <span nz-icon nzType="fullscreen" nzTheme="outline" class="ag01-action-icon" (click)="toggleFullscreen(plot.plotId, $event)"></span>
+                <span nz-icon nzType="more" nzTheme="outline" class="ag01-action-icon" (click)="toggleActionMenu(plot.plotId, $event)"></span>
+                <div class="ag01-action-menu" *ngIf="activeActionMenuPlotId === plot.plotId">
+                  <button type="button" class="ag01-action-menu-item" (click)="openCollab(plot); activeActionMenuPlotId = null">Collab</button>
+                  <button type="button" class="ag01-action-menu-item" (click)="toggleFullscreen(plot.plotId, $event); activeActionMenuPlotId = null">Fullscreen</button>
+                </div>
+              </div>
+            </div>
+            @if (comp) {
+              <ng-container *ngComponentOutlet="comp; inputs: { config: plot, data: data }">
+              </ng-container>
+            } @else {
+              <nz-empty [nzNotFoundContent]="'No renderer for: ' + plot.chartType"></nz-empty>
+            }
+          </nz-card>
+        }
+      }
+    </div>

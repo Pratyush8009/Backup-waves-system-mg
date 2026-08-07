@@ -1,0 +1,70 @@
+.dt-root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.dt-header .dt-title {
+  margin: 0 0 8px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.dt-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+}
+
+.dt-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.dt-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dt-section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.dt-section-category {
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.dt-section-desc {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.dt-section-empty {
+  padding: 24px 0;
+}
+
+.dt-category-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.dt-category-label {
+  align-self: flex-start;
+  text-transform: uppercase;
+  font-size: 11px;
+}

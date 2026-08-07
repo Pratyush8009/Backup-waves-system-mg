@@ -1,0 +1,312 @@
+.badcrampde {
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+.page-container {
+    padding: 8px;
+    background: #f5f5f5;
+    min-height: 100vh;
+    position: relative;
+}
+
+.switching-section {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+
+}
+
+.mode-toggle {
+    display: inline-flex;
+    background: #e6e6e6;
+    padding: 4px;
+    border-radius: 999px;
+    width: fit-content;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s ease;
+}
+
+.toggle-option {
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.toggle-option.active {
+    background: #1890ff;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.back-to-unit {
+    cursor: pointer;
+    font-size: 15px;
+    color: #1890ff;
+    display: inline-flex;
+    align-items: center;
+    margin-bottom: 16px;
+    transition: color 0.3s;
+}
+
+.back-to-unit:hover {
+    color: #40a9ff;
+}
+
+.back-icon {
+    margin-right: 5px;
+}
+
+.badcrampde {
+    margin-bottom: 20px;
+    margin-left: 10px;
+}
+
+/* Tabs Styling */
+.system-tabs {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+:host ::ng-deep .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+:host ::ng-deep .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active {
+    background-color: #1890ff;
+    color: white;
+}
+
+:host ::ng-deep .ant-tabs-card>.ant-tabs-nav .ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: white;
+}
+
+:host ::ng-deep .ant-tabs-content-holder {
+    padding: 24px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.tab-content {
+    min-height: 400px;
+    position: relative;
+}
+
+
+
+.tab-content.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: white;
+    padding: 24px;
+    overflow-y: auto;
+}
+
+.tab-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tab-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #1a1a1a;
+}
+
+.tab-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.config-wrapper {
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+    align-items: flex-end;
+}
+
+.config-wrapper.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    background: white;
+    overflow-y: auto;
+    margin-bottom: 0;
+}
+
+/* important which prvent to scroll when editor is fullscreen */
+.config-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.config-wrapper.fullscreen app-configure-page {
+    display: block;
+    height: 100%;
+}
+
+
+.system-components {
+    display: grid;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+/* Flow Tab Specific */
+.flow-tab {
+    padding: 0;
+    margin: -24px;
+}
+
+/* Testing Tab Specific */
+.testing-tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 500px;
+}
+
+.testing-placeholder {
+    text-align: center;
+    padding: 48px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.placeholder-icon {
+    font-size: 64px;
+    color: #1890ff;
+    margin-bottom: 24px;
+}
+
+.testing-placeholder h3 {
+    font-size: 20px;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.testing-placeholder p {
+    color: #666;
+    margin-bottom: 32px;
+}
+
+.testing-controls {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.test-cases {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: left;
+}
+
+.test-case {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.test-case:last-child {
+    border-bottom: none;
+}
+
+.test-icon {
+    margin-right: 12px;
+    font-size: 16px;
+}
+
+.test-case span:first-of-type {
+    flex: 1;
+    color: #333;
+}
+
+.test-status {
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.test-status.success {
+    background: #f6ffed;
+    color: #52c41a;
+    border: 1px solid #b7eb8f;
+}
+
+.test-status.failed {
+    background: #fff1f0;
+    color: #f5222d;
+    border: 1px solid #ffa39e;
+}
+
+.test-status:not(.success):not(.failed) {
+    background: #e6f7ff;
+    color: #1890ff;
+    border: 1px solid #91d5ff;
+}
+
+/* Fullscreen overlay */
+.fullscreen-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen-overlay.hidden {
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .page-container {
+        padding: 12px;
+    }
+
+    :host ::ng-deep .ant-tabs-content-holder {
+        padding: 16px;
+    }
+
+    .testing-placeholder {
+        padding: 24px;
+    }
+
+    .testing-controls {
+        flex-direction: column;
+    }
+
+    .tab-header {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
+}

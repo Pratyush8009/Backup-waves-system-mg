@@ -1,0 +1,30 @@
+.sc-card {
+  text-align: center;
+  padding: 20px;
+}
+.sc-label {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+.sc-value {
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.sc-unit {
+  font-size: 16px;
+  font-weight: 400;
+  color: #6b7280;
+  margin-left: 4px;
+}
+.sc-trend {
+  font-size: 13px;
+  margin-top: 6px;
+}
+.sc-up {
+  color: #52c41a;
+}
+.sc-down {
+  color: #ff4d4f;
+}

@@ -1,0 +1,67 @@
+.ltp-root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+}
+
+.ltp-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ltp-title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.ltp-subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+.ltp-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 240px;
+}
+
+.ltp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.ltp-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.ltp-desc {
+  margin: 12px 0 16px;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 13px;
+}
+
+.ltp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ltp-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ltp-section-title {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 3px solid #1677ff;
+  font-size: 16px;
+  font-weight: 600;
+}

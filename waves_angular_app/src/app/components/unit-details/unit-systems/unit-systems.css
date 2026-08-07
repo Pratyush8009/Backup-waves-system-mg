@@ -1,0 +1,225 @@
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+/* Search Bar Styles */
+.header {
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.header-left {
+    flex: 1;
+    max-width: 300px;
+}
+
+.header-left nz-input-group {
+    width: 100%;
+}
+
+.empty-state button {
+    margin-top: 16px;
+}
+
+.header button {
+    min-width: 140px;
+    height: 40px;
+    border-radius: 6px;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.header button:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Card Grid Layout */
+[nz-row] {
+    margin: -12px !important;
+}
+
+[nz-col] {
+    padding: 12px !important;
+}
+
+/* System Card Styles */
+.system-card {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    background: white !important;
+    position: relative;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+}
+
+.system-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+}
+
+.system-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a1a;
+    line-height: 1.4;
+    margin-top: 10px;
+}
+
+.label {
+    font-size: 13px;
+    color: #1890ff;
+    font-weight: 600;
+}
+
+.system-card .description {
+    font-size: 14px;
+    color: #6b6b6b;
+    line-height: 1.6;
+    margin: 0 0 16px;
+    flex-grow: 1;
+    padding: 0 16px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Customized Footer containing two specific metrics */
+.card-footer-metrics {
+    margin: 0 16px 16px;
+    padding-top: 10px;
+    border-top: 1px solid #f0f0f0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.metric-item {
+    font-size: 13px;
+    color: #8c8c8c;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 0;
+}
+
+/* Action Buttons */
+.system-card .action-buttons {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
+}
+
+.system-card.selected {
+    border: 5px solid #2d93f3;
+    box-shadow: 0px 0px 5px 6px rgba(2, 71, 136, 0.2);
+}
+
+.system-card .action-buttons button {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #ff4d4f;
+    transition: all 0.3s ease;
+}
+
+.system-card .action-buttons button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 8px rgba(255, 77, 79, 0.2);
+}
+
+/* Card Bottom Action Button */
+.system-card>button {
+    margin: 0 16px 16px;
+    border-radius: 6px;
+    height: 40px;
+    font-weight: 500;
+    border: 1px solid #e8e8e8;
+    background: white;
+    color: #1890ff;
+    transition: all 0.3s ease;
+}
+
+.system-card>button:hover {
+    background: #f5f5f5;
+    border-color: #1890ff;
+    color: #1890ff;
+}
+
+/* Empty & Loading States */
+.empty-state,
+.loading-state {
+    text-align: center;
+    padding: 64px 24px;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    max-width: 500px;
+    margin: 48px auto;
+}
+
+.empty-state h3,
+.loading-state p {
+    font-size: 18px;
+    color: #1a1a1a;
+    margin-top: 16px;
+}
+
+/* Form inputs mapping style from original css */
+nz-modal {
+    --modal-padding: 24px;
+}
+
+nz-form-item {
+    margin-bottom: 24px;
+}
+
+nz-form-label {
+    font-weight: 500;
+}
+
+input[nz-input],
+textarea[nz-input] {
+    border-radius: 6px;
+    width: 100%;
+}
+
+/* Animations */
+.system-card,
+[nz-col] {
+    animation: fadeInUp 0.5s ease-out both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

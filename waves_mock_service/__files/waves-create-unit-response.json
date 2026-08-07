@@ -1,0 +1,130 @@
+{
+  "code": 201,
+  "message": "Unit created successfully",
+  "data": {
+    "unitId": "UNIT-001",
+    "clientId": "CLIENT-550e8400-e29b-41d4-a716-446655440001",
+    "name": "Global Manufacturing Division",
+    "type": "MANUFACTURING",
+    "state": "ACTIVE",
+    "status": "PROVISIONING",
+    "createdAt": "2024-04-09T12:00:00Z",
+    "createdBy": "USR-support-005",
+    "createdByName": "Support User Name",
+    "approvedBy": "USR-manager-002",
+    "approvedByName": "Manager Name",
+    "subscription": {
+      "subscriptionId": "SUB-550e8400-e29b-41d4-a716-446655440001",
+      "planType": "ENTERPRISE",
+      "billingModel": "Annual",
+      "amount": 50000,
+      "currency": "USD",
+      "startDate": "2024-04-09T00:00:00Z",
+      "endDate": "2025-04-08T23:59:59Z",
+      "status": "ACTIVE",
+      "features": {
+        "maxSystems": 50,
+        "maxModels": 200,
+        "maxAnalyses": 100,
+        "maxUsers": 100,
+        "maxApiCallsPerMonth": 10000000,
+        "dataRetentionDays": 365,
+        "supportLevel": "24x7 Premium"
+      }
+    },
+    "configuration": {
+      "alerting": {
+        "emailAlerts": true,
+        "mobileAlerts": true,
+        "smsAlerts": true,
+        "inAppAlerts": true,
+        "alertRecipients": 2,
+        "quietHours": true
+      },
+      "usageLimit": {
+        "enabled": true,
+        "monthlyApiCalls": 10000000,
+        "storageGB": 5000,
+        "maxSystems": 50,
+        "maxUsers": 100,
+        "overageAllowed": true
+      },
+      "template": {
+        "templateId": "TEMPLATE-MANUFACTURING-STANDARD-001",
+        "applied": true,
+        "preConfiguredSystems": 2,
+        "preConfiguredModels": 1,
+        "includedDashboards": 2
+      },
+      "monitoring": {
+        "realTimeMonitoring": true,
+        "healthCheckInterval": "60 seconds",
+        "metricsCollected": 9
+      }
+    },
+    "provisioningStatus": {
+      "overall": "IN_PROGRESS",
+      "steps": [
+        {
+          "step": "Validate client",
+          "status": "COMPLETED",
+          "completedAt": "2024-04-09T12:00:05Z"
+        },
+        {
+          "step": "Create unit record",
+          "status": "COMPLETED",
+          "completedAt": "2024-04-09T12:00:10Z"
+        },
+        {
+          "step": "Apply subscription",
+          "status": "COMPLETED",
+          "completedAt": "2024-04-09T12:00:15Z"
+        },
+        {
+          "step": "Configure alerting",
+          "status": "COMPLETED",
+          "completedAt": "2024-04-09T12:00:20Z"
+        },
+        {
+          "step": "Set usage limits",
+          "status": "COMPLETED",
+          "completedAt": "2024-04-09T12:00:25Z"
+        },
+        {
+          "step": "Apply template",
+          "status": "IN_PROGRESS",
+          "startedAt": "2024-04-09T12:00:25Z"
+        },
+        {
+          "step": "Create pre-configured systems",
+          "status": "PENDING"
+        },
+        {
+          "step": "Finalize provisioning",
+          "status": "PENDING"
+        }
+      ],
+      "estimatedCompletionTime": "2024-04-09T12:05:00Z",
+      "progressPercentage": 62
+    },
+    "stats": {
+      "systemCount": 0,
+      "modelCount": 0,
+      "analysisCount": 0,
+      "userCount": 1,
+      "apiCallsUsed": 0,
+      "storageUsedGB": 0,
+      "lastActivityAt": "2024-04-09T12:00:00Z"
+    }
+  },
+  "metadata": {
+    "requestDuration": "4500ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "provisioning": {
+      "status": "IN_PROGRESS"
+    }
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00001",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

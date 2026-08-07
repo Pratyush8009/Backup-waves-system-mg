@@ -1,0 +1,465 @@
+.app-state-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    width: 100%;
+    margin: 0 auto;
+    box-sizing: border-box;
+
+}
+
+/* Header Section */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.header h3 {
+    margin: 0;
+    font-size: 23px;
+    font-weight: 600;
+    color: #000000;
+}
+
+.header p {
+    margin: 4px 0 0;
+    color: #8c8c8c;
+    font-size: 14px;
+}
+
+.header button[nz-button] {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 40px;
+    padding: 0 20px;
+    font-weight: 500;
+    background: #1890ff;
+    color: white;
+    border: none;
+    transition: all 0.3s;
+}
+
+.header button[nz-button]:hover {
+    background: #40a9ff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+.header button[nz-button] span[nz-icon] {
+    font-size: 16px;
+}
+
+/* Search Bar */
+.search-bar {
+    margin-bottom: 24px;
+    max-width: 400px;
+}
+
+.search-bar input[nz-input] {
+    height: 40px;
+    border-radius: 6px;
+    border: 1px solid #d9d9d9;
+    transition: all 0.3s;
+    padding: 0 12px;
+    font-size: 14px;
+}
+
+.search-bar input[nz-input]:hover {
+    border-color: #40a9ff;
+}
+
+.search-bar input[nz-input]:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    outline: none;
+}
+
+.search-bar input[nz-input]::placeholder {
+    color: #bfbfbf;
+}
+
+/* Table Styles */
+nz-table {
+    margin-top: 16px;
+}
+
+::ng-deep .ant-table-thead>tr>th {
+    background: #fafafa;
+    font-weight: 600;
+    color: #1a1a1a;
+    padding: 16px 12px;
+    border-bottom: 2px solid #f0f0f0;
+    white-space: nowrap;
+}
+
+::ng-deep .ant-table-tbody>tr>td {
+    padding: 16px 12px;
+    vertical-align: middle;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.3s;
+}
+
+::ng-deep .ant-table-tbody>tr:hover>td {
+    background: #f5f9ff;
+}
+
+/* Form Elements inside Table */
+td input[nz-input] {
+    width: 100%;
+    min-width: 140px;
+    height: 36px;
+    padding: 0 10px;
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+    transition: all 0.3s;
+}
+
+td input[nz-input]:hover {
+    border-color: #40a9ff;
+}
+
+td input[nz-input]:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+    outline: none;
+}
+
+td input[nz-input]:disabled {
+    background-color: #f5f5f5;
+    border-color: #d9d9d9;
+    color: rgba(0, 0, 0, 0.25);
+    cursor: not-allowed;
+}
+
+td input[nz-input]:disabled:hover {
+    border-color: #d9d9d9;
+}
+
+td input[nz-input].ng-invalid.ng-touched {
+    border-color: #ff4d4f;
+}
+
+td input[nz-input].ng-invalid.ng-touched:focus {
+    box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+}
+
+/* Select Dropdowns */
+::ng-deep td .ant-select {
+    width: 100%;
+    min-width: 120px;
+}
+
+::ng-deep td .ant-select-selector {
+    height: 36px !important;
+    padding: 0 11px !important;
+    border-radius: 4px !important;
+    border: 1px solid #d9d9d9 !important;
+    transition: all 0.3s !important;
+}
+
+::ng-deep td .ant-select-disabled .ant-select-selector {
+    background-color: #f5f5f5 !important;
+    color: rgba(0, 0, 0, 0.25) !important;
+    cursor: not-allowed !important;
+}
+
+::ng-deep td .ant-select-disabled .ant-select-selector:hover {
+    border-color: #d9d9d9 !important;
+}
+
+::ng-deep td .ant-select-focused .ant-select-selector {
+    border-color: #1890ff !important;
+    box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2) !important;
+}
+
+::ng-deep td .ant-select:hover .ant-select-selector {
+    border-color: #40a9ff !important;
+}
+
+::ng-deep td .ant-select-selection-item {
+    line-height: 34px !important;
+}
+
+/* Switch Toggle */
+td nz-switch {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+::ng-deep .ant-switch {
+    min-width: 44px;
+    height: 22px;
+    background: #d9d9d9;
+    transition: all 0.3s;
+}
+
+::ng-deep .ant-switch-checked {
+    background: #1890ff;
+}
+
+::ng-deep .ant-switch-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+::ng-deep .ant-switch-handle {
+    width: 18px;
+    height: 18px;
+    top: 2px;
+    left: 2px;
+}
+
+::ng-deep .ant-switch-checked .ant-switch-handle {
+    left: calc(100% - 20px);
+}
+
+/* Actions Column */
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+}
+
+.actions span[nz-icon] {
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: all 0.3s;
+    opacity: 0.7;
+}
+
+/* Edit Icon */
+.edit-icon {
+    color: #1890ff;
+}
+
+.edit-icon:hover {
+    opacity: 1;
+    background: #e6f7ff;
+    transform: scale(1.1);
+}
+
+/* Delete Icon */
+.delete-icon {
+    color: #ff4d4f;
+}
+
+.delete-icon:hover {
+    opacity: 1;
+    background: #fff1f0;
+    transform: scale(1.1);
+}
+
+/* Save Icon */
+.save-icon {
+    color: #52c41a;
+}
+
+.save-icon:hover {
+    opacity: 1;
+    background: #f6ffed;
+    transform: scale(1.1);
+}
+
+/* Cancel Icon */
+.cancel-icon {
+    color: #ff4d4f;
+}
+
+.cancel-icon:hover {
+    opacity: 1;
+    background: #fff1f0;
+    transform: scale(1.1);
+}
+
+/* Tooltip Styles */
+::ng-deep .ant-tooltip-inner {
+    border-radius: 4px;
+    font-size: 12px;
+    padding: 6px 12px;
+}
+
+/* Highlight for rows in editing mode */
+::ng-deep .ant-table-tbody tr.editing-row td {
+    background-color: #fff7e6;
+}
+
+::ng-deep .ant-table-tbody tr.editing-row:hover td {
+    background-color: #ffe7ba;
+}
+
+/* New row indicator */
+::ng-deep .ant-table-tbody tr.new-row td {
+    background-color: #f6ffed;
+    animation: fadeIn 0.3s ease-out;
+}
+
+::ng-deep .ant-table-tbody tr.new-row:hover td {
+    background-color: #d9f7be;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    ::ng-deep .ant-table {
+        overflow-x: auto;
+    }
+
+    ::ng-deep .ant-table-tbody>tr>td {
+        min-width: 120px;
+    }
+
+    td input[nz-input] {
+        min-width: 120px;
+    }
+
+    .actions {
+        min-width: 80px;
+        gap: 8px;
+    }
+
+    .actions span[nz-icon] {
+        padding: 6px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 768px) {
+    .app-state-container {
+        padding: 16px;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+    }
+
+    .header button[nz-button] {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .search-bar {
+        max-width: 100%;
+    }
+
+    .actions {
+        flex-wrap: wrap;
+        min-width: 60px;
+    }
+}
+
+/* Loading State */
+::ng-deep .ant-table-placeholder {
+    padding: 32px !important;
+    text-align: center;
+    color: #8c8c8c;
+}
+
+/* Custom Scrollbar for Table */
+::ng-deep .ant-table-body::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+::ng-deep .ant-table-body::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+::ng-deep .ant-table-body::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+    border-radius: 4px;
+}
+
+::ng-deep .ant-table-body::-webkit-scrollbar-thumb:hover {
+    background: #8c8c8c;
+}
+
+/* Animation for New Row */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+::ng-deep .ant-table-tbody tr:last-child td {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 48px;
+    color: #8c8c8c;
+}
+
+.empty-state span[nz-icon] {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #d9d9d9;
+}
+
+/* Focus Visible for Accessibility */
+button:focus-visible,
+input:focus-visible,
+.ant-select-selector:focus-visible,
+.actions span[nz-icon]:focus-visible {
+    outline: 2px solid #1890ff;
+    outline-offset: 2px;
+}
+
+/* Disabled state styles */
+.actions span[nz-icon].disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Success message animation */
+::ng-deep .ant-message-success {
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Modal customization */
+::ng-deep .ant-modal-confirm .ant-modal-confirm-btns {
+    display: flex;
+    gap: 8px;
+}
+
+::ng-deep .ant-modal-confirm .ant-btn-primary.ant-btn-dangerous {
+    background: #ff4d4f;
+    border-color: #ff4d4f;
+}
+
+::ng-deep .ant-modal-confirm .ant-btn-primary.ant-btn-dangerous:hover {
+    background: #ff7875;
+    border-color: #ff7875;
+}

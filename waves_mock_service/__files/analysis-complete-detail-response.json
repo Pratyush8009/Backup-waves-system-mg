@@ -1,0 +1,121 @@
+{
+  "code": 200,
+  "message": "",
+  "data": {
+    "id": "ANL-770e8400-e29b-41d4-a716-446655440201",
+    "systemId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+    "name": "Monthly Production Analysis",
+    "description": "Ad-hoc analysis of monthly production trends and patterns",
+    "version": "1.2.0",
+    "stage": "PUBLISHED",
+    "status": "ACTIVE",
+    "createdAt": "2024-02-01T10:00:00Z",
+    "updatedAt": "2024-03-15T16:20:00Z",
+    "createdBy": "USR-analyst-001",
+    "updatedBy": "USR-analyst-002",
+    "metadata": {
+      "analysisType": "TREND_ANALYSIS",
+      "frequency": "MONTHLY",
+      "tags": [
+        "production",
+        "trends",
+        "performance"
+      ]
+    },
+    "uploadedFiles": [
+      {
+        "fileId": "AFILE-001",
+        "fileName": "march_production_summary.xlsx",
+        "fileSize": 524288,
+        "uploadedAt": "2024-03-15T16:00:00Z",
+        "uploadedBy": "USR-analyst-002",
+        "status": "READY",
+        "recordCount": 2500
+      },
+      {
+        "fileId": "AFILE-002",
+        "fileName": "february_production_summary.xlsx",
+        "fileSize": 512000,
+        "uploadedAt": "2024-02-28T18:00:00Z",
+        "uploadedBy": "USR-analyst-001",
+        "status": "PROCESSED",
+        "recordCount": 2400
+      }
+    ],
+    "pipelineId": "PIP-880e8400-e29b-41d4-a716-446655440302",
+    "collaboration": {
+      "sharedWith": [
+        {
+          "userId": "USR-analyst-003",
+          "role": "VIEWER",
+          "sharedAt": "2024-03-10T09:00:00Z"
+        },
+        {
+          "userId": "USR-manager-001",
+          "role": "EDITOR",
+          "sharedAt": "2024-02-05T11:00:00Z"
+        }
+      ],
+      "comments": [
+        {
+          "id": "CMT-001",
+          "userId": "USR-manager-001",
+          "comment": "Excellent analysis on the Q1 trends",
+          "createdAt": "2024-03-16T10:30:00Z"
+        }
+      ]
+    },
+    "transactionLogs": [
+      {
+        "id": "TXN-001",
+        "action": "FILE_UPLOADED",
+        "performedBy": "USR-analyst-002",
+        "timestamp": "2024-03-15T16:00:00Z",
+        "details": {
+          "fileName": "march_production_summary.xlsx"
+        }
+      },
+      {
+        "id": "TXN-002",
+        "action": "ANALYSIS_EXECUTED",
+        "performedBy": "USR-analyst-002",
+        "timestamp": "2024-03-15T16:15:00Z",
+        "details": {
+          "executionTime": "45s",
+          "recordsProcessed": 2500
+        }
+      }
+    ],
+    "currentVersion": "1.2.0",
+    "versionHistory": [
+      {
+        "version": "1.2.0",
+        "createdAt": "2024-03-15T16:20:00Z",
+        "changeType": "MINOR",
+        "changes": "Added comparative analysis flow",
+        "createdBy": "USR-analyst-002"
+      },
+      {
+        "version": "1.1.0",
+        "createdAt": "2024-02-20T14:00:00Z",
+        "changeType": "MINOR",
+        "changes": "Enhanced visualization blocks",
+        "createdBy": "USR-analyst-001"
+      },
+      {
+        "version": "1.0.0",
+        "createdAt": "2024-02-01T10:00:00Z",
+        "changeType": "MAJOR",
+        "changes": "Initial version",
+        "createdBy": "USR-analyst-001"
+      }
+    ]
+  },
+  "metadata": {
+    "requestDuration": "156ms",
+    "cacheHit": false,
+    "currentUtilization": 87.5
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

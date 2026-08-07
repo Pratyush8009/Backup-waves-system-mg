@@ -1,0 +1,48 @@
+<div class="t2-root">
+  <div class="t2-header">
+    <span nz-icon [nzType]="icon" nzTheme="outline" class="t2-icon"></span>
+    <div class="t2-heading">
+      <h2 class="t2-title">{{ name || badgeLabel }}</h2>
+      <nz-tag nzColor="warning">{{ badgeLabel }}</nz-tag>
+    </div>
+  </div>
+
+  @if (!sections || sections.length === 0) {
+    <nz-empty nzNotFoundContent="No sections configured for this template"></nz-empty>
+  } @else {
+    <div class="t2-panel-list">
+      @for (section of sections; track section.sectionId; let i = $index) {
+        @let grid = getGridComponent(section.parentPlaceholderTemplate);
+
+        <section class="t2-panel">
+          <div class="t2-panel-number">{{ i + 1 }}</div>
+          <div class="t2-panel-body">
+            <div class="t2-panel-header">
+              <h3 class="t2-panel-title">{{ section.title }}</h3>
+              <p class="t2-panel-desc" *ngIf="section.description">{{ section.description }}</p>
+            </div>
+
+            @if (section.categories && section.categories.length > 0) {
+              <div class="t2-category-grid">
+                @for (categoryGroup of section.categories; track categoryGroup.category) {
+                  <div class="t2-category-box">
+                    <nz-tag nzColor="gold" class="t2-category-label">
+                      {{ categoryGroup.category }}
+                    </nz-tag>
+                    <ng-container
+                      *ngComponentOutlet="grid; inputs: { plots: categoryGroup.components, rawLiveData: rawLiveData }">
+                    </ng-container>
+                  </div>
+                }
+              </div>
+            } @else {
+              <div class="t2-panel-empty">
+                <nz-empty nzNotFoundContent="No components configured in this section"></nz-empty>
+              </div>
+            }
+          </div>
+        </section>
+      }
+    </div>
+  }
+</div>

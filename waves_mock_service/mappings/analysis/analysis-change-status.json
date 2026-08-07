@@ -1,0 +1,27 @@
+{
+  "request": {
+    "method": "PUT",
+    "urlPathPattern": "/api/v1/waves/unit/[a-zA-Z0-9-]+/system/[a-zA-Z0-9-]+/analysis/[a-zA-Z0-9-]+/status",
+    "bodyPatterns": [
+      {
+        "matchesJsonPath": "$.status"
+      }
+    ]
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    },
+    "jsonBody": {
+      "code": 200,
+      "message": "Analysis status updated successfully",
+      "data": {},
+      "metadata": {},
+      "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+      "timestamp": "2024-03-15T23:50:00Z"
+    }
+  }
+}

@@ -1,0 +1,416 @@
+<div class="template-container">
+    <nz-content class="main-canvas">
+        <div class="inner-content">
+
+            <!-- system-template.html -->
+            <app-template-renderer [mode]="'config'" [templateId]="selectedTemplateId()" [entityId]="entityId"
+                [systemData]="systemData()">
+            </app-template-renderer>
+
+        </div>
+    </nz-content>
+
+    <div class="right-sidebar">
+        <div class="sidebar-header-fixed">
+            <div class="sidebar-section">
+                <div class="section-title">Templates</div>
+                <div class="config-card">
+                    <label class="config-label">Choose Template</label>
+                    <select class="config-select" [ngModel]="selectedTemplateId()"
+                        (ngModelChange)="onTemplateChange($event)">
+                        <option *ngFor="let tmpl of templatesData()" [value]="tmpl.templateId">
+                            {{ tmpl.name }}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidebar-scrollable-body">
+            <ng-container *ngIf="selectedSectionId() && !selectedPlotId()">
+                <div class="sidebar-section border-0">
+                    <div class="section-header-row">
+                        <div class="section-title">Section Configuration</div>
+                        <!-- <button class="icon-add-btn" (click)="openAddPlotModal()" title="Add Plot to Section">+</button> -->
+                    </div>
+
+                    <div class="config-card" *ngIf="currentSection() as sec">
+                        <label class="config-label">Section Title</label>
+                        <input class="config-input disabled" type="text" [value]="sec.title" disabled />
+                    </div>
+
+                    <div class="config-card" *ngIf="currentSection() as sec">
+                        <label class="config-label">Description</label>
+                        <textarea class="config-input disabled" rows="3" disabled>{{ sec.description }}</textarea>
+                    </div>
+
+                    <div class="action-card-box">
+                        <p class="info-text">Click <strong>+ Add New Plot</strong> below or at the top header to add a
+                            plot to this section.</p>
+                        <button class="add-plot-wide-btn" (click)="openAddPlotModal()">+ Add New Plot</button>
+                    </div>
+                </div>
+            </ng-container>
+
+            <ng-container *ngIf="selectedPlotId() && activePlotConfig() as plot">
+                <div class="sidebar-section border-0">
+                    <div class="section-title">Plot Configuration</div>
+
+                    <div class="config-card">
+                        <label class="config-label">Name / Title</label>
+                        <input class="config-input" type="text" [(ngModel)]="plot.title" />
+                    </div>
+                    <div class="config-card">
+                        <label class="config-label">Category</label>
+                        <input class="config-input" type="text" [(ngModel)]="plot.category" />
+                    </div>
+
+                    <!-- Line & Single Bar Charts -->
+                    <ng-container
+                        *ngIf="['single-line', 'multi-line-ts', 'multi-line-index', 'bar-single','scatter','heatmap','parallel-coords','bar-grouped','pie','donut','gauge','stat-card'].includes(plot.chartType)">
+
+                        <div class="config-card" *ngIf="plot.metadata?.xAxis !== undefined">
+                            <label class="config-label">X Axis</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.xAxis">
+                                <option value="index">index</option>
+                                <option value="ts">ts</option>
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.yAxis !== undefined">
+                            <label class="config-label">Y Axis</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.yAxis">
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="config-card" *ngIf="plot.metadata?.categoryField !== undefined">
+                            <label class="config-label">Category Field</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.categoryField">
+                                <option value="index">index</option>
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.labelField !== undefined">
+                            <label class="config-label">Label Field</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.labelField">
+                                <option value="index">index</option>
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.valueField !== undefined">
+                            <label class="config-label">Value Field</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.valueField">
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.trendField !== undefined">
+                            <label class="config-label">Trend Field</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.trendField">
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Labels -->
+                        <div class="config-card" *ngIf="plot.metadata?.xAxisLabel !== undefined">
+                            <label class="config-label">X Axis Label</label>
+                            <input class="config-input" type="text" [(ngModel)]="plot.metadata.xAxisLabel" />
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.yAxisLabel !== undefined">
+                            <label class="config-label">Y Axis Label</label>
+                            <input class="config-input" type="text" [(ngModel)]="plot.metadata.yAxisLabel" />
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.label !== undefined">
+                            <label class="config-label">Label</label>
+                            <input class="config-input" type="text" [(ngModel)]="plot.metadata.label" />
+                        </div>
+
+                        <!-- Chips Inputs -->
+                        <div class="config-card" *ngIf="plot.metadata?.series">
+                            <label class="config-label">Series</label>
+                            <div class="chips-container" *ngIf="plot.metadata.series.length > 0">
+                                <span class="chip" *ngFor="let item of plot.metadata.series; let i = index">
+                                    {{ item }} <span class="chip-remove" (click)="removeSeriesTag(i)">×</span>
+                                </span>
+                            </div>
+                            <select class="config-select margin-top-6" (change)="addSeriesTag($event)">
+                                <option value="" disabled selected>+ Add series</option>
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.fields">
+                            <label class="config-label">Fields Matrix</label>
+                            <div class="chips-container" *ngIf="plot.metadata?.fields?.length > 0">
+                                <span class="chip" *ngFor="let item of plot.metadata.fields; let i = index">
+                                    {{ item }} <span class="chip-remove" (click)="removeHeatmapFieldTag(i)">×</span>
+                                </span>
+                            </div>
+                            <select class="config-select margin-top-6" (change)="addHeatmapFieldTag($event)">
+                                <option value="" disabled selected>+ Add field</option>
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.axes">
+                            <label class="config-label">Axes List</label>
+                            <div class="chips-container" *ngIf="plot.metadata?.axes?.length > 0">
+                                <span class="chip" *ngFor="let item of plot.metadata.axes; let i = index">
+                                    {{ item }} <span class="chip-remove" (click)="removeParallelAxisTag(i)">×</span>
+                                </span>
+                            </div>
+                            <select class="config-select margin-top-6" (change)="addParallelAxisTag($event)">
+                                <option value="" disabled selected>+ Add axis field</option>
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Unit, Orientation, RowIndex -->
+                        <div class="config-card" *ngIf="plot.metadata?.unit !== undefined">
+                            <label class="config-label">Unit</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.unit">
+                                <option value="MW">MW</option>
+                                <option value="kPa">KPA</option>
+                                <option value="°C">°C</option>
+                                <option value="Mixed">MIXED</option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.aggregation !== undefined">
+                            <label class="config-label">Aggregation</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.aggregation">
+                                <option value="last">last</option>
+                                <option value="mean">mean</option>
+                                <option value="max">max</option>
+                                <option value="min">min</option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.orientation !== undefined">
+                            <label class="config-label">Orientation</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.orientation">
+                                <option value="vertical">Vertical</option>
+                                <option value="horizontal">Horizontal</option>
+                            </select>
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.rowIndex !== undefined">
+                            <label class="config-label">Row Index</label>
+                            <input class="config-input" type="number" [(ngModel)]="plot.metadata.rowIndex" />
+                        </div>
+
+                        <!-- Y-max, Y-min -->
+                        <div class="dual-input-row"
+                            *ngIf="plot.metadata?.yMin !== undefined || plot.metadata?.yMax !== undefined">
+                            <div class="config-card flex-1" *ngIf="plot.metadata?.yMin !== undefined">
+                                <label class="config-label">Y Min</label>
+                                <input class="config-input" type="number" [(ngModel)]="plot.metadata.yMin"
+                                    placeholder="Auto" />
+                            </div>
+                            <div class="config-card flex-1" *ngIf="plot.metadata?.yMax !== undefined">
+                                <label class="config-label">Y Max</label>
+                                <input class="config-input" type="number" [(ngModel)]="plot.metadata.yMax"
+                                    placeholder="Auto" />
+                            </div>
+                        </div>
+                        <div class="dual-input-row"
+                            *ngIf="plot.metadata?.min !== undefined || plot.metadata?.max !== undefined">
+                            <div class="config-card flex-1" *ngIf="plot.metadata?.min !== undefined">
+                                <label class="config-label">Min Value</label>
+                                <input class="config-input" type="number" [(ngModel)]="plot.metadata.min" />
+                            </div>
+                            <div class="config-card flex-1" *ngIf="plot.metadata?.max !== undefined">
+                                <label class="config-label">Max Value</label>
+                                <input class="config-input" type="number" [(ngModel)]="plot.metadata.max" />
+                            </div>
+                        </div>
+
+                        <div class="config-card" *ngIf="plot.metadata?.mode !== undefined">
+                            <label class="config-label">Mode</label>
+                            <input class="config-input" type="text" [(ngModel)]="plot.metadata.mode" />
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.colorByLabel !== undefined">
+                            <label class="config-label">Color Label</label>
+                            <input class="config-input" type="text" [(ngModel)]="plot.metadata.colorByLabel" />
+                        </div>
+                        <div class="config-card" *ngIf="plot.metadata?.colorBy !== undefined">
+                            <label class="config-label">Color By Field</label>
+                            <select class="config-select" [(ngModel)]="plot.metadata.colorBy">
+                                <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{ prop.label }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Switches -->
+                        <div class="config-card toggle-card" *ngIf="plot.metadata?.normalize !== undefined">
+                            <label class="config-label">Normalize Data</label>
+                            <button class="toggle-btn" [class.active]="plot.metadata?.normalize"
+                                (click)="plot.metadata.normalize = !plot.metadata.normalize">
+                                <span class="toggle-thumb"></span>
+                            </button>
+                        </div>
+                        <div class="config-card toggle-card" *ngIf="plot.metadata?.showPercentage !== undefined">
+                            <label class="config-label">Show Percentage</label>
+                            <button class="toggle-btn" [class.active]="plot.metadata?.showPercentage"
+                                (click)="plot.metadata.showPercentage = !plot.metadata.showPercentage">
+                                <span class="toggle-thumb"></span>
+                            </button>
+                        </div>
+                        <div class="config-card toggle-card" *ngIf="plot.metadata?.showLegend !== undefined">
+                            <label class="config-label">Show Legend</label>
+                            <button class="toggle-btn" [class.active]="plot.metadata?.showLegend"
+                                (click)="plot.metadata.showLegend = !plot.metadata.showLegend">
+                                <span class="toggle-thumb"></span>
+                            </button>
+                        </div>
+                    </ng-container>
+
+                    <!-- Multi-KPI Plot -->
+                    <ng-container *ngIf="plot.chartType === 'multi-kpi' && plot.metadata?.kpis">
+                        <div class="config-card">
+                            <label class="config-label">Label</label>
+                            <input class="config-input" type="text" [(ngModel)]="plot.metadata.label" />
+                        </div>
+                        <div class="kpi-header-row">
+                            <span class="group-title bold-title">KPI Cards ({{ plot.metadata.kpis.length }})</span>
+                            <button class="add-kpi-btn" (click)="addKpiItem()">+ Add KPI</button>
+                        </div>
+                        <div *ngFor="let kpi of plot.metadata.kpis; let i = index" class="kpi-block-card">
+                            <div class="kpi-card-header">
+                                <span class="kpi-card-title">KPI #{{ i + 1 }}</span>
+                                <span class="kpi-remove-btn" (click)="removeKpiItem(i)">×</span>
+                            </div>
+                            <div class="config-card">
+                                <label class="config-label">Label</label>
+                                <input class="config-input" type="text" [(ngModel)]="kpi.label" />
+                            </div>
+                            <div class="config-card">
+                                <label class="config-label">Value Field</label>
+                                <select class="config-select" [(ngModel)]="kpi.valueField">
+                                    <option *ngFor="let prop of availableProperties()" [value]="prop.value">{{
+                                        prop.label }}</option>
+                                </select>
+                            </div>
+                            <div class="config-card">
+                                <label class="config-label">Aggregation</label>
+                                <select class="config-select" [(ngModel)]="kpi.aggregation">
+                                    <option value="mean">mean</option>
+                                    <option value="max">max</option>
+                                    <option value="min">min</option>
+                                    <option value="last">last</option>
+                                </select>
+                            </div>
+                            <div class="config-card">
+                                <label class="config-label">Unit</label>
+                                <select class="config-select" [(ngModel)]="kpi.unit">
+                                    <option value="MW">MW</option>
+                                    <option value="kPa">KPA</option>
+                                    <option value="°C">°C</option>
+                                    <option value="Mixed">MIXED</option>
+                                </select>
+                            </div>
+                            <div class="group-section">
+                                <span class="group-title">Thresholds (Optional)</span>
+                                <div class="dual-input-row">
+                                    <div class="config-card flex-1">
+                                        <label class="config-label">Warning</label>
+                                        <input class="config-input" type="number"
+                                            [(ngModel)]="kpi.thresholds.warning" />
+                                    </div>
+                                    <div class="config-card flex-1">
+                                        <label class="config-label">Critical</label>
+                                        <input class="config-input" type="number"
+                                            [(ngModel)]="kpi.thresholds.critical" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Threshold Section -->
+                    <div class="group-section" *ngIf="plot.metadata?.thresholds">
+                        <span class="group-title">Thresholds (Optional)</span>
+                        <div class="dual-input-row">
+                            <div class="config-card flex-1">
+                                <label class="config-label">Warning</label>
+                                <input class="config-input" type="number"
+                                    [(ngModel)]="plot.metadata.thresholds.warning" />
+                            </div>
+                            <div class="config-card flex-1">
+                                <label class="config-label">Critical</label>
+                                <input class="config-input" type="number"
+                                    [(ngModel)]="plot.metadata.thresholds.critical" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <!-- MODE 3: EMPTY STATE -->
+            <ng-container *ngIf="!selectedSectionId() && !selectedPlotId()">
+                <div class="empty-selection-box">
+                    <p class="empty-title">No Item Selected</p>
+                    <p class="empty-subtitle">Click on any section header or plot card on the canvas to configure it
+                        here.</p>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Sidebar Footer only visible when editing a Plot -->
+        <div class="sidebar-footer" *ngIf="selectedPlotId() && activePlotConfig()">
+            <button class="save-btn" (click)="saveConfiguration()">Save Configuration</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Dialog -->
+<div class="modal-overlay" *ngIf="isAddPlotModalOpen()">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h3>Add New Plot</h3>
+            <span class="modal-close" (click)="closeAddPlotModal()">×</span>
+        </div>
+        <div class="modal-body">
+            <div class="config-card">
+                <label class="config-label">Target Section</label>
+                <input class="config-input disabled" type="text" [value]="currentSection()?.title" disabled />
+            </div>
+
+            <div class="config-card">
+                <label class="config-label">Plot Title</label>
+                <input class="config-input" type="text" [ngModel]="newPlotTitle()"
+                    (ngModelChange)="newPlotTitle.set($event)" placeholder="Enter Plot Title" />
+            </div>
+            <div class="config-card">
+                <label class="config-label">Category</label>
+                <input class="config-input" type="text" [ngModel]="newPlotCategory()"
+                    (ngModelChange)="newPlotCategory.set($event)" placeholder="Enter Plot Category" />
+            </div>
+
+            <div class="config-card">
+                <label class="config-label">Chart Type (Filtered by Rules)</label>
+                <select class="config-select" [ngModel]="selectedComponentCatalogItem()?.plotComponentId"
+                    (ngModelChange)="onCatalogItemSelect($event)">
+                    <option *ngFor="let item of allowedChartComponentsForSection()" [value]="item.plotComponentId">
+                        {{ item.label }} ({{ item.plotComponentId }})
+                    </option>
+                </select>
+            </div>
+
+            <div class="restriction-hint" *ngIf="allowedChartComponentsForSection().length === 0">
+                ⚠️ No plots allowed in this section based on validation rules.
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="cancel-btn" (click)="closeAddPlotModal()">Cancel</button>
+            <button class="save-btn" [disabled]="allowedChartComponentsForSection().length === 0"
+                (click)="confirmAddPlot()">
+                Add Plot
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+{
+  "code": 200,
+  "message": "Unit details retrieved successfully",
+  "data": {
+    "unitId": "UNIT-001",
+    "systems": [
+      {
+        "systemId": "b8fb0ff1-f1fb-4e68-9938-046d73f1631",
+        "name": "Production Line 1",
+        "type": "PRODUCTION",
+        "status": "ACTIVE",
+        "criticality": "CRITICAL",
+        "operatingHours": "24x7",
+        "lastActivityAt": "2024-04-09T11:55:00Z",
+        "healthStatus": "HEALTHY",
+        "modelCount": 5,
+        "analysisCount": 3,
+        "createdAt": "2024-01-15T10:30:00Z"
+      },
+      {
+        "systemId": "b8fb0ff1-f1fb-4e68-9938-046d73f1632",
+        "name": "Production Line 2",
+        "type": "PRODUCTION",
+        "status": "ACTIVE",
+        "criticality": "CRITICAL",
+        "operatingHours": "24x7",
+        "lastActivityAt": "2024-04-09T11:50:00Z",
+        "healthStatus": "HEALTHY",
+        "modelCount": 4,
+        "analysisCount": 2,
+        "createdAt": "2024-02-01T08:00:00Z"
+      }
+    ],
+    "total": 2,
+    "systemSummary": {
+      "activeCount": 2,
+      "inactiveCount": 0,
+      "maintenanceCount": 0,
+      "healthyCount": 2,
+      "warningCount": 0,
+      "errorCount": 0,
+      "totalModelsAcrossAllSystems": 9,
+      "totalAnalysesAcrossAllSystems": 5,
+      "runningModelsCount": 3,
+      "runningAnalysesCount": 3
+    },
+    "pagination": {
+      "page": 1,
+      "pageSize": 20,
+      "total": 2,
+      "hasMore": false
+    }
+  },
+  "metadata": {
+    "requestDuration": "245ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "lastUpdated": "2024-04-09T11:55:00Z",
+    "dataFreshness": "Real-time"
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

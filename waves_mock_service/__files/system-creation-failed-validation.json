@@ -1,0 +1,20 @@
+{
+    "code": 400,
+    "message": "System creation failed - validation errors",
+    "errors": [
+        {
+            "field": "clientValidation.userId",
+            "errorCode": "EMAIL_NOT_VERIFIED",
+            "message": "User email not verified. User must verify email before system can be created.",
+            "severity": "ERROR",
+            "details": {
+                "userId": "USR-galaxy-001",
+                "email": "user@company.com",
+                "emailVerified": false,
+                "verificationEmailSentAt": "2026-04-08T10:00:00Z"
+            }
+        }
+    ],
+    "requestId": "req-create-sys-20260409-002",
+    "timestamp": "2026-04-09T14:35:00Z"
+}

@@ -1,0 +1,336 @@
+export const blockFlow = {
+    "id": "PIP-ANL-denoise-001",
+    "systemId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+    "entityType": "ANALYSIS",
+    "entityId": "ANL-770e8400-e29b-41d4-a716-446655440201",
+    "entityVersion": "1.2.0",
+    "name": "Signal Denoising Analysis Pipeline",
+    "description": "Comparative analysis of SMA and Savitzky-Golay filters for signal denoising",
+    "version": "1.0.0",
+    "isActive": true,
+    "createdAt": "2024-02-01T10:00:00Z",
+    "updatedAt": "2024-03-15T16:20:00Z",
+    "blockMembers": [
+        "BKI-DENOISE-INPUT-001",
+        "BKI-DENOISE-FILTER-001",
+        "BKI-DENOISE-ANALYSIS-001",
+        "BKI-DENOISE-OUTPUT-001"
+    ],
+    "blocks": [
+        {
+            "id": "BKI-DENOISE-INPUT-001",
+            "blockId": "BLK-input-001",
+            "name": "Signal Input Block",
+            "description": "Loads noisy signal data from CSV",
+            "blockType": "INPUT",
+            "category": "I/O Blocks",
+            "ports": [
+                {
+                    "id": "PORT-DEN-IN-OUT-001",
+                    "name": "noisy_signal_output",
+                    "portType": "OUTPUT",
+                    "portOrder": 1,
+                    "dataType": "ARRAY"
+                }
+            ],
+            "uiLayout": {
+                "canvasX": 50,
+                "canvasY": 200,
+                "canvasWidth": 160,
+                "canvasHeight": 40,
+                "color": "#4a8bdc",
+                "icon": "file-add"
+            },
+            "flows": [
+                {
+                    "id": "FLW-DEN-IN-001",
+                    "name": "Load Signal Flow",
+                    "flowType": "SEQUENTIAL",
+                    "priorityLevel": 1,
+                    "status": "READY",
+                    "nodes": [
+                        {
+                            "id": "NODI-DEN-001",
+                            "nodeTypeId": "signal_loader",
+                            "name": "Load Noisy Signal",
+                            "order": 1,
+                            "config": {
+                                "fileType": "csv",
+                                "filePath": "noisy_flow_signal.csv",
+                                "delimiter": ","
+                            },
+                            "uiLayout": {
+                                "canvasX": 30,
+                                "canvasY": 30,
+                                "label": "Load CSV"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "BKI-DENOISE-FILTER-001",
+            "blockId": "BLK-processor-001",
+            "name": "Signal Filtering Block",
+            "description": "Applies multiple filtering techniques in parallel",
+            "blockType": "PROCESSOR",
+            "category": "Without ML processor blocks",
+            "ports": [
+                {
+                    "id": "PORT-DEN-FILT-IN-001",
+                    "name": "noisy_signal_input",
+                    "portType": "INPUT",
+                    "portOrder": 1
+                },
+                {
+                    "id": "PORT-DEN-FILT-OUT-001",
+                    "name": "sma_filtered_output",
+                    "portType": "OUTPUT",
+                    "portOrder": 1
+                },
+                {
+                    "id": "PORT-DEN-FILT-OUT-002",
+                    "name": "sg_filtered_output",
+                    "portType": "OUTPUT",
+                    "portOrder": 2
+                }
+            ],
+            "uiLayout": {
+                "canvasX": 280,
+                "canvasY": 150,
+                "canvasWidth": 200,
+                "canvasHeight": 40,
+                "color": "#1b9aa3",
+                "icon": "filter"
+            },
+            "flows": [
+                {
+                    "id": "FLW-DEN-FILT-001",
+                    "name": "SMA Filter Flow",
+                    "flowType": "PARALLEL",
+                    "priorityLevel": 1,
+                    "status": "READY",
+                    "nodes": [
+                        {
+                            "id": "NODI-DEN-002",
+                            "nodeTypeId": "sma_filter",
+                            "name": "Apply SMA Filter",
+                            "order": 1,
+                            "config": {
+                                "windowSize": 15,
+                                "centerWindow": true
+                            },
+                            "uiLayout": {
+                                "canvasX": 30,
+                                "canvasY": 30,
+                                "label": "SMA (15)"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "id": "FLW-DEN-FILT-002",
+                    "name": "Savitzky-Golay Filter Flow",
+                    "flowType": "PARALLEL",
+                    "priorityLevel": 1,
+                    "status": "READY",
+                    "nodes": [
+                        {
+                            "id": "NODI-DEN-003",
+                            "nodeTypeId": "savgol_filter",
+                            "name": "Apply SG Filter",
+                            "order": 1,
+                            "config": {
+                                "windowLength": 15,
+                                "polyorder": 2,
+                                "derivative": 0
+                            },
+                            "uiLayout": {
+                                "canvasX": 30,
+                                "canvasY": 110,
+                                "label": "SG (15,2)"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "BKI-DENOISE-ANALYSIS-001",
+            "blockId": "BLK-processor-001",
+            "name": "Comparative Analysis Block",
+            "description": "Analyzes and compares filtering results",
+            "blockType": "PROCESSOR",
+            "category": "Without ML processor blocks",
+            "ports": [
+                {
+                    "id": "PORT-DEN-ANL-IN-001",
+                    "name": "original_signal_input",
+                    "portType": "INPUT",
+                    "portOrder": 1
+                },
+                {
+                    "id": "PORT-DEN-ANL-IN-002",
+                    "name": "filtered_signals_input",
+                    "portType": "INPUT",
+                    "portOrder": 2
+                },
+                {
+                    "id": "PORT-DEN-ANL-OUT-001",
+                    "name": "analysis_results_output",
+                    "portType": "OUTPUT",
+                    "portOrder": 1
+                }
+            ],
+            "uiLayout": {
+                "canvasX": 590,
+                "canvasY": 200,
+                "canvasWidth": 240,
+                "canvasHeight": 40,
+                "color": "#b8a331",
+                "icon": "area-chart"
+            },
+            "flows": [
+                {
+                    "id": "FLW-DEN-ANL-001",
+                    "name": "Statistical Analysis Flow",
+                    "flowType": "SEQUENTIAL",
+                    "priorityLevel": 1,
+                    "status": "READY",
+                    "nodes": [
+                        {
+                            "id": "NODI-DEN-004",
+                            "nodeTypeId": "statistical_analyzer",
+                            "name": "Compute Statistics",
+                            "order": 1,
+                            "config": {
+                                "metrics": [
+                                    "mean",
+                                    "std",
+                                    "min",
+                                    "max",
+                                    "median"
+                                ],
+                                "compareSignals": true
+                            },
+                            "uiLayout": {
+                                "canvasX": 30,
+                                "canvasY": 30,
+                                "label": "Stats"
+                            }
+                        },
+                        {
+                            "id": "NODI-DEN-005",
+                            "nodeTypeId": "signal_comparator",
+                            "name": "Generate Comparison Plot",
+                            "order": 2,
+                            "config": {
+                                "plotType": "overlay",
+                                "showOriginal": true,
+                                "alpha": 0.3
+                            },
+                            "uiLayout": {
+                                "canvasX": 150,
+                                "canvasY": 30,
+                                "label": "Compare"
+                            }
+                        }
+                    ],
+                    "nodeConnections": [
+                        {
+                            "id": "NODCONN-DEN-001",
+                            "sourceNodeId": "NODI-DEN-004",
+                            "targetNodeId": "NODI-DEN-005"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "BKI-DENOISE-OUTPUT-001",
+            "blockId": "BLK-output-001",
+            "name": "Results Export Block",
+            "description": "Exports analysis results and visualizations",
+            "blockType": "OUTPUT",
+            "category": "I/O Blocks",
+            "ports": [
+                {
+                    "id": "PORT-DEN-OUT-IN-001",
+                    "name": "results_input",
+                    "portType": "INPUT",
+                    "portOrder": 1
+                }
+            ],
+            "uiLayout": {
+                "canvasX": 880,
+                "canvasY": 200,
+                "canvasWidth": 200,
+                "canvasHeight": 40,
+                "color": "#4CAF50",
+                "icon": "download"
+            },
+            "flows": [
+                {
+                    "id": "FLW-DEN-OUT-001",
+                    "name": "Export Results Flow",
+                    "flowType": "SEQUENTIAL",
+                    "priorityLevel": 1,
+                    "status": "READY",
+                    "nodes": [
+                        {
+                            "id": "NODI-DEN-006",
+                            "nodeTypeId": "data_exporter",
+                            "name": "Export to Excel",
+                            "order": 1,
+                            "config": {
+                                "exportFormat": "excel",
+                                "includeMetadata": true,
+                                "generateSummary": true
+                            },
+                            "uiLayout": {
+                                "canvasX": 30,
+                                "canvasY": 30,
+                                "label": "Export"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "blockConnections": [
+        {
+            "id": "BLKCONN-DEN-001",
+            "sourceBlockInstanceId": "BKI-DENOISE-INPUT-001",
+            "targetBlockInstanceId": "BKI-DENOISE-FILTER-001",
+            "sourcePortId": "PORT-DEN-IN-OUT-001",
+            "targetPortId": "PORT-DEN-FILT-IN-001",
+            "label": "Noisy Signal"
+        },
+        {
+            "id": "BLKCONN-DEN-002",
+            "sourceBlockInstanceId": "BKI-DENOISE-FILTER-001",
+            "targetBlockInstanceId": "BKI-DENOISE-ANALYSIS-001",
+            "sourcePortId": "PORT-DEN-FILT-OUT-001",
+            "targetPortId": "PORT-DEN-ANL-IN-002",
+            "label": "Filtered Signals"
+        },
+        {
+            "id": "BLKCONN-DEN-003",
+            "sourceBlockInstanceId": "BKI-DENOISE-INPUT-001",
+            "targetBlockInstanceId": "BKI-DENOISE-ANALYSIS-001",
+            "sourcePortId": "PORT-DEN-IN-OUT-001",
+            "targetPortId": "PORT-DEN-ANL-IN-001",
+            "label": "Original Signal"
+        },
+        {
+            "id": "BLKCONN-DEN-004",
+            "sourceBlockInstanceId": "BKI-DENOISE-ANALYSIS-001",
+            "targetBlockInstanceId": "BKI-DENOISE-OUTPUT-001",
+            "sourcePortId": "PORT-DEN-ANL-OUT-001",
+            "targetPortId": "PORT-DEN-OUT-IN-001",
+            "label": "Analysis Results"
+        }
+    ]
+}

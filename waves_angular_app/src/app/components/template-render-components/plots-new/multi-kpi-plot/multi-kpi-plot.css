@@ -1,0 +1,82 @@
+.mk-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #374151;
+  margin-bottom: 12px;
+}
+
+.mk-grid {
+  display: grid;
+  width: 100%;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.mk-tile {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+  background: #f9fafb;
+  border: 1px solid #d7d5d5;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: left;
+}
+
+.mk-tile-label {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.mk-tile-value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.mk-tile-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: #9ca3af;
+  margin-left: 4px;
+}
+
+@media (max-width: 768px) {
+  .mk-grid {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
+
+  .mk-tile {
+    padding: 12px;
+  }
+
+  .mk-tile-value {
+    font-size: 22px;
+  }
+}
+
+@media (max-width: 520px) {
+  .mk-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .mk-tile {
+    padding: 12px 8px;
+  }
+
+  .mk-tile-value {
+    font-size: 20px;
+  }
+}
+
+.stg-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 12px;
+  padding-left: 8px;
+}

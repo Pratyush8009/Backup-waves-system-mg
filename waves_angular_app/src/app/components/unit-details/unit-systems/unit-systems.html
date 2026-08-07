@@ -1,0 +1,106 @@
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <nz-input-group nzSearch>
+                <input type="text" nz-input placeholder="Search systems..." [(ngModel)]="searchText"
+                    (ngModelChange)="onSearch()" />
+            </nz-input-group>
+
+        </div>
+        <div class="header-right">
+            <button nz-button nzType="primary" (click)="showModal()">
+                <span nz-icon nzType="plus"></span> Create System
+            </button>
+        </div>
+    </div>
+
+    <div class="loading-state" *ngIf="isLoading && systems.length === 0">
+        <nz-spin nzSimple nzSize="large"></nz-spin>
+        <p>Fetching your systems...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredSystems.length === 0" class="empty-state">
+        <nz-empty nzNotFoundImage="simple"></nz-empty>
+        <h3>{{ searchText ? 'No Match Found' : 'No Systems Yet' }}</h3>
+        <p>{{ searchText ? 'Try adjusting your filters.' : 'Get started by creating your first digital twin system.' }}
+        </p>
+        <button *ngIf="searchText" nz-button nzType="default" (click)='clearSearch()'>Clear Search</button>
+    </div>
+
+    <div nz-row [nzGutter]="[24, 24]" *ngIf="!isLoading && filteredSystems.length > 0">
+        <div nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="6" *ngFor="let system of filteredSystems">
+
+            <nz-card class="system-card" [class.selected]="selectedSystemId === system.systemId">
+
+                <div class="card-header-tags">
+                    <nz-tag [nzColor]="system.healthStatus === 'HEALTHY' ? 'success' : 'warning'">
+                        {{ system.status }}
+                    </nz-tag>
+                    <div class="action-buttons">
+                        <button nz-button nzType="text" nzDanger nz-popconfirm
+                            nzPopconfirmTitle="Permanently delete this system?"
+                            [nzLoading]="deleteLoading[system.systemId]" (nzOnConfirm)="deleteSystem(system.systemId)"
+                            (click)="$event.stopPropagation()">
+                            <span nz-icon nzType="delete"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card-content">
+                    <h3 class="system-title">{{ system.name }}</h3>
+                    <p class="type-badge">{{ system.type }}</p>
+
+                    <div class="card-footer-metrics">
+                        <div class="metric">
+                            <span class="label">Models : </span>
+                            <span class="value">{{ system.modelCount }}</span>
+                        </div>
+                        <div class="metric">
+                            <span class="label">Analyses : </span>
+                            <span class="value">{{ system.analysisCount }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-action">
+                    <button nz-button nzType="primary" nzBlock
+                        (click)="viewSystemDetails(system.systemId); $event.stopPropagation()">
+                        Manage System
+                    </button>
+                </div>
+            </nz-card>
+        </div>
+    </div>
+
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Configure New System" (nzOnCancel)="handleCancel()"
+        (nzOnOk)="handleOk()" [nzOkLoading]="isLoading">
+        <div *nzModalContent>
+            <form nz-form [formGroup]="systemForm" nzLayout="vertical">
+                <nz-form-item>
+                    <nz-form-label nzRequired>System Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input a name">
+                        <input nz-input formControlName="name" placeholder="Line Alpha, Boiler 7, etc." />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label nzRequired>System Type</nz-form-label>
+                    <nz-form-control nzErrorTip="Please select a system type">
+                        <nz-select formControlName="type" nzPlaceholder="Select system type">
+                            <nz-option *ngFor="let type of systemTypes" [nzValue]="type.value"
+                                [nzLabel]="type.label"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label nzRequired>Description</nz-form-label>
+                    <nz-form-control nzErrorTip="Description is required">
+                        <textarea nz-input formControlName="description" rows="3"
+                            placeholder="Brief overview of the system purposes"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </div>
+    </nz-modal>
+</div>

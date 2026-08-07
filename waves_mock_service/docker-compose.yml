@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  wiremock:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./mappings:/home/wiremock/mappings
+      - ./__files:/home/wiremock/__files
+    environment:
+      - WIREMOCK_OPTIONS=--global-response-templating --local-response-templating --verbose
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/__admin/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  default:
+    name: block-flow-node-network

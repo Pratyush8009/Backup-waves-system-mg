@@ -1,0 +1,80 @@
+{
+  "code": 200,
+  "message": "",
+  "data": {
+    "analysisId": "ANL-770e8400-e29b-41d4-a716-446655440201",
+    "pipelineId": "PIP-ANL-denoise-001",
+    "executionId": "EXEC-ANL-20260408-001",
+    "executionStatus": "COMPLETED",
+    "summary": {
+      "signalProcessing": {
+        "originalSignalLength": 1000,
+        "samplingRate": "100 Hz",
+        "duration": "10s",
+        "filtersApplied": [
+          "SMA-15",
+          "SG(15,2)"
+        ]
+      },
+      "noiseReduction": {
+        "originalSNR": "12.3 dB",
+        "smaFilteredSNR": "24.7 dB",
+        "sgFilteredSNR": "26.1 dB",
+        "improvementSMA": "+12.4 dB",
+        "improvementSG": "+13.8 dB"
+      },
+      "statisticalComparison": {
+        "original": {
+          "mean": 50.234,
+          "std": 8.456,
+          "min": 28.123,
+          "max": 72.891,
+          "median": 50.012
+        },
+        "smaFiltered": {
+          "mean": 50.198,
+          "std": 2.134,
+          "min": 42.567,
+          "max": 58.234,
+          "median": 50.123
+        },
+        "sgFiltered": {
+          "mean": 50.215,
+          "std": 1.987,
+          "min": 43.012,
+          "max": 57.891,
+          "median": 50.145
+        }
+      },
+      "recommendation": "Savitzky-Golay filter (window=15, poly=2) provides better noise reduction with 13.8 dB SNR improvement while preserving signal features."
+    },
+    "completedAt": "2026-04-08T10:36:00Z",
+    "generatedArtifacts": [
+      {
+        "type": "FILTERED_SIGNAL",
+        "name": "sma_filtered_signal.csv",
+        "size": "32.4 KB",
+        "url": "/api/analyses/ANL-770e8400-e29b-41d4-a716-446655440201/artifacts/sma-signal"
+      },
+      {
+        "type": "FILTERED_SIGNAL",
+        "name": "sg_filtered_signal.csv",
+        "size": "32.4 KB",
+        "url": "/api/analyses/ANL-770e8400-e29b-41d4-a716-446655440201/artifacts/sg-signal"
+      },
+      {
+        "type": "REPORT",
+        "name": "signal_analysis_report.xlsx",
+        "size": "89 KB",
+        "url": "/api/analyses/ANL-770e8400-e29b-41d4-a716-446655440201/artifacts/report"
+      }
+    ]
+  },
+  "metadata": {
+    "requestDuration": "156ms",
+    "cacheHit": false,
+    "currentUtilization": 87.5
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

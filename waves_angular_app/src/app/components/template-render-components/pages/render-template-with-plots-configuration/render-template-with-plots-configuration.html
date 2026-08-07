@@ -1,0 +1,15 @@
+<div class="page-root">
+  <div class="page-toolbar">
+    <a routerLink="/template-landing-dashboard" class="page-back">&larr; All templates</a>
+    <h1 class="page-title">Template With Plots Configuration</h1>
+    <p class="page-subtitle">Sections, categories, placeholders and plot components &mdash; without live feed data.</p>
+  </div>
+
+@if (entityId$ | async; as entityId)  {
+    <app-template-renderer
+      [entityId]="entityId"
+      [templateId]="templateId$ | async"
+      [mode]="'config'"
+    ></app-template-renderer>
+  }
+</div>

@@ -1,0 +1,109 @@
+{
+    "code": 200,
+    "message": "Model pipeline details has been fetched.",
+    "data": {
+        "id": "BKI-DENOISE-ANALYSIS-001",
+        "blockId": "BLK-processor-001",
+        "name": "Comparative Analysis Block",
+        "description": "Analyzes and compares filtering results",
+        "blockType": "PROCESSOR",
+        "category": "Without ML processor blocks",
+        "flows": [
+            {
+                "id": "FLW-DEN-ANL-001",
+                "name": "Statistical Analysis Flow",
+                "flowType": "SEQUENTIAL",
+                "priorityLevel": 1,
+                "status": "READY",
+                "nodes": [
+                    {
+                        "id": "NODI-DEP-001",
+                        "nodeId": "NLK-DEP-001",
+                        "name": "Compute Statistics",
+                        "nodeType": "INPUT",
+                        "category": "ML input node",
+                        "order": 1,
+                        "ports": [
+                            {
+                                "id": "PORT-DEP-OUT-001",
+                                "name": "prepared_data_output",
+                                "portType": "OUTPUT",
+                                "portOrder": 1
+                            }
+                        ],
+                        "config": {
+                            "metrics": [
+                                "mean",
+                                "std",
+                                "min",
+                                "max",
+                                "median"
+                            ],
+                            "compareSignals": true
+                        },
+                        "uiLayout": {
+                            "canvasX": 250,
+                            "canvasY": 300,
+                            "canvasWidth": 200,
+                            "canvasHeight": 40,
+                            "color": "#9C27B0",
+                            "icon": "upload",
+                            "label": "Load CSV"
+                        }
+                    },
+                    {
+                        "id": "NODI-DEN-002",
+                        "nodeId": "signal_comparator",
+                        "name": "Generate Comparison Plot",
+                        "nodeType": "PROCESSOR",
+                        "category": "ML processor node",
+                        "order": 2,
+                        "ports": [
+                            {
+                                "id": "PORT-DEN-IN-001",
+                                "name": "raw_data_input",
+                                "portType": "INPUT",
+                                "portOrder": 1
+                            },
+                            {
+                                "id": "PORT-DEN-OUT-001",
+                                "name": "prepared_data_output",
+                                "portType": "OUTPUT",
+                                "portOrder": 1
+                            }
+                        ],
+                        "config": {
+                            "plotType": "overlay",
+                            "showOriginal": true,
+                            "alpha": 0.3
+                        },
+                        "uiLayout": {
+                            "canvasX": 500,
+                            "canvasY": 100,
+                            "canvasWidth": 250,
+                            "canvasHeight": 40,
+                            "color": "#112fb4",
+                            "icon": "file-excel",
+                            "label": "Load CSV"
+                        }
+                    }
+                ],
+                "nodeConnections": [
+                    {
+                        "id": "NLKCONN-CCPP-002",
+                        "sourceNodeInstanceId": "NODI-DEP-001",
+                        "targetNodeInstanceId": "NODI-DEN-002",
+                        "sourcePortId": "PORT-DEP-OUT-001",
+                        "targetPortId": "PORT-DEN-IN-001"
+                    }
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "requestDuration": "245ms",
+        "cacheHit": false
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+    "timestamp": "2024-03-15T23:50:00Z"
+}

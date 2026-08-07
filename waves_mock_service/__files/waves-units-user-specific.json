@@ -1,0 +1,46 @@
+{
+  "code": 200,
+  "message": "Unit details retrieved successfully",
+  "data": {
+    "userId": "USR-galaxy-001",
+    "units": [
+      {
+        "id": "b8fb0ff1-f1fb-4e68-9938-046d73f16f5c",
+        "name": "Global Manufacturing Division",
+        "type": "MANUFACTURING",
+        "accessLevel": "READ_WRITE",
+        "assignedAt": "2023-07-01T10:00:00Z",
+        "systemCount": 15,
+        "state": "ACTIVE",
+        "status": "ACTIVE",
+        "planType": "ENTERPRISE",
+        "membersCount": 7,
+        "lastAccessedAt": "2026-04-08T09:30:00Z"
+      },
+      {
+        "id": "b8fb0ff1-f1fb-4e68-9938-046d73f16f5d",
+        "name": "Quality Assurance Division",
+        "type": "QUALITY",
+        "accessLevel": "READ_ONLY",
+        "assignedAt": "2024-01-15T14:00:00Z",
+        "systemCount": 5,
+        "state": "ACTIVE",
+        "status": "ACTIVE",
+        "planType": "BASIC",
+        "membersCount": 5,
+        "lastAccessedAt": "2026-04-07T16:45:00Z"
+      }
+    ],
+    "total": 2,
+    "filterType": "USER_SPECIFIC"
+  },
+  "metadata": {
+    "requestDuration": "245ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "lastUpdated": "2024-04-09T11:55:00Z",
+    "dataFreshness": "Real-time"
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

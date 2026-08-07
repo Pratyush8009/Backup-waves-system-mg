@@ -1,0 +1,71 @@
+<div class="ltp-root">
+  <div class="ltp-header">
+    <h1 class="ltp-title">Template-landing page</h1>
+  </div>
+
+  @if (loading()) {
+    <div class="ltp-loading">
+      <nz-spin [nzTip]="'Loading templates...'" nzSize="large"></nz-spin>
+    </div>
+  } @else {
+    <section class="ltp-section">
+      <h2 class="ltp-section-title">Templates List</h2>
+
+      @if (!templates() || templates().length === 0) {
+        <nz-empty nzNotFoundContent="No templates found"></nz-empty>
+      } @else {
+        <div class="ltp-grid">
+          @for (template of templates(); track template.templateId) {
+            <nz-card class="ltp-card" [nzTitle]="template.name">
+              <nz-tag nzColor="geekblue">{{ template.templateCategory }}</nz-tag>
+              <nz-tag>{{ template.type }}</nz-tag>
+              <p class="ltp-desc">{{ template.description }}</p>
+
+              <div class="ltp-actions">
+                <a
+                  nz-button
+                  nzType="primary"
+                  [routerLink]="['/template-landing-dashboard', 'render-template-only', template.templateId]">
+                  Template Only
+                </a>
+              </div>
+            </nz-card>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="ltp-section">
+      <h2 class="ltp-section-title">Saved Plots Configurations with plot & data</h2>
+
+      @if (!entities() || entities().length === 0) {
+        <nz-empty nzNotFoundContent="No saved plot configurations found"></nz-empty>
+      } @else {
+        <div class="ltp-grid">
+          @for (entity of entities(); track entity.entityId) {
+            <nz-card class="ltp-card" [nzTitle]="entity.name">
+              <nz-tag nzColor="geekblue">{{ entity.templateCategory }}</nz-tag>
+              <nz-tag>{{ entity.templateName }}</nz-tag>
+              <p class="ltp-desc">{{ entity.description }}</p>
+
+              <div class="ltp-actions">
+                <a
+                  nz-button
+                  nzType="default"
+                  [routerLink]="['/template-landing-dashboard', 'render-template-with-plots-configuration', entity.entityId, entity.templateId]">
+                  With Plot config
+                </a>
+                <a
+                  nz-button
+                  nzType="primary"
+                  [routerLink]="['/template-landing-dashboard', 'render-template-with-plots-configuration-with-feed-data', entity.entityId, entity.templateId]">
+                  With Feed Data
+                </a>
+              </div>
+            </nz-card>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

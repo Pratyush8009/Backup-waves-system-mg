@@ -1,0 +1,527 @@
+{
+  "code": 200,
+  "message": "Model related nodes has been fetched.",
+  "data": {
+    "nodes": [
+      {
+        "id": "NTYPE-ML-001",
+        "nodeTypeId": "data_loader",
+        "name": "Data Loader",
+        "description": "Loads data from Excel, CSV, or text files",
+        "category": "Data Input",
+        "subCategory": "File Loading",
+        "type": "DATA_LOADER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "fileType": {
+            "type": "SELECT",
+            "options": [
+              "excel",
+              "csv",
+              "txt"
+            ],
+            "default": "csv",
+            "required": true
+          },
+          "filePath": {
+            "type": "STRING",
+            "default": "",
+            "required": true
+          },
+          "skipRows": {
+            "type": "INTEGER",
+            "default": 0,
+            "required": false
+          },
+          "useCols": {
+            "type": "STRING",
+            "default": "",
+            "required": false,
+            "description": "Excel column range like 'A:E'"
+          },
+          "delimiter": {
+            "type": "STRING",
+            "default": ",",
+            "required": false
+          }
+        },
+        "inputConfig": {},
+        "outputConfig": {
+          "dataFrame": {
+            "type": "DATAFRAME",
+            "description": "Loaded dataset"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ML-002",
+        "nodeTypeId": "train_test_split",
+        "name": "Train-Test Splitter",
+        "description": "Splits dataset into training and testing sets",
+        "category": "Data Preparation",
+        "subCategory": "Data Splitting",
+        "type": "DATA_SPLITTER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "testSize": {
+            "type": "DOUBLE",
+            "default": 0.2,
+            "min": 0.1,
+            "max": 0.5,
+            "required": true,
+            "description": "Proportion of dataset for testing (0.1-0.5)"
+          },
+          "randomState": {
+            "type": "INTEGER",
+            "default": 100,
+            "required": false,
+            "description": "Random seed for reproducibility"
+          },
+          "stratify": {
+            "type": "BOOLEAN",
+            "default": false,
+            "required": false
+          },
+          "validationSplit": {
+            "type": "BOOLEAN",
+            "default": false,
+            "required": false,
+            "description": "Create additional validation set"
+          },
+          "validationSize": {
+            "type": "DOUBLE",
+            "default": 0.25,
+            "required": false,
+            "description": "Size of validation set if enabled"
+          }
+        },
+        "inputConfig": {
+          "X": {
+            "type": "ARRAY",
+            "description": "Feature matrix"
+          },
+          "y": {
+            "type": "ARRAY",
+            "description": "Target variable"
+          }
+        },
+        "outputConfig": {
+          "X_train": {
+            "type": "ARRAY"
+          },
+          "X_test": {
+            "type": "ARRAY"
+          },
+          "y_train": {
+            "type": "ARRAY"
+          },
+          "y_test": {
+            "type": "ARRAY"
+          },
+          "X_val": {
+            "type": "ARRAY",
+            "optional": true
+          },
+          "y_val": {
+            "type": "ARRAY",
+            "optional": true
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ML-003",
+        "nodeTypeId": "standard_scaler",
+        "name": "Standard Scaler",
+        "description": "Standardizes features by removing mean and scaling to unit variance",
+        "category": "Data Preprocessing",
+        "subCategory": "Feature Scaling",
+        "type": "SCALER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "withMean": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          },
+          "withStd": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          },
+          "fitOnTrain": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": true,
+            "description": "Fit scaler on training data only"
+          }
+        },
+        "inputConfig": {
+          "X_train": {
+            "type": "ARRAY"
+          },
+          "X_test": {
+            "type": "ARRAY"
+          },
+          "y_train": {
+            "type": "ARRAY",
+            "optional": true
+          },
+          "y_test": {
+            "type": "ARRAY",
+            "optional": true
+          }
+        },
+        "outputConfig": {
+          "X_train_scaled": {
+            "type": "ARRAY"
+          },
+          "X_test_scaled": {
+            "type": "ARRAY"
+          },
+          "y_train_scaled": {
+            "type": "ARRAY",
+            "optional": true
+          },
+          "y_test_scaled": {
+            "type": "ARRAY",
+            "optional": true
+          },
+          "scaler": {
+            "type": "OBJECT",
+            "description": "Fitted scaler object"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ML-004",
+        "nodeTypeId": "ffnn_model",
+        "name": "Feed-Forward Neural Network",
+        "description": "Keras Sequential FFNN model for regression/classification",
+        "category": "Machine Learning",
+        "subCategory": "Deep Learning",
+        "type": "ML_MODEL",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "layers": {
+            "type": "ARRAY",
+            "default": [
+              {
+                "neurons": 8,
+                "activation": "relu"
+              },
+              {
+                "neurons": 5,
+                "activation": "relu"
+              }
+            ],
+            "required": true,
+            "description": "Hidden layer configurations"
+          },
+          "inputDim": {
+            "type": "INTEGER",
+            "default": 4,
+            "required": true,
+            "description": "Input feature dimension"
+          },
+          "outputDim": {
+            "type": "INTEGER",
+            "default": 1,
+            "required": true,
+            "description": "Output dimension"
+          },
+          "kernelInitializer": {
+            "type": "SELECT",
+            "options": [
+              "he_normal",
+              "glorot_uniform",
+              "random_normal"
+            ],
+            "default": "he_normal",
+            "required": true
+          },
+          "regularization": {
+            "type": "OBJECT",
+            "default": {
+              "type": "L1",
+              "value": 0.0000001
+            },
+            "required": false
+          },
+          "optimizer": {
+            "type": "SELECT",
+            "options": [
+              "Adam",
+              "SGD",
+              "RMSprop"
+            ],
+            "default": "Adam",
+            "required": true
+          },
+          "learningRate": {
+            "type": "DOUBLE",
+            "default": 0.001,
+            "min": 0.00001,
+            "max": 0.1,
+            "required": false
+          },
+          "loss": {
+            "type": "SELECT",
+            "options": [
+              "mse",
+              "mae",
+              "binary_crossentropy",
+              "categorical_crossentropy"
+            ],
+            "default": "mse",
+            "required": true
+          },
+          "epochs": {
+            "type": "INTEGER",
+            "default": 25,
+            "min": 1,
+            "max": 10000,
+            "required": true
+          },
+          "batchSize": {
+            "type": "INTEGER",
+            "default": 32,
+            "min": 1,
+            "max": 512,
+            "required": true
+          },
+          "earlyStopping": {
+            "type": "OBJECT",
+            "default": {
+              "enabled": false,
+              "monitor": "val_loss",
+              "patience": 200
+            },
+            "required": false
+          },
+          "randomSeed": {
+            "type": "INTEGER",
+            "default": null,
+            "required": false,
+            "description": "For reproducibility"
+          }
+        },
+        "inputConfig": {
+          "X_train": {
+            "type": "ARRAY"
+          },
+          "y_train": {
+            "type": "ARRAY"
+          },
+          "X_val": {
+            "type": "ARRAY",
+            "optional": true
+          },
+          "y_val": {
+            "type": "ARRAY",
+            "optional": true
+          }
+        },
+        "outputConfig": {
+          "model": {
+            "type": "KERAS_MODEL"
+          },
+          "history": {
+            "type": "OBJECT",
+            "description": "Training history"
+          },
+          "trainedWeights": {
+            "type": "ARRAY"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ML-005",
+        "nodeTypeId": "model_predictor",
+        "name": "Model Predictor",
+        "description": "Makes predictions using trained ML model",
+        "category": "Machine Learning",
+        "subCategory": "Prediction",
+        "type": "PREDICTOR",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "inverseTransform": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false,
+            "description": "Apply inverse scaling to predictions"
+          },
+          "batchSize": {
+            "type": "INTEGER",
+            "default": 32,
+            "required": false
+          }
+        },
+        "inputConfig": {
+          "model": {
+            "type": "KERAS_MODEL"
+          },
+          "X_test": {
+            "type": "ARRAY"
+          },
+          "scaler": {
+            "type": "OBJECT",
+            "optional": true
+          }
+        },
+        "outputConfig": {
+          "y_pred": {
+            "type": "ARRAY"
+          },
+          "y_pred_scaled": {
+            "type": "ARRAY",
+            "optional": true
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ML-006",
+        "nodeTypeId": "metrics_calculator",
+        "name": "Metrics Calculator",
+        "description": "Calculates model performance metrics (R2, MSE, MAE, etc.)",
+        "category": "Model Evaluation",
+        "subCategory": "Metrics",
+        "type": "EVALUATOR",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "metrics": {
+            "type": "ARRAY",
+            "default": [
+              "r2_score",
+              "mse",
+              "mae",
+              "rmse"
+            ],
+            "options": [
+              "r2_score",
+              "mse",
+              "mae",
+              "rmse",
+              "mape"
+            ],
+            "required": true
+          }
+        },
+        "inputConfig": {
+          "y_true": {
+            "type": "ARRAY"
+          },
+          "y_pred": {
+            "type": "ARRAY"
+          }
+        },
+        "outputConfig": {
+          "metrics": {
+            "type": "OBJECT",
+            "description": "Dictionary of metric names and values"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ML-007",
+        "nodeTypeId": "model_visualizer",
+        "name": "Model Visualizer",
+        "description": "Creates plots for model evaluation (predictions, residuals, validation curves)",
+        "category": "Visualization",
+        "subCategory": "Model Plots",
+        "type": "VISUALIZER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "MODEL"
+        ],
+        "config": {
+          "plotTypes": {
+            "type": "ARRAY",
+            "default": [
+              "prediction_scatter",
+              "residuals",
+              "validation_curve"
+            ],
+            "options": [
+              "prediction_scatter",
+              "residuals",
+              "validation_curve",
+              "time_series"
+            ],
+            "required": true
+          },
+          "saveToFile": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          },
+          "fileFormat": {
+            "type": "SELECT",
+            "options": [
+              "png",
+              "pdf",
+              "svg"
+            ],
+            "default": "png",
+            "required": false
+          }
+        },
+        "inputConfig": {
+          "y_true": {
+            "type": "ARRAY"
+          },
+          "y_pred": {
+            "type": "ARRAY"
+          },
+          "history": {
+            "type": "OBJECT",
+            "optional": true
+          }
+        },
+        "outputConfig": {
+          "plots": {
+            "type": "ARRAY",
+            "description": "Generated plot files"
+          }
+        }
+      }
+    ],
+    "total": 7,
+    "categories": [
+      "Data Input",
+      "Data Preparation",
+      "Data Preprocessing",
+      "Machine Learning",
+      "Model Evaluation",
+      "Visualization"
+    ],
+    "applicableFor": "MODEL"
+  },
+  "metadata": {},
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

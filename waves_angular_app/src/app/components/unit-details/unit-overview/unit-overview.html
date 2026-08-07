@@ -1,0 +1,165 @@
+<div class="unit-page-container" *ngIf="!isLoading; else loadingTpl">
+
+    <div class="main-content-grid">
+        <div class="left-column">
+
+            <div class="styled-container">
+                <div class="details-header">
+                    <h2>Unit Details</h2>
+                    <div class="active-toggle">
+                        <nz-switch [ngModel]="unitData.isActive" nzDisabled></nz-switch>
+                    </div>
+                </div>
+
+                <div class="details-body">
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="label">Unit Name</span>
+                            <span class="value">{{ unitData.name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Unit ID</span>
+                            <span class="value">#{{ unitData.unitId }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="label">Unit Type</span>
+                            <span class="value"><nz-tag nzColor="blue">{{ unitData.type }}</nz-tag></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Location</span>
+                            <span class="value">{{ unitData.location }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="label">Client Name</span>
+                            <span class="value">{{ unitData.clientName }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Client Email</span>
+                            <span class="value">{{ unitData.clientEmail }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="label">Created By</span>
+                            <span class="value">{{ unitData.createdByName }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Created At</span>
+                            <span class="value">{{ unitData.createdAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row">
+                        <div class="info-item">
+                            <span class="label">Last Updated By</span>
+                            <span class="value">{{ unitData.updatedByName }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="label">Last Activity</span>
+                            <span class="value">{{ unitData.lastActivityAt | date:'dd MMM yyyy, HH:mm' }}</span>
+                        </div>
+                    </div>
+
+                    <div class="info-row full-width">
+                        <div class="info-item">
+                            <span class="label">Description</span>
+                            <span class="value">{{ unitData.description }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="styled-container mt-24">
+                <h2 class="section-title">Resource Usage & Plan</h2>
+                <div class="subscription-banner">
+                    <div>
+                        <span class="plan-badge">{{ subscriptionData.planName }}</span>
+                        <p class="sub-text">
+                            {{ subscriptionData.billingModel }} Billing •
+                            {{ subscriptionData.currency }} {{ subscriptionData.amount | number }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="usage-grid">
+                    <div class="usage-item">
+                        <div class="usage-info">
+                            <span>API Calls</span>
+                            <span>{{ usageStats.api.total }} / {{ usageStats.api.limit }}</span>
+                        </div>
+                        <nz-progress [nzPercent]="usageStats.api.percentageUsed" nzStatus="active"></nz-progress>
+                    </div>
+                    <div class="usage-item">
+                        <div class="usage-info">
+                            <span>Data Storage</span>
+                            <span>{{ usageStats.storage.used }} / {{ usageStats.storage.limit }}</span>
+                        </div>
+                        <nz-progress [nzPercent]="usageStats.storage.percentageUsed" nzColor="#10b981"></nz-progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-title">Active Systems</span>
+                    <span class="stat-value success">{{ systems.summary.active }}</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">Total Systems</span>
+                    <span class="stat-value success">{{ systems.system_list.length }}</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">Total Analysis</span>
+                    <span class="stat-value success">{{ systems.summary.totalAnalyses }}</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-title">Total Models</span>
+                    <span class="stat-value success">{{ systems.summary.totalModels }}</span>
+                </div>
+            </div>
+
+            <div class="styled-container mt-16">
+                <h3 class="small-title">Systems Status</h3>
+                <div class="system-mini-list">
+                    <div class="system-mini-item" *ngFor="let sys of systems.system_list">
+                        <i nz-icon [nzType]="sys.healthStatus === 'HEALTHY' ? 'check-circle' : 'warning'"
+                            nzTheme="twotone" [nzTwotoneColor]="sys.healthStatus === 'HEALTHY' ? '#52c41a' : '#faad14'">
+                        </i>
+                        <span class="sys-name">{{ sys.name }}</span>
+                        <nz-tag nzColor="processing">{{ sys.modelCount }} Models</nz-tag>
+                    </div>
+                </div>
+            </div>
+
+            <div class="members-section">
+                <h2 class="section-title">Members ({{ members.length }})</h2>
+                <div class="member-list">
+                    <div class="member-item" *ngFor="let member of members">
+                        <nz-avatar [nzSize]="40" [nzSrc]="member.avatar"></nz-avatar>
+                        <div class="member-info">
+                            <span class="member-name">{{ member.name }}</span>
+                            <span class="member-email">{{ member.role }}</span>
+                        </div>
+                        <i nz-icon nzType="right" class="arrow-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingTpl>
+    <div class="loading-state">
+        <nz-spin nzSimple nzSize="large"></nz-spin>
+        <p>Fetching unit details...</p>
+    </div>
+</ng-template>

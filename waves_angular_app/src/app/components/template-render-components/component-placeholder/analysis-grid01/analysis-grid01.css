@@ -1,0 +1,15 @@
+:host { display: block; }
+    .ag01-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) { .ag01-grid { grid-template-columns: 1fr; } }
+ 
+    .ag01-card         { border-radius: 10px !important; }
+    .ag01-card-metric  { display: flex; align-items: center; justify-content: center; }
+    .ag01-card-header  { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+    .ag01-card-actions { display: flex; gap: 8px; }
+    .ag01-action-icon  { color: #9ca3af; cursor: pointer; font-size: 14px; }
+    .ag01-action-icon:hover { color: #1677ff; }
+    .ag01-card-title   { font-size: 14px; font-weight: 600; color: #111827; }

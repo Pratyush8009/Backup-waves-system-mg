@@ -1,0 +1,306 @@
+/* Container and Page Layout */
+.unit-page-container {
+    padding: 10px;
+    background-color: #f8fafc;
+    min-height: 100vh;
+}
+
+/* Main Content Grid (2 columns on desktop, 1 on mobile) */
+.main-content-grid {
+    display: grid;
+    grid-template-columns: 1.8fr 1fr;
+    gap: 32px;
+    margin-top: 24px;
+}
+
+/* Reusable Styled Container */
+.styled-container {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.mt-24 {
+    margin-top: 24px;
+}
+
+.mt-16 {
+    margin-top: 16px;
+}
+
+/* Header Styling */
+.details-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    border-bottom: 1px solid #f1f5f9;
+    padding-bottom: 16px;
+}
+
+.details-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0;
+}
+
+.active-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Info Rows & Typography */
+.details-body .info-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.details-body .info-row.full-width {
+    grid-template-columns: 1fr;
+}
+
+.info-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-item .label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.info-item .value {
+    font-size: 14px;
+    color: #334155;
+    font-weight: 500;
+}
+
+/* Subscription & Plan Banner */
+.subscription-banner {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+    padding: 16px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.plan-badge {
+    font-weight: 700;
+    color: #1e40af;
+    font-size: 14px;
+}
+
+.sub-text {
+    margin: 4px 0 0 0;
+    font-size: 12px;
+    color: #60a5fa;
+}
+
+/* Usage Progress Section */
+.usage-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.usage-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #475569;
+}
+
+/* Stats Cards (Right Column) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: left;
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-2px);
+}
+
+.stat-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.stat-value {
+    font-size: 28px;
+    font-weight: 800;
+    color: #1e293b;
+}
+
+.stat-value.success {
+    color: #10b981;
+}
+
+/* Systems Mini List */
+.system-mini-list {
+    margin-top: 12px;
+}
+
+.system-mini-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.system-mini-item:last-child {
+    border-bottom: none;
+}
+
+.sys-name {
+    flex: 1;
+    font-size: 13px;
+    font-weight: 500;
+    color: #334155;
+}
+
+/* Teams & Avatar Stacking */
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 32px 0 16px;
+}
+
+.teams-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.team-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.team-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+}
+
+.avatar-group {
+    display: flex;
+    align-items: center;
+}
+
+.avatar-group .avatar {
+    border: 2px solid #fff;
+    margin-left: -10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.avatar-group .avatar:first-child {
+    margin-left: 0;
+}
+
+.more-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #fef9c3;
+    color: #854d0e;
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff;
+    margin-left: -10px;
+}
+
+/* Member List */
+.member-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.member-item {
+    background: #ffffff;
+    border: 1px solid #f1f5f9;
+    border-radius: 10px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: background 0.2s;
+}
+
+.member-item:hover {
+    background: #f8fafc;
+}
+
+.member-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.member-name {
+    font-weight: 600;
+    color: #1e293b;
+    font-size: 14px;
+}
+
+.member-email {
+    color: #64748b;
+    font-size: 12px;
+}
+
+.arrow-icon {
+    color: #cbd5e1;
+}
+
+/* Helper Classes */
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1024px) {
+    .main-content-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+}

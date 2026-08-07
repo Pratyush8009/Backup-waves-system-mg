@@ -1,0 +1,80 @@
+<div class="app-state-container">
+    <div class="header">
+        <div>
+            <h3>System Schema</h3>
+            <p>Define schema in your system.</p>
+        </div>
+
+        <button nz-button nzType="default" nzSize="default" (click)="addField()" [disabled]="isLoading">
+            <span nz-icon nzType="plus"></span>
+            Add fields
+        </button>
+    </div>
+
+    <div class="search-bar">
+        <input nz-input placeholder="Search for app state variable..." [(ngModel)]="searchText" />
+    </div>
+
+    <nz-table [nzData]="filteredFields" [nzBordered]="false" [nzFrontPagination]="false" [nzLoading]="isLoading">
+        <thead>
+            <tr>
+                <th>Field Name</th>
+                <th>Data Type</th>
+                <th>Type</th>
+                <th>Is Required</th>
+                <th>Default Value</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let field of filteredFields; let i = index">
+                <td>
+                    <input nz-input [(ngModel)]="field.fieldName" [disabled]="!!(field._id && !field.isEditing)" />
+                </td>
+
+                <td>
+                    <nz-select [(ngModel)]="field.dataType" nzPlaceHolder="Select type"
+                        [disabled]="!!(field._id && !field.isEditing)">
+                        <nz-option *ngFor="let type of dataTypes" [nzLabel]="type" [nzValue]="type">
+                        </nz-option>
+                    </nz-select>
+                </td>
+
+                <td>
+                    <nz-select [(ngModel)]="field.type" [disabled]="!!(field._id && !field.isEditing)">
+                        <nz-option *ngFor="let t of typeOptions" [nzLabel]="t" [nzValue]="t">
+                        </nz-option>
+                    </nz-select>
+                </td>
+
+                <td>
+                    <nz-switch [(ngModel)]="field.isRequired"
+                        [disabled]="!!(field._id && !field.isEditing)"></nz-switch>
+                </td>
+
+                <td>
+                    <input nz-input [(ngModel)]="field.defaultValue" [disabled]="!!(field._id && !field.isEditing)" />
+                </td>
+
+                <td class="actions">
+                    <!-- Show save/cancel buttons when editing or for new fields -->
+                    <ng-container *ngIf="field.isEditing || !field._id">
+                        <span nz-icon nzType="check" class="save-icon" (click)="saveField(field, i)"
+                            nz-tooltip="Save"></span>
+                        <span nz-icon nzType="close" class="cancel-icon" (click)="cancelEdit(field, i)"
+                            nz-tooltip="Cancel"></span>
+                    </ng-container>
+
+                    <!-- Show edit/delete buttons when not editing and field exists -->
+                    <ng-container *ngIf="!field.isEditing && field._id">
+                        <span nz-icon nzType="edit" class="edit-icon" (click)="editField(field)"
+                            nz-tooltip="Edit"></span>
+                        <span nz-icon nzType="delete" class="delete-icon" (click)="deleteField(i)"
+                            nz-tooltip="Delete"></span>
+                    </ng-container>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+</div>

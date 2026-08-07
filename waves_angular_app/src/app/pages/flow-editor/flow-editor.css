@@ -1,0 +1,245 @@
+.page-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+}
+
+.main-splitter {
+    height: 100%;
+}
+
+/* ============ LEFT PANEL ============ */
+.left-panel .title h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1677ff;
+}
+
+.left-panel {
+    border-right: 1px solid #ddd;
+    width: 280px;
+    background: #fafafa;
+    padding: 10px;
+    height: 100vh;
+}
+
+.flows-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.flows-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    width: 100%;
+}
+
+/* flows list */
+.saved-flow {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border: 1px solid rgb(211, 211, 211);
+}
+
+.saved-flow:hover {
+    background-color: #f5f5f5;
+}
+
+.active-flow {
+    background: #e6f4ff;
+    border-left: 4px solid #1677ff;
+    font-weight: 600;
+}
+
+.flow-delete-icon {
+    color: rgb(245, 102, 102);
+}
+
+.flow-delete-icon:hover {
+    color: red;
+    font-size: 16px;
+}
+
+.saved-flow:hover {
+    background: #f0f0f0;
+}
+
+
+.header-icon {
+    border: 1px solid #ddd;
+    padding: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.nodes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+}
+
+.library-node {
+    width: 90%;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: grab;
+    text-align: center;
+    position: relative;
+    color: white;
+    font-weight: 500;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.endpoint {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: #535353;
+    border-radius: 5px;
+}
+
+.endpoint.left {
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.endpoint.right {
+    right: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* ============ CENTER PANEL ============ */
+.canvas-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    /* Allows dragging nodes over the empty state */
+    z-index: 1;
+}
+
+.canvas-hint ::ng-deep .ant-empty-description {
+    font-size: 16px;
+    font-weight: 500;
+    color: #bfbfbf;
+}
+
+.center-panel {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.top-bar {
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+}
+
+.canvas {
+    position: relative;
+    flex: 1;
+    background: #ffffff;
+    overflow: auto;
+    user-select: none;
+}
+
+.block-instance-node {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    cursor: move;
+    color: white;
+    padding: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.2s;
+}
+
+.block-instance-node:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.name-icon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.controlles {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.screen-mode {
+    background: #eee;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ============ RIGHT PANEL ============ */
+.right-panel {
+    width: 300px;
+    border-left: 1px solid #ddd;
+    background: #fafafa;
+    padding: 15px;
+}
+
+/* Context Menu */
+.context-menu {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
+}
+
+.menu-item {
+    padding: 8px 20px;
+    cursor: pointer;
+}
+
+.menu-item.delete {
+    color: #c4187c;
+}
+
+.menu-item:hover {
+    background: #f5f5f5;
+}
+
+/* jsPlumb depth fixes */
+::ng-deep .jtk-endpoint {
+    z-index: 10;
+}
+
+::ng-deep .jtk-connector {
+    z-index: 5;
+}

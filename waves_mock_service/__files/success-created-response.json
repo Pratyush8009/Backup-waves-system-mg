@@ -1,0 +1,80 @@
+{
+  "code": 201,
+  "message": "System created successfully and pending approval",
+  "data": {
+    "systemId": "SYS-660e8400-e29b-41d4-a716-446655440005",
+    "unitId": "UNIT-001",
+    "name": "Manufacturing Line Alpha System",
+    "type": "MANUFACTURING",
+    "state": "PENDING_APPROVAL",
+    "status": "AWAITING_ACTIVATION",
+    "starred": true,
+    "validationResults": {
+      "clientValidation": {
+        "clientId": "CLT-client-001",
+        "clientStatus": "ACTIVE",
+        "userId": "USR-galaxy-001",
+        "userStatus": "ACTIVE",
+        "emailVerified": true,
+        "emailVerifiedAt": "2024-01-10T08:30:00Z"
+      },
+      "subscriptionValidation": {
+        "subscriptionPlan": "ENTERPRISE",
+        "planStatus": "ACTIVE",
+        "maxSystemsAllowed": 50,
+        "currentSystemsCount": 23,
+        "remainingSlots": 27,
+        "canCreateSystem": true,
+        "quotaDetails": {
+          "storageQuotaGB": 10000,
+          "storageUsedGB": 4567,
+          "executionsQuotaPerMonth": 5000000,
+          "executionsUsedThisMonth": 1234567
+        }
+      },
+      "configuration": {
+        "status": "VALID",
+        "warnings": [
+          {
+            "field": "configuration.usageLimits.maxExecutionsPerDay",
+            "message": "Execution limit (100000/day) is above recommended threshold (50000/day) for this plan",
+            "severity": "WARNING",
+            "canProceed": true
+          }
+        ]
+      }
+    },
+    "approvalStatus": {
+      "required": true,
+      "status": "PENDING",
+      "approver": {
+        "userId": "USR-senior-support-001",
+        "name": "Sarah Johnson",
+        "role": "SENIOR_SUPPORT_AGENT",
+        "email": "sarah.johnson@support.company.com"
+      },
+      "submittedAt": "2026-04-09T14:30:00Z",
+      "expectedApprovalBy": "2026-04-10T14:30:00Z",
+      "approvalReason": "High-cost system with advanced monitoring requirements"
+    },
+    "appliedTemplate": {
+      "templateId": "TMPL-MANUFACTURING-001",
+      "templateName": "Standard Manufacturing Template",
+      "appliedAt": "2026-04-09T14:30:00Z"
+    },
+    "createdAt": "2026-04-09T14:30:00Z",
+    "createdBy": {
+      "userId": "USR-support-agent-003",
+      "name": "Mike Thompson",
+      "role": "SUPPORT_AGENT"
+    },
+    "nextSteps": [
+      "System is pending senior approval",
+      "Once approved, system state will change to ACTIVE",
+      "Configuration can be modified before approval",
+      "Email notification sent to approver"
+    ]
+  },
+  "requestId": "req-create-sys-20260409-001",
+  "timestamp": "2026-04-09T14:30:00Z"
+}

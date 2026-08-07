@@ -1,0 +1,66 @@
+{
+    "code": 201,
+    "message": "Analysis created successfully",
+    "data": {
+        "analysisId": "ANL-NEW-001",
+        "systemId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+        "unitId": "UNIT-550e8400",
+        "name": "Real-time Quality Analysis",
+        "description": "Continuous analysis of production quality metrics",
+        "type": "ANALYSIS",
+        "category": "Quality Monitoring",
+        "version": "1.0.0",
+        "versionState": "INACTIVE",
+        "versionStatus": "CREATED",
+        "stage": "EDITING",
+        "status": "CREATED",
+        "metadata": {
+            "owner": "Jane Engineer",
+            "ownerEmail": "jane.engineer@company.com",
+            "tags": [
+                "quality",
+                "real-time",
+                "monitoring"
+            ]
+        },
+        "pipelineInfo": {
+            "pipelineId": "PIP-ANL-NEW-001",
+            "blockCount": 0,
+            "flowCount": 0,
+            "nodeCount": 0,
+            "createdAt": "2024-04-09T12:00:00Z"
+        },
+        "createdAt": "2024-04-09T12:00:00Z",
+        "createdBy": "USR-support-005",
+        "createdByName": "Support Agent Johnson",
+        "updatedAt": "2024-04-09T12:00:00Z",
+        "stats": {
+            "totalExecutions": 0,
+            "successfulExecutions": 0,
+            "failedExecutions": 0,
+            "successRate": 0
+        },
+        "schedule": {
+            "isScheduled": false,
+            "frequency": null,
+            "nextScheduledRun": null
+        },
+        "nextSteps": [
+            "Add blocks to the pipeline",
+            "Configure flows within blocks",
+            "Add nodes to flows",
+            "Define analysis execution schedule (optional)",
+            "Run initial validation",
+            "Publish analysis for testing"
+        ]
+    },
+    "metadata": {
+        "requestDuration": "234ms",
+        "cacheHit": false,
+        "currentUtilization": 72.3,
+        "validationsPerformed": 5,
+        "validationsResult": "ALL_PASSED"
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00018",
+    "timestamp": "2024-04-09T12:00:00Z"
+}

@@ -1,0 +1,376 @@
+{
+  "code": 200,
+  "message": "Analysis related nodes has been fetched.",
+  "data": {
+    "nodes": [
+      {
+        "id": "NTYPE-ANL-001",
+        "nodeTypeId": "signal_loader",
+        "name": "Signal Data Loader",
+        "description": "Loads signal data from CSV or text files",
+        "category": "Data Input",
+        "subCategory": "Signal Loading",
+        "type": "DATA_LOADER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "fileType": {
+            "type": "SELECT",
+            "options": [
+              "csv",
+              "txt",
+              "excel"
+            ],
+            "default": "csv",
+            "required": true
+          },
+          "filePath": {
+            "type": "STRING",
+            "default": "",
+            "required": true
+          },
+          "delimiter": {
+            "type": "STRING",
+            "default": ",",
+            "required": false
+          },
+          "hasHeader": {
+            "type": "BOOLEAN",
+            "default": false,
+            "required": false
+          }
+        },
+        "inputConfig": {},
+        "outputConfig": {
+          "signal": {
+            "type": "ARRAY",
+            "description": "Loaded signal data"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ANL-002",
+        "nodeTypeId": "sma_filter",
+        "name": "Simple Moving Average Filter",
+        "description": "Applies SMA filter to denoise signals",
+        "category": "Signal Processing",
+        "subCategory": "Filtering",
+        "type": "FILTER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "windowSize": {
+            "type": "INTEGER",
+            "default": 15,
+            "min": 3,
+            "max": 101,
+            "required": true,
+            "description": "Moving average window size (odd number recommended)"
+          },
+          "centerWindow": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          }
+        },
+        "inputConfig": {
+          "noisySignal": {
+            "type": "ARRAY"
+          }
+        },
+        "outputConfig": {
+          "smoothedSignal": {
+            "type": "ARRAY"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ANL-003",
+        "nodeTypeId": "savgol_filter",
+        "name": "Savitzky-Golay Filter",
+        "description": "Applies Savitzky-Golay filter for signal smoothing",
+        "category": "Signal Processing",
+        "subCategory": "Filtering",
+        "type": "FILTER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "windowLength": {
+            "type": "INTEGER",
+            "default": 15,
+            "min": 5,
+            "max": 101,
+            "required": true,
+            "description": "Window length (must be odd and >= polyorder + 2)"
+          },
+          "polyorder": {
+            "type": "INTEGER",
+            "default": 2,
+            "min": 1,
+            "max": 5,
+            "required": true,
+            "description": "Polynomial order for fitting"
+          },
+          "derivative": {
+            "type": "INTEGER",
+            "default": 0,
+            "min": 0,
+            "max": 3,
+            "required": false,
+            "description": "Order of derivative to compute (0 = smoothing only)"
+          }
+        },
+        "inputConfig": {
+          "noisySignal": {
+            "type": "ARRAY"
+          }
+        },
+        "outputConfig": {
+          "smoothedSignal": {
+            "type": "ARRAY"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ANL-004",
+        "nodeTypeId": "signal_comparator",
+        "name": "Signal Comparator",
+        "description": "Compares multiple signals and generates comparison plots",
+        "category": "Signal Analysis",
+        "subCategory": "Comparison",
+        "type": "COMPARATOR",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "plotType": {
+            "type": "SELECT",
+            "options": [
+              "overlay",
+              "subplot",
+              "difference"
+            ],
+            "default": "overlay",
+            "required": true
+          },
+          "showOriginal": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          },
+          "alpha": {
+            "type": "DOUBLE",
+            "default": 0.3,
+            "min": 0.1,
+            "max": 1.0,
+            "required": false,
+            "description": "Transparency for noisy signal"
+          }
+        },
+        "inputConfig": {
+          "originalSignal": {
+            "type": "ARRAY"
+          },
+          "filteredSignals": {
+            "type": "ARRAY",
+            "description": "Array of filtered signals"
+          }
+        },
+        "outputConfig": {
+          "comparisonPlot": {
+            "type": "IMAGE"
+          },
+          "statistics": {
+            "type": "OBJECT"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ANL-005",
+        "nodeTypeId": "statistical_analyzer",
+        "name": "Statistical Analyzer",
+        "description": "Computes statistical measures for signal analysis",
+        "category": "Signal Analysis",
+        "subCategory": "Statistics",
+        "type": "ANALYZER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "metrics": {
+            "type": "ARRAY",
+            "default": [
+              "mean",
+              "std",
+              "min",
+              "max",
+              "median"
+            ],
+            "options": [
+              "mean",
+              "std",
+              "min",
+              "max",
+              "median",
+              "variance",
+              "skewness",
+              "kurtosis"
+            ],
+            "required": true
+          },
+          "compareSignals": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          }
+        },
+        "inputConfig": {
+          "signals": {
+            "type": "ARRAY",
+            "description": "Array of signals to analyze"
+          }
+        },
+        "outputConfig": {
+          "statistics": {
+            "type": "OBJECT",
+            "description": "Statistical measures for each signal"
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ANL-006",
+        "nodeTypeId": "trend_analyzer",
+        "name": "Trend Analyzer",
+        "description": "Analyzes trends and patterns in time-series data",
+        "category": "Time Series Analysis",
+        "subCategory": "Trend Detection",
+        "type": "ANALYZER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "method": {
+            "type": "SELECT",
+            "options": [
+              "linear_regression",
+              "moving_average",
+              "exponential_smoothing"
+            ],
+            "default": "linear_regression",
+            "required": true
+          },
+          "detectSeasonality": {
+            "type": "BOOLEAN",
+            "default": false,
+            "required": false
+          },
+          "confidenceLevel": {
+            "type": "DOUBLE",
+            "default": 0.95,
+            "min": 0.8,
+            "max": 0.99,
+            "required": false
+          }
+        },
+        "inputConfig": {
+          "timeSeriesData": {
+            "type": "ARRAY"
+          }
+        },
+        "outputConfig": {
+          "trend": {
+            "type": "ARRAY"
+          },
+          "trendCoefficients": {
+            "type": "OBJECT"
+          },
+          "seasonality": {
+            "type": "ARRAY",
+            "optional": true
+          }
+        }
+      },
+      {
+        "id": "NTYPE-ANL-007",
+        "nodeTypeId": "data_exporter",
+        "name": "Data Exporter",
+        "description": "Exports analysis results to various formats",
+        "category": "Data Output",
+        "subCategory": "Export",
+        "type": "EXPORTER",
+        "version": "1.0.0",
+        "status": "ACTIVE",
+        "applicableFor": [
+          "ANALYSIS"
+        ],
+        "config": {
+          "exportFormat": {
+            "type": "SELECT",
+            "options": [
+              "csv",
+              "excel",
+              "json",
+              "pdf_report"
+            ],
+            "default": "csv",
+            "required": true
+          },
+          "includeMetadata": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          },
+          "generateSummary": {
+            "type": "BOOLEAN",
+            "default": true,
+            "required": false
+          }
+        },
+        "inputConfig": {
+          "data": {
+            "type": "ARRAY"
+          },
+          "metadata": {
+            "type": "OBJECT",
+            "optional": true
+          }
+        },
+        "outputConfig": {
+          "exportedFile": {
+            "type": "FILE"
+          },
+          "exportPath": {
+            "type": "STRING"
+          }
+        }
+      }
+    ],
+    "total": 7,
+    "categories": [
+      "Data Input",
+      "Signal Processing",
+      "Signal Analysis",
+      "Time Series Analysis",
+      "Data Output"
+    ],
+    "applicableFor": "ANALYSIS"
+  },
+  "metadata": {},
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

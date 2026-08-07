@@ -1,0 +1,365 @@
+<!-- analysis-overview.component.html -->
+<div class="analysis-overview-container">
+
+    @if (loading) {
+    <div class="loading-state">
+        <nz-spin nzSimple nzSize="large"></nz-spin>
+        <p>Loading Analysis Details...</p>
+    </div>
+    }
+
+    @if (!loading && analysisDetails) {
+    <!-- Header & Metadata Section -->
+    <div class="details-section">
+        <div class="header">
+            <div class="title-area">
+                <h3>{{ analysisDetails.name }}</h3>
+                <div class="id-badges">
+                    <span class="id-tag">Analysis ID: {{ analysisDetails.id }}</span>
+                    <span class="id-tag">Pipeline: {{ analysisDetails.pipelineId }}</span>
+                </div>
+            </div>
+            <div class="header-tags">
+                <nz-tag nzColor="blue" class="status-tag">{{ analysisDetails.stage }}</nz-tag>
+                <nz-tag [nzColor]="analysisDetails.status === 'ACTIVE' ? 'success' : 'default'" class="status-tag">
+                    {{ analysisDetails.status }}
+                </nz-tag>
+                @if (analysisSummary?.executionStatus) {
+                <!-- <nz-tag nzColor="green">Execution: {{ analysisSummary.executionStatus }}</nz-tag> -->
+                }
+            </div>
+        </div>
+
+        <div class="description-block">
+            <p class="analysis-desc">{{ analysisDetails.description }}</p>
+            <div class="active-version-callout">
+                <strong>Current Version:</strong> {{ analysisDetails.version }}
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div class="info-item">
+                <span class="label">Analysis Type</span>
+                <span class="val">{{ analysisDetails.metadata.analysisType || 'N/A' }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Frequency</span>
+                <span class="val">{{ analysisDetails.metadata.frequency || 'N/A' }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Created Date</span>
+                <span class="val">{{ formatDate(analysisDetails.createdAt) }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Last Updated</span>
+                <span class="val">{{ formatDate(analysisDetails.updatedAt) }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">Created By</span>
+                <span class="val">{{ analysisDetails.createdBy }}</span>
+            </div>
+            <div class="info-item">
+                <span class="label">System ID</span>
+                <span class="val">{{ analysisDetails.systemId }}</span>
+            </div>
+            <div class="info-item full-width">
+                <span class="label">Classification Tags</span>
+                <div class="tag-container">
+                    @for (t of analysisDetails.metadata.tags; track t) {
+                    <nz-tag nzColor="geekblue">{{ t }}</nz-tag>
+                    } @empty {
+                    <span class="val secondary">No tags defined</span>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Signal Processing & Noise Reduction Section -->
+    @if (analysisSummary) {
+    <div class="section-header">
+        <nz-divider nzText="Signal Processing & Noise Reduction" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="metrics-grid">
+        <div class="metrics-card">
+            <div class="metrics-title">
+                <span nz-icon nzType="sound" nzTheme="outline"></span> Signal Characteristics
+            </div>
+            <div class="metrics-content">
+                <div class="metric-item">
+                    <span class="metric-label">Original Length</span>
+                    <span class="metric-value">{{ analysisSummary.summary.signalProcessing.originalSignalLength | number
+                        }} samples</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Sampling Rate</span>
+                    <span class="metric-value">{{ analysisSummary.summary.signalProcessing.samplingRate }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Duration</span>
+                    <span class="metric-value">{{ analysisSummary.summary.signalProcessing.duration }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">Filters Applied</span>
+                    <div class="feature-tags">
+                        @for (f of analysisSummary.summary.signalProcessing.filtersApplied; track f) {
+                        <nz-tag nzColor="cyan">{{ f }}</nz-tag>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-card">
+            <div class="metrics-title">
+                <span nz-icon nzType="dashboard" nzTheme="outline"></span> SNR Improvement
+            </div>
+            <div class="metrics-content">
+                <div class="metric-item">
+                    <span class="metric-label">Original SNR</span>
+                    <span class="metric-value">{{ analysisSummary.summary.noiseReduction.originalSNR }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">SMA Filtered SNR</span>
+                    <span class="metric-value">{{ analysisSummary.summary.noiseReduction.smaFilteredSNR }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">SG Filtered SNR</span>
+                    <span class="metric-value">{{ analysisSummary.summary.noiseReduction.sgFilteredSNR }}</span>
+                </div>
+                <div class="metric-item improvement">
+                    <span class="metric-label">Total Improvement</span>
+                    <span class="metric-value highlight">+{{ analysisSummary.summary.noiseReduction.improvementSG
+                        }}</span>
+                </div>
+                <div class="metric-item">
+                    <span class="metric-label">SNR Gain</span>
+                    <nz-progress [nzPercent]="getSNRImprovementPercent()" nzStatus="success"
+                        [nzStrokeWidth]="8"></nz-progress>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-card wide-card">
+            <div class="metrics-title">
+                <span nz-icon nzType="line-chart" nzTheme="outline"></span> Statistical Comparison
+            </div>
+            <div class="stats-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Original</th>
+                            <th>SMA Filtered</th>
+                            <th>SG Filtered</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mean</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.original.mean }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.smaFiltered.mean }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.sgFiltered.mean }}</td>
+                        </tr>
+                        <tr>
+                            <td>Std Dev</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.original.std }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.smaFiltered.std }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.sgFiltered.std }}</td>
+                        </tr>
+                        <tr>
+                            <td>Min</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.original.min }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.smaFiltered.min }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.sgFiltered.min }}</td>
+                        </tr>
+                        <tr>
+                            <td>Max</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.original.max }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.smaFiltered.max }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.sgFiltered.max }}</td>
+                        </tr>
+                        <tr>
+                            <td>Median</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.original.median }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.smaFiltered.median }}</td>
+                            <td>{{ analysisSummary.summary.statisticalComparison.sgFiltered.median }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recommendation Card -->
+    <div class="recommendation-card">
+        <div class="recommendation-title">
+            <span nz-icon nzType="bulb" nzTheme="fill" style="color: #faad14;"></span> AI Recommendation
+        </div>
+        <div class="recommendation-content">
+            {{ analysisSummary.summary.recommendation }}
+        </div>
+        <div class="recommendation-footer">
+            <span nz-icon nzType="clock-circle"></span> Completed: {{ formatDate(analysisSummary.completedAt) }}
+            <span nz-icon nzType="api"></span> Execution ID: {{ analysisSummary.executionId }}
+        </div>
+    </div>
+
+    <div class="section-header">
+        <nz-divider nzText="Generated Artifacts" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="artifacts-grid">
+        @for (artifact of analysisSummary.generatedArtifacts; track artifact.url) {
+        <div class="artifact-card">
+            <div class="artifact-icon">
+                <span nz-icon [nzType]="artifact.type === 'REPORT' ? 'file-excel' : 'file-text'"></span>
+            </div>
+            <div class="artifact-info">
+                <div class="artifact-name">{{ artifact.name }}</div>
+                <div class="artifact-meta">{{ artifact.size }} • {{ artifact.type }}</div>
+            </div>
+            <button nz-button nzType="text" nzShape="circle" title="Download">
+                <span nz-icon nzType="download"></span>
+            </button>
+        </div>
+        }
+    </div>
+    }
+
+    <!-- Ingested Training Assets Section -->
+    <div class="section-header">
+        <nz-divider nzText="Ingested Data Assets" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="table-card">
+        <nz-table #fileTable [nzData]="analysisDetails.uploadedFiles" nzSize="middle" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th>File Asset</th>
+                    <th>Size</th>
+                    <th>Record Count</th>
+                    <th>Uploaded By</th>
+                    <th>Upload Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (file of fileTable.data; track file.fileId) {
+                <tr>
+                    <td class="file-name"><span nz-icon nzType="file-excel"></span> {{ file.fileName }}</td>
+                    <td>{{ formatFileSize(file.fileSize) }}</td>
+                    <td>{{ file.recordCount | number }} records</td>
+                    <td>{{ file.uploadedBy }}</td>
+                    <td>{{ formatDate(file.uploadedAt) }}</td>
+                    <td>
+                        <nz-badge
+                            [nzStatus]="file.status === 'PROCESSED' || file.status === 'READY' ? 'success' : 'processing'"
+                            [nzText]="file.status">
+                        </nz-badge>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+    </div>
+
+    <!-- Collaboration & Sharing Section -->
+    <div class="section-header">
+        <nz-divider nzText="Collaboration & Sharing" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="collaboration-grid">
+        <div class="collab-card">
+            <div class="collab-title">
+                <span nz-icon nzType="team"></span> Shared With
+            </div>
+            <div class="shared-list">
+                @for (user of analysisDetails.collaboration.sharedWith; track user.userId) {
+                <div class="shared-item">
+                    <div class="user-info">
+                        <span nz-icon nzType="user"></span>
+                        <span class="user-id">{{ user.userId }}</span>
+                    </div>
+                    <nz-tag [nzColor]="user.role === 'EDITOR' ? 'orange' : 'default'">{{ user.role }}</nz-tag>
+                    <span class="shared-date">{{ formatDate(user.sharedAt) }}</span>
+                </div>
+                } @empty {
+                <div class="no-data">No shared users</div>
+                }
+            </div>
+        </div>
+
+        <div class="collab-card">
+            <div class="collab-title">
+                <span nz-icon nzType="message"></span> Comments
+            </div>
+            <div class="comments-list">
+                @for (comment of analysisDetails.collaboration.comments; track comment.id) {
+                <div class="comment-item">
+                    <div class="comment-header">
+                        <strong>{{ comment.userId }}</strong>
+                        <span class="comment-date">{{ formatDate(comment.createdAt) }}</span>
+                    </div>
+                    <div class="comment-text">{{ comment.comment }}</div>
+                </div>
+                } @empty {
+                <div class="no-data">No comments yet</div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Transaction Logs Section -->
+    <div class="section-header">
+        <nz-divider nzText="Transaction Logs" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="table-card">
+        <nz-table #logTable [nzData]="analysisDetails.transactionLogs" nzSize="middle" [nzShowPagination]="false">
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Performed By</th>
+                    <th>Timestamp</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (log of logTable.data; track log.id) {
+                <tr>
+                    <td><nz-tag nzColor="purple">{{ log.action }}</nz-tag></td>
+                    <td>{{ log.performedBy }}</td>
+                    <td>{{ formatDate(log.timestamp) }}</td>
+                    <td class="log-details">{{ log.details | json }}</td>
+                </tr>
+                }
+            </tbody>
+        </nz-table>
+    </div>
+
+    <!-- Version Timeline -->
+    <div class="section-header">
+        <nz-divider nzText="Version Timeline" nzOrientation="left"></nz-divider>
+    </div>
+
+    <div class="version-row">
+        @for (v of analysisDetails.versionHistory; track v.version) {
+        <div class="v-card-wrapper">
+            <nz-card class="history-card" [class.active-v]="v.version === analysisDetails.currentVersion">
+                <div class="v-header">
+                    <strong>v{{ v.version }}</strong>
+                    <nz-tag [nzColor]="v.changeType === 'MAJOR' ? 'volcano' : 'orange'">{{ v.changeType }}</nz-tag>
+                </div>
+                <p class="v-changes">{{ v.changes }}</p>
+                <div class="v-footer">
+                    <span nz-icon nzType="user"></span> {{ v.createdBy }} <br>
+                    {{ formatDate(v.createdAt) }}
+                </div>
+            </nz-card>
+        </div>
+        }
+    </div>
+    }
+</div>

@@ -1,0 +1,46 @@
+<nz-layout class="app-layout">
+    <nz-sider nzCollapsible nzWidth="256px" nzTheme="light">
+        <div class="sidebar-header">
+            <button nz-button nzType="text" (click)="goBackToUnits()">
+                <span nz-icon nzType="arrow-left"></span>
+                <span>Unit</span>
+            </button>
+        </div>
+
+        <ul nz-menu nzMode="inline">
+            <li nz-menu-item [nzSelected]="currentPage === 'Overview'" (click)="unitOverviewPage()">
+                <span nz-icon nzType="pie-chart"></span>
+                <span>Overview</span>
+            </li>
+            <li nz-menu-item [nzSelected]="currentPage === 'Model'" (click)="unitSystemsPage()">
+                <span nz-icon nzType="appstore"></span>
+                <span>Systems</span>
+            </li>
+
+            <li nz-menu-item [nzSelected]="currentPage === 'Configuration'" (click)="unitConfigurationPage()">
+                <span nz-icon nzType="edit"></span>
+                <span>Configuration</span>
+            </li>
+
+        </ul>
+    </nz-sider>
+
+    <nz-layout>
+        <nz-header class="top-bar">
+            <nz-breadcrumb>
+                <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+                <nz-breadcrumb-item>User</nz-breadcrumb-item>
+                <nz-breadcrumb-item>Unit</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Overview'">Overview</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'System'">Systems</nz-breadcrumb-item>
+                <nz-breadcrumb-item *ngIf="currentPage === 'Configuration'">Configuration</nz-breadcrumb-item>
+            </nz-breadcrumb>
+        </nz-header>
+
+        <nz-content>
+            <div class="inner-content">
+                <router-outlet></router-outlet>
+            </div>
+        </nz-content>
+    </nz-layout>
+</nz-layout>

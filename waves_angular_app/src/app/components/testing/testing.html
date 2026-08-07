@@ -1,0 +1,122 @@
+<div class="testing-page-container">
+    <!-- Top Stepper Navigation -->
+    <div class="stepper-wrapper">
+        <nz-steps [nzCurrent]="currentStep()" nzSize="small">
+            <nz-step nzTitle="Validation Test" [nzDisabled]="false" (click)="goToStep(0)">
+            </nz-step>
+            <nz-step nzTitle="Upload Sample Data" [nzDisabled]="!canProceedToStep2()" (click)="goToStep(1)">
+            </nz-step>
+            <nz-step nzTitle="View result through template" [nzDisabled]="!canProceedToStep3()" (click)="goToStep(2)">
+            </nz-step>
+        </nz-steps>
+    </div>
+
+    <!-- Step Content Container -->
+    <div class="step-content">
+
+        <!-- STEP 1: VALIDATION -->
+        @if (currentStep() === 0) {
+        <nz-card class="validation-container" [nzTitle]="titleTpl">
+            <div class="header-row">
+                <p class="subtitle">Test the system configuration to ensure it is ready for deployment.</p>
+                <button nz-button nzType="primary" (click)="runFullValidation()" [nzLoading]="isFullValidating()">
+                    Run Full Validation
+                </button>
+            </div>
+
+            <nz-list nzSplit="false">
+                @for (item of validationSteps(); track item.label; let i = $index) {
+                <nz-list-item class="validation-item">
+                    <div class="label-group">
+                        <span nz-icon [nzType]="item.status === 'success' ? 'check-circle' : 'check-circle'"
+                            [class.icon-success]="item.status === 'success'"
+                            [class.icon-pending]="item.status !== 'success'" nzTheme="fill">
+                        </span>
+                        <span class="label-text">{{ item.label }}</span>
+                    </div>
+
+                    <button nz-button nzSize="small" [class.btn-success]="item.status === 'success'"
+                        [class.btn-run]="item.status !== 'success'" [nzLoading]="item.status === 'loading'"
+                        (click)="runTest(i)">
+                        @if (item.status === 'success') {
+                        <span nz-icon nzType="check"></span>
+                        }
+                        Test
+                    </button>
+                </nz-list-item>
+                }
+            </nz-list>
+
+            <!-- Always visible Next Button Footer -->
+            <div class="next-step-bar">
+                <span class="status-msg">
+                    @if (canProceedToStep2()) {
+                    <span class="success-msg"><span nz-icon nzType="check-circle" nzTheme="fill"></span> All checks
+                        passed!</span>
+                    } @else {
+                    <span class="pending-msg">Run and pass all tests to proceed.</span>
+                    }
+                </span>
+
+                <button nz-button nzType="primary" [disabled]="!canProceedToStep2()" (click)="goToStep(1)">
+                    Next: Upload Sample Data <span nz-icon nzType="right"></span>
+                </button>
+            </div>
+        </nz-card>
+        }
+
+        <!-- STEP 2: UPLOAD FILE & RUN MODEL -->
+        @if (currentStep() === 1) {
+        <nz-card class="upload-container" nzTitle="Upload file">
+            <nz-upload nzType="drag" [nzMultiple]="false" [nzBeforeUpload]="beforeUpload" [nzFileList]="fileList"
+                (nzChange)="handleFileChange($event)">
+                <p class="ant-upload-drag-icon">
+                    <span nz-icon nzType="file-add" class="upload-icon"></span>
+                </p>
+                <p class="ant-upload-text">Drag and Drop file here or <span class="browse-text">Choose file</span></p>
+                <p class="ant-upload-hint">Supported formats: DOC, XLS, PDF (Maximum size: 25MB)</p>
+            </nz-upload>
+
+            <!-- Circular Progress Bar overlay during model execution -->
+            @if (isRunningModel() || progressValue() > 0) {
+            <div class="progress-section">
+                <nz-progress nzType="circle" [nzPercent]="progressValue()"
+                    [nzStatus]="progressValue() === 100 ? 'success' : 'active'" [nzWidth]="120">
+                </nz-progress>
+                <p class="progress-text">
+                    @if (progressValue() < 100) { Running model... Please wait (30s) } @else { Model execution completed
+                        successfully! } </p>
+            </div>
+            }
+
+            <div class="upload-actions">
+                <button nz-button nzType="default" [disabled]="isRunningModel()" (click)="goToStep(0)">Back</button>
+
+                <button nz-button nzType="primary" [disabled]="fileList.length === 0 || progressValue() === 100"
+                    [nzLoading]="isRunningModel()" (click)="runModel()">
+                    Run
+                </button>
+
+                <!-- Manual Next Button displayed upon 100% completion -->
+                <button nz-button nzType="primary" [disabled]="!canProceedToStep3()" (click)="goToStep(2)">
+                    Next: View Result <span nz-icon nzType="right"></span>
+                </button>
+            </div>
+        </nz-card>
+        }
+
+        <!-- STEP 3: RESULT DATA WITH TEMPLATE -->
+        @if (currentStep() === 2) {
+        <div class="result-container">
+            <div class="coming-soon-box">
+                <h1 class="coming-soon-title">Coming soon</h1>
+            </div>
+        </div>
+        }
+
+    </div>
+</div>
+
+<ng-template #titleTpl>
+    <span class="card-title">Test Validation</span>
+</ng-template>

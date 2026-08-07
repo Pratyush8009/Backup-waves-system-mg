@@ -1,0 +1,7 @@
+{
+  "code": 409,
+  "error": "CONFLICT",
+  "message": "Version conflict detected",
+  "timestamp": "2024-03-25T10:00:00Z",
+  "details": "The resource has been modified by another user"
+}

@@ -1,0 +1,61 @@
+{
+  "code": 200,
+  "message": "Unit details retrieved successfully",
+  "data": {
+    "units": [
+      {
+        "id": "UNIT-001",
+        "name": "Global Manufacturing Division",
+        "type": "MANUFACTURING",
+        "isActive": true,
+        "systemCount": 15,
+        "modelCount": 42,
+        "analysisCount": 28,
+        "state": "ACTIVE",
+        "status": "ACTIVE",
+        "planType": "ENTERPRISE",
+        "membersCount": 15,
+        "createdAt": "2023-06-15T10:00:00Z"
+      },
+      {
+        "id": "UNIT-002",
+        "name": "Energy & Utilities Division",
+        "type": "ENERGY",
+        "isActive": true,
+        "systemCount": 8,
+        "modelCount": 24,
+        "analysisCount": 16,
+        "state": "ACTIVE",
+        "status": "ACTIVE",
+        "planType": "ENTERPRISE",
+        "membersCount": 5,
+        "createdAt": "2023-08-20T14:30:00Z"
+      },
+      {
+        "id": "UNIT-003",
+        "name": "Quality Assurance Division",
+        "type": "QUALITY",
+        "isActive": true,
+        "systemCount": 5,
+        "modelCount": 12,
+        "analysisCount": 35,
+        "state": "ACTIVE",
+        "status": "ACTIVE",
+        "planType": "BASIC",
+        "membersCount": 5,
+        "createdAt": "2023-09-10T09:15:00Z"
+      }
+    ],
+    "total": 3,
+    "filterType": "ALL"
+  },
+  "metadata": {
+    "requestDuration": "245ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "lastUpdated": "2024-04-09T11:55:00Z",
+    "dataFreshness": "Real-time"
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

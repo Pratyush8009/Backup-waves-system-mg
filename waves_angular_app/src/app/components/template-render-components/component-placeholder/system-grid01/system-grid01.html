@@ -1,0 +1,34 @@
+<div class="sg01-grid">
+  @for (plot of plots; track plot.plotId) {
+  @let comp = getPlotComponent(plot.chartType);
+  @let data = resolveData(plot.mappedField);
+
+  <nz-card class="sg01-card" [class.selected-card]="selectionService.activePlotId() === plot.plotId" [nzBordered]="true"
+    (click)="onPlotClick(plot.plotId, $event)">
+    <!-- Card header -->
+    <div class="sg01-card-header">
+      <span class="sg01-card-title">{{ plot.title || "notfound" }}</span>
+      <div class="sg01-card-actions">
+        <span nz-icon nzType="fullscreen" nzTheme="outline" class="sg01-action-icon"
+          (click)="toggleFullscreen(plot.plotId, $event)"></span>
+        <span nz-icon nzType="more" nzTheme="outline" class="sg01-action-icon"
+          (click)="toggleActionMenu(plot.plotId, $event)"></span>
+        <div class="sg01-action-menu" *ngIf="activeActionMenuPlotId === plot.plotId">
+          <button type="button" class="sg01-action-menu-item"
+            (click)="openCollab(plot); activeActionMenuPlotId = null">Collab</button>
+          <button type="button" class="sg01-action-menu-item"
+            (click)="toggleFullscreen(plot.plotId, $event); activeActionMenuPlotId = null">Fullscreen</button>
+        </div>
+      </div>
+    </div>
+    <p class="sg01-card-subtitle">{{ plot.metadata?.label || "notfound"}}</p>
+
+    <!-- Dynamic plot -->
+    @if (comp) {
+    <ng-container *ngComponentOutlet="comp; inputs: { config: plot, data: data }">
+    </ng-container>
+    } @else {
+    <nz-empty [nzNotFoundContent]="'No renderer for: ' + plot.chartType"></nz-empty>
+    }
+  </nz-card>
+  }

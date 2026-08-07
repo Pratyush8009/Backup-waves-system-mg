@@ -1,0 +1,18 @@
+{
+  "code": 200,
+  "message": "No systems found",
+  "data": {
+    "systems": []
+  },
+  "metadata": {
+    "pagination": {
+      "total": 0,
+      "page": 1,
+      "pageSize": 20
+    },
+    "requestDuration": "245ms",
+    "cacheHit": false
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

@@ -1,0 +1,100 @@
+<nz-page-header (nzBack)="goBackToUser()" nzBackIcon nzTitle="User" />
+<nz-breadcrumb class="bdc">
+    <nz-breadcrumb-item>Home</nz-breadcrumb-item>
+    <nz-breadcrumb-item>User</nz-breadcrumb-item>
+    <nz-breadcrumb-item>Units</nz-breadcrumb-item>
+</nz-breadcrumb>
+
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <nz-input-group nzSearch>
+                <input type="text" nz-input placeholder="Search units by name" [(ngModel)]="searchText"
+                    (ngModelChange)="onSearch()" />
+            </nz-input-group>
+
+        </div>
+        <div class="header-right">
+            <button nz-button nzType="primary" (click)="showModal()" [disabled]="isLoading">
+                Create Unit
+            </button>
+        </div>
+    </div>
+
+    <div class="loading-state" *ngIf="isLoading && units.length === 0">
+        <nz-spin nzSimple></nz-spin>
+        <p>Loading units...</p>
+    </div>
+
+    <div *ngIf="!isLoading && filteredUnits.length === 0" class="empty-state">
+        <nz-empty nzNotFoundImage="simple"></nz-empty>
+        <h3>{{ searchText ? 'No Matching Units Found' : 'No Units Available' }}</h3>
+        <p>{{ searchText ? 'Try different keywords.' : 'Get started by creating your first unit.' }}</p>
+        <button *ngIf="searchText" nz-button nzType="default" (click)="clearSearch()">Clear Search</button>
+    </div>
+
+    <div nz-row [nzGutter]="[24, 24]" *ngIf="!isLoading && filteredUnits.length > 0">
+        <div nz-col nzXs="24" nzSm="12" nzMd="8" nzLg="6" *ngFor="let unit of filteredUnits">
+            <nz-card class="unit-card">
+
+                <div class="action-buttons">
+                    <button nz-button nzType="text" nzDanger nz-popconfirm
+                        nzPopconfirmTitle="Are you sure you want to delete this unit?"
+                        [nzLoading]="isDeleteLoading(unit._id)" (nzOnConfirm)="deleteUnit(unit._id)"
+                        (click)="$event.stopPropagation()">
+                        <span *ngIf="!isDeleteLoading(unit._id)" nz-icon nzType="delete" nzTheme="outline"></span>
+                    </button>
+                </div>
+
+                <h3>{{ unit.name }}</h3>
+                <nz-tag class="status-tag" [nzColor]="unit.status === 'ACTIVE' ? 'success' : 'processing'">{{
+                    unit.status }}</nz-tag>
+
+                <p class="description">{{ unit.description }}</p>
+
+                <p class="system-count">
+                    <span nz-icon nzType="appstore" nzTheme="outline"></span>
+                    Systems: <strong>{{ unit.system_count }}</strong>
+                </p>
+
+                <button nz-button nzType="primary" nzBlock
+                    (click)="viewUnitDetails(unit._id); $event.stopPropagation()">
+                    View Unit
+                </button>
+            </nz-card>
+        </div>
+    </div>
+
+    <nz-modal [(nzVisible)]="isVisible" nzTitle="Create New Unit" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()"
+        [nzOkLoading]="isLoading" [nzOkDisabled]="!unitForm.valid">
+        <ng-container *nzModalContent>
+            <form nz-form [formGroup]="unitForm" nzLayout="vertical">
+                <nz-form-item>
+                    <nz-form-label nzRequired>Unit Name</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input the unit name!">
+                        <input nz-input formControlName="name" placeholder="e.g. Global Manufacturing" />
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label nzRequired>Unit Type</nz-form-label>
+                    <nz-form-control>
+                        <nz-select formControlName="type" nzPlaceHolder="Select Type">
+                            <nz-option nzValue="MANUFACTURING" nzLabel="Manufacturing"></nz-option>
+                            <nz-option nzValue="QUALITY" nzLabel="Quality"></nz-option>
+                            <nz-option nzValue="TESTING" nzLabel="Testing"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label nzRequired>Description</nz-form-label>
+                    <nz-form-control nzErrorTip="Please input a description!">
+                        <textarea nz-input formControlName="description" rows="3"
+                            placeholder="Describe the unit purpose"></textarea>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </ng-container>
+    </nz-modal>
+</div>

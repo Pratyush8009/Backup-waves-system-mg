@@ -1,0 +1,11 @@
+<div class="page-root">
+  <div class="page-toolbar">
+    <a routerLink="/template-landing-dashboard" class="page-back">&larr; All templates</a>
+    <h1 class="page-title">Template Only</h1>
+    <p class="page-subtitle">Shows the raw template layout &mdash; sections and placeholders, no plot configuration.</p>
+  </div>
+
+  @if (templateId$ | async; as templateId) {
+    <app-template-renderer [templateId]="templateId" [mode]="'only'"></app-template-renderer>
+  }
+</div>

@@ -1,0 +1,37 @@
+{
+    "code": 404,
+    "message": "Model/Analysis creation failed - system not found",
+    "error": {
+        "type": "RESOURCE_NOT_FOUND",
+        "code": "SYSTEM_NOT_FOUND",
+        "message": "System does not exist or is inactive",
+        "details": {
+            "systemId": "SYS-550e8400-e29b-41d4-a716-446655440999",
+            "searchedIn": "UNIT-550e8400",
+            "systemStatus": "NOT_FOUND",
+            "possibleReasons": [
+                "System ID is incorrect",
+                "System has been deleted",
+                "System is inactive and archived"
+            ],
+            "suggestion": "Verify the system ID and ensure it is active"
+        },
+        "severity": "ERROR",
+        "isBlocking": true,
+        "resolutionSteps": [
+            "Verify the correct system ID",
+            "Check unit's system list",
+            "Ensure system is ACTIVE",
+            "Retry with correct system ID"
+        ]
+    },
+    "metadata": {
+        "requestDuration": "32ms",
+        "cacheHit": false,
+        "currentUtilization": 65.2,
+        "validationsPerformed": 2,
+        "validationsFailed": 1
+    },
+    "requestId": "req-550e8400-e29b-41d4-a716-4466554st00012",
+    "timestamp": "2024-04-09T12:00:00Z"
+}

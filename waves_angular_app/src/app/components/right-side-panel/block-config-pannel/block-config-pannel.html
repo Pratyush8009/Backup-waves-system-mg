@@ -1,0 +1,277 @@
+<div class="config-container">
+  <!-- Sticky Header Section -->
+  <div class="header-section">
+    <h2 class="panel-title">{{ blockData ? 'Block Configuration' : 'Model Configuration' }}</h2>
+    <div class="header-actions">
+      <div class="action-btn" nz-tooltip nzTooltipTitle="Info">
+        <nz-icon nzType="info" nzTheme="outline"></nz-icon>
+      </div>
+      <div class="action-btn" nz-tooltip nzTooltipTitle="Settings">
+        <nz-icon nzType="setting" nzTheme="outline"></nz-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scrollable Panel Body -->
+  <div class="panel-scroll-body">
+    <!-- Selected Block Configuration View -->
+    <div *ngIf="blockData; else modelConfig" class="content-section">
+
+      <!-- Custom Block Tabs -->
+      <div class="tab-header" *ngIf="blockData.category === 'custom'">
+        <div class="tab-item" [class.active]="activeTab === 0" (click)="activeTab = 0">Info</div>
+        <div class="tab-item" [class.active]="activeTab === 1" (click)="activeTab = 1">Port</div>
+        <div class="tab-item" [class.active]="activeTab === 2" (click)="activeTab = 2">Schema</div>
+      </div>
+
+      <!-- System Block Tabs (Input & Output) -->
+      <div class="tab-header" *ngIf="blockData.category === 'system'">
+        <div class="tab-item" [class.active]="activeTab === 0" (click)="activeTab = 0">Info</div>
+        <div class="tab-item" [class.active]="activeTab === 1" (click)="activeTab = 1">Port</div>
+        <div class="tab-item" [class.active]="activeTab === 3" (click)="activeTab = 3">Group</div>
+      </div>
+
+      <!-- TAB 0: INFO -->
+      <div class="tab-body" *ngIf="activeTab === 0">
+        <div class="form-group">
+          <label>Name</label>
+          <input nz-input [disabled]="true" [ngModel]="blockData.name" />
+        </div>
+        <div class="form-group">
+          <label>Type</label>
+          <input nz-input [disabled]="true" [ngModel]="blockData.blockType" />
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <input nz-input [disabled]="true" [ngModel]="blockData.category" />
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea nz-input [disabled]="true" rows="4"
+            [ngModel]="blockData.description || 'No description available'"></textarea>
+        </div>
+      </div>
+
+      <!-- TAB 1: PORT (CUSTOM & SYSTEM BLOCKS) -->
+      <div class="tab-body" *ngIf="activeTab === 1">
+        <div class="add-section">
+          <div class="form-group">
+            <label>Port Type</label>
+
+            <!-- Custom Block Port Type Selection -->
+            <nz-select *ngIf="blockData.category === 'custom'" [(ngModel)]="newPortType" style="width: 100%;">
+              <nz-option nzValue="INPUT" nzLabel="INPUT"></nz-option>
+              <nz-option nzValue="OUTPUT" nzLabel="OUTPUT"></nz-option>
+            </nz-select>
+
+            <!-- System Input Block Restricted Port Type (OUTPUT Only) -->
+            <input *ngIf="blockData.category === 'system' && blockData.blockType === 'INPUT'" nz-input [disabled]="true"
+              value="OUTPUT" />
+
+            <!-- System Output Block Restricted Port Type (INPUT Only) -->
+            <input *ngIf="blockData.category === 'system' && blockData.blockType === 'OUTPUT'" nz-input
+              [disabled]="true" value="INPUT" />
+          </div>
+          <div class="form-group">
+            <label>Port Name</label>
+            <input nz-input [(ngModel)]="newPortName" placeholder="e.g. port_1" />
+          </div>
+          <button nz-button nzType="primary" (click)="addPort()" [disabled]="!newPortName">Add Port</button>
+        </div>
+
+        <nz-divider></nz-divider>
+
+        <div class="ports-container">
+          <h4 class="section-subtitle">Existing Ports</h4>
+          <div *ngFor="let port of blockData.ports" class="port-card">
+            <div class="port-header">
+              <span class="port-title">{{ port.name }}</span>
+              <div class="port-actions">
+                <span class="port-tag" [style.background-color]="getPortColor(port.portType)"
+                  [style.color]="getPortTextColor(port.portType)">
+                  {{ port.portType }}
+                </span>
+                <span class="delete-icon" (click)="deletePort(port.id)" nz-tooltip nzTooltipTitle="Delete Port">
+                  <nz-icon nzType="delete" nzTheme="outline"></nz-icon>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2: SCHEMA (CUSTOM BLOCKS ONLY) -->
+      <div class="tab-body" *ngIf="activeTab === 2 && blockData.category === 'custom'">
+        <div class="add-section">
+          <div class="form-group">
+            <label>Select Target Port</label>
+            <nz-select [(ngModel)]="selectedPortId" style="width: 100%;" nzPlaceholder="Choose Port">
+              <nz-option *ngFor="let p of blockData.ports" [nzValue]="p.id"
+                [nzLabel]="p.name + ' (' + p.portType + ')'"></nz-option>
+            </nz-select>
+          </div>
+          <div class="form-group">
+            <label>Field Name</label>
+            <input nz-input [(ngModel)]="newSchemaName" placeholder="e.g. BL" />
+          </div>
+          <div class="form-group">
+            <label>Data Type</label>
+            <nz-select [(ngModel)]="newSchemaType" style="width: 100%;">
+              <nz-option nzValue="decimal" nzLabel="decimal"></nz-option>
+              <nz-option nzValue="number" nzLabel="number"></nz-option>
+              <nz-option nzValue="string" nzLabel="string"></nz-option>
+            </nz-select>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <input nz-input [(ngModel)]="newSchemaDesc" placeholder="Field description" />
+          </div>
+          <button nz-button nzType="primary" (click)="addSchema()" [disabled]="!newSchemaName || !selectedPortId">
+            Add Schema
+          </button>
+          <nz-divider></nz-divider>
+        </div>
+
+        <!-- Schemas grouped by Port -->
+        <div class="ports-container">
+          <div *ngFor="let port of blockData.ports" class="port-card">
+            <div class="port-header">
+              <span class="port-title">{{ port.name }}</span>
+              <span class="port-tag" [style.background-color]="getPortColor(port.portType)"
+                [style.color]="getPortTextColor(port.portType)">
+                {{ port.portType }}
+              </span>
+            </div>
+            <nz-divider style="margin: 8px 0;"></nz-divider>
+
+            <div *ngIf="port.schema.length === 0" class="empty-port-icon-container">
+              <span class="placeholder-text">No schema fields assigned</span>
+            </div>
+
+            <div *ngFor="let field of port.schema" class="schema-item-layout">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong>{{ field.name }}</strong>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="port-tag" [style.background-color]="getDataTypeColor(field.type)"
+                    [style.color]="getDataTypeTextColor(field.type)">
+                    {{ field.type }}
+                  </span>
+                  <span class="delete-icon" (click)="deleteSchema(port.id, field.name)" nz-tooltip
+                    nzTooltipTitle="Delete Field">
+                    <nz-icon nzType="delete" nzTheme="outline"></nz-icon>
+                  </span>
+                </div>
+              </div>
+              <small style="color: #8c8c8c;">{{ field.description }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: GROUP (SYSTEM BLOCKS ONLY) -->
+      <div class="tab-body" *ngIf="activeTab === 3 && blockData.category === 'system'">
+        <div class="add-section">
+          <div class="form-group">
+            <label>Select Target Port</label>
+            <nz-select [(ngModel)]="selectedGroupPortId" style="width: 100%;" nzPlaceholder="Choose Port">
+              <nz-option *ngFor="let p of getAvailablePorts()" [nzValue]="p.id"
+                [nzLabel]="p.name + ' (' + p.portType + ')'"></nz-option>
+            </nz-select>
+          </div>
+
+          <div class="form-group">
+            <label>{{ blockData.blockType === 'INPUT' ? 'System Input Schema' : 'System Output Schema' }}</label>
+            <nz-select [(ngModel)]="selectedSystemSchemaName" style="width: 100%;" nzPlaceholder="Select Schema Field">
+              <nz-option *ngFor="let schema of getAvailableSystemSchemas()" [nzValue]="schema.name"
+                [nzLabel]="schema.name + ' (' + schema.type + ')'"></nz-option>
+            </nz-select>
+          </div>
+
+          <button nz-button nzType="primary" (click)="addGroupSystemSchema()"
+            [disabled]="!selectedGroupPortId || !selectedSystemSchemaName">
+            Save
+          </button>
+          <nz-divider></nz-divider>
+        </div>
+
+        <!-- Displays grouped system schemas per port -->
+        <div class="ports-container">
+          <div *ngFor="let port of getAvailablePorts()" class="port-card">
+            <div class="port-header">
+              <span class="port-title">{{ port.name }}</span>
+              <span class="port-tag" [style.background-color]="getPortColor(port.portType)"
+                [style.color]="getPortTextColor(port.portType)">
+                {{ port.portType }}
+              </span>
+            </div>
+            <nz-divider style="margin: 8px 0;"></nz-divider>
+
+            <div *ngIf="port.schema.length === 0" class="empty-port-icon-container">
+              <span class="placeholder-text">No schema fields assigned</span>
+            </div>
+
+            <div *ngFor="let field of port.schema" class="schema-item-layout">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <strong>{{ field.name }}</strong>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span class="port-tag" [style.background-color]="getDataTypeColor(field.type)"
+                    [style.color]="getDataTypeTextColor(field.type)">
+                    {{ field.type }}
+                  </span>
+                  <span class="delete-icon" (click)="deleteSchema(port.id, field.name)" nz-tooltip
+                    nzTooltipTitle="Delete Field">
+                    <nz-icon nzType="delete" nzTheme="outline"></nz-icon>
+                  </span>
+                </div>
+              </div>
+              <small style="color: #8c8c8c;">{{ field.description }}</small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Default View: Model Configuration (When no block is selected) -->
+    <ng-template #modelConfig>
+      <div class="tab-header">
+        <div class="tab-item" [class.active]="activeModelTab === 0" (click)="activeModelTab = 0">Info</div>
+        <div class="tab-item" [class.active]="activeModelTab === 1" (click)="activeModelTab = 1">Debug</div>
+      </div>
+
+      <div class="tab-body" *ngIf="activeModelTab === 0">
+        <div class="model-config-view">
+          <div class="form-group">
+            <label>Pipeline ID</label>
+            <input nz-input [disabled]="true" [ngModel]="pipelineId" />
+          </div>
+          <div class="form-group">
+            <label>Model Version</label>
+            <input nz-input [disabled]="true" [ngModel]="modelId" />
+          </div>
+          <div class="form-group">
+            <label>System ID</label>
+            <input nz-input [disabled]="true" [ngModel]="systemId" />
+          </div>
+          <div class="form-group">
+            <label>Unit ID</label>
+            <input nz-input [disabled]="true" [ngModel]="unitId" />
+          </div>
+          <div class="form-group">
+            <label>Status</label>
+            <input nz-input [disabled]="true" value="Ready for Validation" />
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-body" *ngIf="activeModelTab === 1">
+        <div class="model-config-view">
+          <div class="info-callout">
+            <nz-icon nzType="info-circle" nzTheme="outline" style="color: #ff0000; margin-right: 8px;"></nz-icon>
+            <span style="color: #ff0000">Error</span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

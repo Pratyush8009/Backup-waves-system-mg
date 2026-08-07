@@ -1,0 +1,156 @@
+<div class="full-page-config">
+    <div class="config-content">
+
+        <nz-card nzTitle="Choose Template" class="config-section highlight-card">
+            <div nz-row [nzGutter]="24" nzAlign="middle">
+                <div nz-col [nzSpan]="12" class="field">
+                    <label>Active Configuration Template</label>
+                    <nz-select [(ngModel)]="config.templateId" style="width: 100%" nzPlaceHolder="Select a template">
+                        <nz-option *ngFor="let t of templateList" [nzLabel]="t.label" [nzValue]="t.value"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="1. Data Management & Retention" class="config-section">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Data Retention (Days)</label>
+                    <nz-input-number [(ngModel)]="config.dataManagement.dataRetentionDays"></nz-input-number>
+                </div>
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Archive Retention (Days)</label>
+                    <nz-input-number [(ngModel)]="config.dataManagement.archiveRetentionDays"></nz-input-number>
+                </div>
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Monitoring Interval</label>
+                    <nz-select [(ngModel)]="config.dataManagement.monitoringInterval">
+                        <nz-option *ngFor="let m of monitoringIntervals" [nzLabel]="m" [nzValue]="m"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <div nz-row [nzGutter]="24" class="m-t-20">
+                <div nz-col [nzSpan]="12" class="field">
+                    <label>Storage Provider</label>
+                    <nz-select [(ngModel)]="config.dataRetention.fileStorageProvider" style="width: 100%">
+                        <nz-option *ngFor="let p of storageProviders" [nzLabel]="p" [nzValue]="p"></nz-option>
+                    </nz-select>
+                </div>
+                <div nz-col [nzSpan]="12" class="field">
+                    <label>Backup Location</label>
+                    <input nz-input [(ngModel)]="config.dataRetention.backupLocation" />
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="2. Sync Engine & Network" class="config-section">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="6" class="field">
+                    <label>Sync Interval</label>
+                    <nz-input-number [(ngModel)]="config.dataSync.syncInterval"></nz-input-number>
+                </div>
+                <div nz-col [nzSpan]="6" class="field">
+                    <label>Unit</label>
+                    <nz-select [(ngModel)]="config.dataSync.syncIntervalUnit">
+                        <nz-option *ngFor="let u of syncUnits" [nzLabel]="u" [nzValue]="u"></nz-option>
+                    </nz-select>
+                </div>
+                <div nz-col [nzSpan]="6" class="field">
+                    <label>Mode</label>
+                    <nz-select [(ngModel)]="config.dataSync.mode">
+                        <nz-option *ngFor="let mode of syncModes" [nzLabel]="mode" [nzValue]="mode"></nz-option>
+                    </nz-select>
+                </div>
+                <div nz-col [nzSpan]="6" class="field">
+                    <label>Primary Protocol</label>
+                    <nz-select [(ngModel)]="config.dataSync.protocol" style="width: 100%">
+                        <nz-option *ngFor="let p of protocolOptions" [nzLabel]="p" [nzValue]="p"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+            <nz-divider nzText="Active Endpoints"></nz-divider>
+            <div class="endpoint-grid">
+                <div class="endpoint-item" *ngFor="let key of endpointKeys">
+                    <span class="endpoint-label">{{ key | uppercase }} URL</span>
+                    <input nz-input [(ngModel)]="config.dataSync.endpoints[key].url" />
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="3. Usage Limits & Performance" class="config-section">
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Max Executions / Day</label>
+                    <nz-input-number [(ngModel)]="config.usageLimits.maxExecutionsPerDay"></nz-input-number>
+                </div>
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Storage Quota (MB)</label>
+                    <nz-input-number [(ngModel)]="config.usageLimits.storageQuotaMB"></nz-input-number>
+                </div>
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Concurrent Connections</label>
+                    <nz-input-number [(ngModel)]="config.usageLimits.concurrentConnections.limit"></nz-input-number>
+                </div>
+            </div>
+            <nz-divider></nz-divider>
+            <div nz-row [nzGutter]="24">
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Max Concurrent Execs</label>
+                    <nz-input-number [(ngModel)]="config.performance.maxConcurrentExecutions"></nz-input-number>
+                </div>
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Execution Timeout</label>
+                    <input nz-input [(ngModel)]="config.performance.executionTimeout" />
+                </div>
+                <div nz-col [nzSpan]="8" class="field">
+                    <label>Queue Size</label>
+                    <nz-input-number [(ngModel)]="config.performance.queueSize"></nz-input-number>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="4. Alerting & Notifications" class="config-section">
+            <div class="switch-container">
+                <div class="switch-box">
+                    <span>Alerting Enabled</span>
+                    <nz-switch [(ngModel)]="config.alerting.alertingEnabled"></nz-switch>
+                </div>
+                <div class="switch-box">
+                    <span>Email</span>
+                    <nz-switch [(ngModel)]="config.alerting.emailNotifications"></nz-switch>
+                </div>
+                <div class="switch-box">
+                    <span>SMS</span>
+                    <nz-switch [(ngModel)]="config.alerting.smsNotifications"></nz-switch>
+                </div>
+            </div>
+
+            <div class="field m-t-20">
+                <label>Webhook URL</label>
+                <input nz-input [(ngModel)]="config.alerting.webhookUrl" />
+            </div>
+
+            <h4 class="m-t-20">Alert Recipients</h4>
+            <div class="recipient-table">
+                <div class="recipient-row header">
+                    <div class="cell">Email Address</div>
+                    <div class="cell">System Role</div>
+                    <div class="cell">Alert Levels</div>
+                </div>
+                <div class="recipient-row" *ngFor="let user of config.alerting.alertRecipients">
+                    <div class="cell"><input nz-input [(ngModel)]="user.email" /></div>
+                    <div class="cell">
+                        <nz-select [(ngModel)]="user.role" style="width: 100%">
+                            <nz-option *ngFor="let r of roles" [nzLabel]="r" [nzValue]="r"></nz-option>
+                        </nz-select>
+                    </div>
+                    <div class="cell">
+                        <nz-select nzMode="multiple" [(ngModel)]="user.alertTypes" style="width: 100%">
+                            <nz-option *ngFor="let a of alertLevels" [nzLabel]="a" [nzValue]="a"></nz-option>
+                        </nz-select>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+    </div>
+</div>

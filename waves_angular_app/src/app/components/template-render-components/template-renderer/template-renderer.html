@@ -1,0 +1,21 @@
+<div class="tr-root">
+  @if (loading()) {
+  <div class="tr-loading">
+    <nz-spin [nzTip]="'Loading template...'" nzSize="large"></nz-spin>
+  </div>
+  } @else if (error()) {
+  <nz-result nzStatus="error" [nzTitle]="error() ?? undefined"></nz-result>
+  } @else if (template()) {
+  @let tmpl = template()!;
+  @let comp = getTemplateComponent();
+  @if (comp) {
+  <ng-container
+    *ngComponentOutlet="comp; inputs: { name: tmpl.name, sections: tmpl.sections, rawLiveData: rawLiveData() }">
+  </ng-container>
+  } @else {
+  <nz-result nzStatus="404" [nzTitle]="'No template renderer found for: ' + tmpl.templateId"></nz-result>
+  }
+  } @else {
+  <nz-result nzStatus="404" nzTitle="Template not found"></nz-result>
+  }
+</div>

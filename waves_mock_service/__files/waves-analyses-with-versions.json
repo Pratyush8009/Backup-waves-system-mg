@@ -1,0 +1,68 @@
+{
+  "code": 200,
+  "message": "Analyses fetched successfully",
+  "data": {
+    "systemId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+    "analyses": [
+      {
+        "id": "ANL-770e8400-e29b-41d4-a716-446655440201",
+        "name": "Monthly Production Analysis",
+        "description": "Ad-hoc analysis of monthly production trends",
+        "currentVersion": "1.2.0",
+        "stage": "PUBLISHED",
+        "status": "ACTIVE",
+        "pipelineId": "PIP-880e8400-e29b-41d4-a716-446655440302",
+        "instances": [
+          {
+            "instanceId": "ANLI-001",
+            "name": "April 2026 Production Analysis",
+            "executedAt": "2026-04-08T10:36:00Z",
+            "status": "COMPLETED",
+            "fileCount": 1
+          },
+          {
+            "instanceId": "ANLI-002",
+            "name": "March 2026 Production Analysis",
+            "executedAt": "2026-03-15T16:20:00Z",
+            "status": "COMPLETED",
+            "fileCount": 2
+          }
+        ],
+        "versions": [
+          {
+            "version": "1.2.0",
+            "createdAt": "2024-03-15T16:20:00Z",
+            "changeType": "MINOR",
+            "changes": "Added comparative analysis flow",
+            "isActive": true
+          },
+          {
+            "version": "1.1.0",
+            "createdAt": "2024-02-20T14:00:00Z",
+            "changeType": "MINOR",
+            "changes": "Enhanced visualization blocks",
+            "isActive": false
+          },
+          {
+            "version": "1.0.0",
+            "createdAt": "2024-02-01T10:00:00Z",
+            "changeType": "MAJOR",
+            "changes": "Initial version",
+            "isActive": false
+          }
+        ],
+        "versionCount": 3,
+        "instanceCount": 2,
+        "createdAt": "2024-02-01T10:00:00Z"
+      }
+    ],
+    "total": 1
+  },
+  "metadata": {
+    "requestDuration": "156ms",
+    "cacheHit": false,
+    "currentUtilization": 87.5
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

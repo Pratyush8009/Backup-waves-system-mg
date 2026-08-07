@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/api/v1/waves/unit/[a-zA-Z0-9-]+/system/[a-zA-Z0-9-]+/models"
+  },
+  "response": {
+    "status": 201,
+    "headers": {
+       "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
+      "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    },
+    "bodyFileName": "model-created-response.json",
+    "transformers": [
+      "response-template"
+    ]
+  }
+}

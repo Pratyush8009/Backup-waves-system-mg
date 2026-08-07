@@ -1,0 +1,272 @@
+.config-container {
+  padding: 16px;
+  background: #fff;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Sticky Header */
+.header-section {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+  color: #000;
+}
+
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  cursor: pointer;
+  background: #fff;
+}
+
+.action-btn:hover {
+  border-color: #1890ff;
+  color: #1890ff;
+}
+
+/* Scrollable Main Body */
+.panel-scroll-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.panel-scroll-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.panel-scroll-body::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 3px;
+}
+
+/* Tabs */
+.tab-header {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+}
+
+.tab-item {
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 8px 4px;
+  color: #595959;
+  position: relative;
+  text-transform: capitalize;
+}
+
+.tab-item.active {
+  color: #2f54eb;
+  font-weight: 600;
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #2f54eb;
+}
+
+.badge-error {
+  background: #ff4d4f;
+  color: #fff;
+  border-radius: 50%;
+  padding: 1px 6px;
+  font-size: 10px;
+  margin-left: 4px;
+}
+
+.tab-body {
+  padding-top: 4px;
+}
+
+.section-subtitle {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #262626;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #000;
+}
+
+::ng-deep .ant-input[disabled] {
+  background-color: #f0f0f0 !important;
+  color: #595959 !important;
+  border-color: #d9d9d9 !important;
+  cursor: default;
+  font-weight: 500;
+}
+
+.ports-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.port-card {
+  border: 1px solid #d9d9d9;
+  border-radius: 6px;
+  padding: 12px;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.schema-item-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px;
+  border-radius: 4px;
+  background: #fafafa;
+  border: 1px solid #f0f0f0;
+}
+
+.port-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.port-title {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.port-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.delete-icon {
+  color: #ff4d4f;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.delete-icon:hover {
+  background: #ffecec;
+}
+
+.port-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.empty-port-icon-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  color: #bfbfbf;
+}
+
+.placeholder-text {
+  font-size: 12px;
+  font-style: italic;
+}
+
+/* Console tab errors/success */
+.console-errors {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.error-item {
+  background: #fff2f0;
+  border: 1px solid #ffccc7;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #d9363e;
+  font-size: 12px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.console-success {
+  background: #f6ffed;
+  border: 1px solid #b7eb8f;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: #389e0d;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+}
+
+/* Model Config Default Panel */
+.model-config-view {
+  padding-top: 8px;
+}
+
+.info-callout {
+  display: flex;
+  align-items: flex-start;
+  background: #e6f7ff;
+  border: 1px solid #91d5ff;
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #0050b3;
+}

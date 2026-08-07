@@ -1,0 +1,31 @@
+.page-root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+}
+
+.page-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-back {
+  align-self: flex-start;
+  font-size: 13px;
+  color: #1677ff;
+  text-decoration: none;
+  margin-bottom: 8px;
+}
+
+.page-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.45);
+}

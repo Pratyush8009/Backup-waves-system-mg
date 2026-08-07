@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/v1/waves/unit/[a-zA-Z0-9-]+system/[a-zA-Z0-9-]+/analyses"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "waves-analyses-with-versions.json"
+  }
+}

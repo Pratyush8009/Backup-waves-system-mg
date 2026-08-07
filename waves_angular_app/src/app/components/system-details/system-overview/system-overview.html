@@ -1,0 +1,133 @@
+<div class="main-layout" *ngIf="!loading; else loader">
+
+    <div class="left-content">
+        <nz-card class="details-card">
+            <div class="details-header">
+                <h3>System Details</h3>
+                <nz-tag [nzColor]="system.status === 'ACTIVE' ? 'success' : 'default'" class="capsule">
+                    {{system.status}}
+                </nz-tag>
+            </div>
+            <div class="details-grid">
+                <div class="grid-item">
+                    <p><strong>System Name :</strong> {{system.name}}</p>
+                    <p><strong>Active model version :</strong> {{system.activeVersion}}</p>
+                    <p><strong>Created By :</strong> {{system.userId}}</p>
+                    <p><strong>UPDATED AT :</strong> {{system.updatedAt}}</p>
+                </div>
+                <div class="grid-item">
+                    <p><strong>System ID :</strong> {{system.id}}</p>
+                    <p><strong>Unit ID :</strong> {{system.unitId}}</p>
+                    <p><strong>CREATED AT :</strong> {{system.createdAt}}</p>
+                    <p><strong>Description :</strong> {{system.description}}</p>
+                </div>
+            </div>
+        </nz-card>
+
+        <div class="model-analysis-wrapper">
+            <div class="section-column">
+                <h2 class="col-title">Models </h2>
+                <div class="list-container">
+                    <nz-card *ngFor="let m of models" class="info-card" nzHoverable>
+                        <div class="card-top">
+                            <span class="card-name">{{m.name}}</span>
+                            <nz-tag [nzColor]="m.status === 'Active' ? 'processing' : 'error'">{{m.status}}</nz-tag>
+                        </div>
+                        <p class="card-meta">Version : <span class="blue-txt">{{m.version}}</span></p>
+                        <p class="card-desc">{{m.desc}}</p>
+                        <div class="card-footer" *ngIf="m.flow">
+                            <span nz-icon nzType="line-chart"></span> Success Rate: {{m.flow}}%
+                        </div>
+                    </nz-card>
+                    <nz-empty *ngIf="models.length === 0" nzNotFoundImage="simple"></nz-empty>
+                </div>
+            </div>
+
+            <div class="inner-divider"></div>
+
+            <div class="section-column">
+                <h2 class="col-title">Analysis </h2>
+                <div class="list-container">
+                    <nz-card *ngFor="let a of analysis" class="info-card" nzHoverable>
+                        <div class="card-top">
+                            <span class="card-name">{{a.name}}</span>
+                            <nz-tag nzColor="processing">{{a.status}}</nz-tag>
+                        </div>
+                        <p class="card-meta">Version : <span class="blue-txt">{{a.version}}</span></p>
+                        <p class="card-desc">{{a.desc}}</p>
+                    </nz-card>
+                    <nz-empty *ngIf="analysis.length === 0" nzNotFoundImage="simple"></nz-empty>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-vertical-divider"></div>
+
+    <div class="right-sidebar">
+        <div class="stats-grid">
+            <nz-card class="stat-box">
+                <span class="stat-label">Average Uptime</span>
+                <div class="stat-val green">{{system.uptime}}</div>
+            </nz-card>
+            <nz-card class="stat-box">
+                <span class="stat-label"><span class="dot red"></span> Alerts</span>
+                <div class="alert-list">
+                    <p><span class="dot red"></span> Critical : {{usage.alerts.critical}}</p>
+                    <p><span class="dot orange"></span> Warning : {{usage.alerts.warning}}</p>
+                    <p><span class="dot green"></span> Low : {{usage.alerts.low}}</p>
+                </div>
+            </nz-card>
+            <nz-card class="stat-box">
+                <span class="stat-label">Total Model</span>
+                <div class="stat-val green">{{models.length}}</div>
+            </nz-card>
+            <nz-card class="stat-box">
+                <span class="stat-label">Total Analysis</span>
+                <div class="stat-val green">{{analysis.length}}</div>
+            </nz-card>
+        </div>
+
+        <nz-divider nzText="Resource Usage" nzOrientation="center"></nz-divider>
+
+        <div class="usage-row">
+            <nz-card class="usage-card">
+                <p class="usage-title">Total Api Calls</p>
+                <p class="usage-val danger">{{usage.apiCalls | number}}</p>
+                <p class="usage-sub">vs. Monthly Limit</p>
+                <div class="circle-box">
+                    <nz-progress nzType="circle" [nzPercent]="usage.apiPercent" [nzWidth]="70"></nz-progress>
+                </div>
+            </nz-card>
+
+            <nz-card class="usage-card">
+                <p class="usage-title">Storage Usage</p>
+                <p class="usage-val success">{{usage.storage}}</p>
+                <p class="usage-sub">Cloud Data Quota</p>
+                <div class="circle-box">
+                    <nz-progress nzType="circle" [nzPercent]="usage.storagePercent" [nzWidth]="70"
+                        [nzStrokeColor]="'#52c41a'"></nz-progress>
+                </div>
+            </nz-card>
+        </div>
+
+        <nz-divider nzText="Recent Activities" nzOrientation="center"></nz-divider>
+
+        <div class="timeline">
+            <div class="timeline-item" *ngFor="let act of activities">
+                <div class="tm-time">{{act.time}}</div>
+                <div class="tm-icon" [style.background]="act.color"></div>
+                <div class="tm-content">
+                    <p class="tm-title">{{act.title}}</p>
+                    <p class="tm-sub">{{act.sub}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loader>
+    <div class="loader-wrap">
+        <nz-spin nzSimple nzSize="large" nzTip="Synchronizing System Data..."></nz-spin>
+    </div>
+</ng-template>

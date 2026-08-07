@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/v1/waves/nodes/platform",
+    "queryParameters": {
+      "applicableFor": {
+        "equalTo": "MODEL"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "node-types-model-specific.json"
+  }
+}

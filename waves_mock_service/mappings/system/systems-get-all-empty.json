@@ -1,0 +1,21 @@
+{
+  "scenarioName": "Empty System",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "No Systems",
+  "request": {
+    "method": "GET",
+    "urlPathPattern": "/api/v1/waves/units/[a-zA-Z0-9-]+/systems",
+    "queryParameters": {
+      "scenario": {
+        "equalTo": "empty"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "systems-empty-response.json"
+  }
+}

@@ -1,0 +1,695 @@
+{
+  "code": 200,
+  "message": "System details fetched successfully.",
+  "data": {
+    "systemMetadata": {
+      "id": "SYS-550e8400-e29b-41d4-a716-446655440001",
+      "unitId": "UNIT-550e8400",
+      "unitName": "Global Manufacturing Division",
+      "name": "Manufacturing Unit ABC",
+      "description": "Primary manufacturing system for digital twin modeling",
+      "type": "MANUFACTURING",
+      "status": "ACTIVE",
+      "state": "RUNNING",
+      "healthStatus": "HEALTHY",
+      "uptime": "99.8%",
+      "createdAt": "2024-01-15T10:30:00Z",
+      "updatedAt": "2024-03-20T14:45:00Z",
+      "createdBy": "USR-admin-001",
+      "createdByName": "Admin User",
+      "updatedBy": "USR-engineer-005",
+      "updatedByName": "Engineer User",
+      "lastActivityAt": "2024-04-09T11:55:00Z",
+      "isActive": true,
+      "isArchived": false
+    },
+    "configuration": {
+      "templateId": "tmp-sys-13",
+      "templateName": "Manufacturing Standard Configuration v3.2",
+      "dataManagement": {
+        "dataRetentionDays": 120,
+        "archiveRetentionDays": 365,
+        "enableRealTimeMonitoring": true,
+        "monitoringInterval": "5 minutes",
+        "dataSourceTypes": [
+          "FILE_UPLOAD",
+          "API",
+          "MQTT",
+          "OPC-UA",
+          "MODBUS"
+        ],
+        "supportedFileFormats": [
+          "CSV",
+          "XLSX",
+          "JSON",
+          "PARQUET",
+          "XML"
+        ]
+      },
+      "dataSync": {
+        "syncInterval": 500,
+        "syncIntervalUnit": "milliseconds",
+        "mode": "stream",
+        "protocol": "MQTT",
+        "endpoints": {
+          "mqtt": {
+            "url": "mqtt://mqtt-broker.cement-plant.local:1883",
+            "status": "CONNECTED",
+            "lastConnected": "2024-04-09T11:55:00Z",
+            "latency": "45ms"
+          },
+          "opcua": {
+            "url": "opc.tcp://plc-master.cement-plant.local:4840",
+            "status": "CONNECTED",
+            "lastConnected": "2024-04-09T11:55:00Z",
+            "latency": "32ms"
+          },
+          "modbus": {
+            "url": "tcp://modbus-gateway.cement-plant.local:502",
+            "status": "CONNECTED",
+            "lastConnected": "2024-04-09T11:55:00Z",
+            "latency": "55ms"
+          }
+        },
+        "activeProtocols": 3
+      },
+      "usageLimits": {
+        "maxExecutionsPerDay": 86400,
+        "executionsUsedToday": 12500,
+        "executionsPercentageUsed": 14.5,
+        "storageQuotaMB": 500000,
+        "storageUsedMB": 125000,
+        "storagePercentageUsed": 25,
+        "apiRateLimit": {
+          "requests": 10000,
+          "window": "hour",
+          "requestsUsedThisHour": 2500,
+          "percentageUsed": 25
+        },
+        "dataPointsPerSecond": {
+          "limit": 5000,
+          "current": 1250,
+          "percentageUsed": 25
+        },
+        "concurrentConnections": {
+          "limit": 500,
+          "current": 145,
+          "percentageUsed": 29
+        }
+      },
+      "dataRetention": {
+        "retentionDays": 365,
+        "archivalAfterDays": 90,
+        "fileStorageProvider": "s3",
+        "backupFrequency": "Daily",
+        "backupLocation": "Cloud (US-East)",
+        "lastBackupDate": "2024-04-09T02:00:00Z",
+        "lastBackupStatus": "SUCCESS"
+      },
+      "alerting": {
+        "alertingEnabled": true,
+        "emailNotifications": true,
+        "smsNotifications": false,
+        "inAppNotifications": true,
+        "webhookUrl": "https://alerts.company.com/webhook",
+        "webhookStatus": "CONNECTED",
+        "lastWebhookCall": "2024-04-09T11:55:00Z",
+        "alertRecipients": [
+          {
+            "email": "ops@company.com",
+            "role": "OPERATOR",
+            "alertTypes": [
+              "CRITICAL",
+              "HIGH"
+            ],
+            "isVerified": true
+          },
+          {
+            "email": "engineering@company.com",
+            "role": "ENGINEER",
+            "alertTypes": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM"
+            ],
+            "isVerified": true
+          }
+        ],
+        "alertingRules": {
+          "criticalThreshold": "Immediate",
+          "highThreshold": "Within 5 minutes",
+          "mediumThreshold": "Within 30 minutes",
+          "lowThreshold": "Daily summary"
+        },
+        "alertsSentToday": 8,
+        "alertsLastHour": 2
+      },
+      "performance": {
+        "maxConcurrentExecutions": 5,
+        "currentConcurrentExecutions": 2,
+        "executionTimeout": "3600s",
+        "queueSize": 100,
+        "currentQueueDepth": 15,
+        "averageExecutionTime": "2.5 minutes",
+        "p95ExecutionTime": "4.2 minutes",
+        "p99ExecutionTime": "5.8 minutes"
+      },
+      "monitoring": {
+        "realTimeMonitoring": true,
+        "healthCheckInterval": "60 seconds",
+        "metricsCollected": 9,
+        "customMetricsEnabled": true,
+        "customMetricsCount": 3,
+        "lastHealthCheckTime": "2024-04-09T11:55:00Z"
+      },
+      "integrations": {}
+    },
+    "systemProperties": {
+      "totalInputProperties": 4,
+      "totalOutputProperties": 4,
+      "inputProperties": [
+        {
+          "id": 1,
+          "name": "Temperature",
+          "displayName": "Temperature Sensor",
+          "description": "Ambient temperature from sensor array",
+          "dataType": "float",
+          "propertyType": "input",
+          "unit": "celsius",
+          "allowNull": false,
+          "defaultValue": null,
+          "required": true,
+          "isActive": true,
+          "precisionLevel": "±0.5°C",
+          "samplingFrequency": "Every 10 seconds",
+          "validation": {
+            "min": -50,
+            "max": 150,
+            "optimal": "20-25"
+          },
+          "dataValidationRules": {
+            "rule": "value between -50 and 150",
+            "onValidationFail": "ALERT_AND_SKIP",
+            "outlierDetection": true
+          }
+        },
+        {
+          "id": 2,
+          "name": "Vacuum",
+          "displayName": "Exhaust Vacuum Pressure",
+          "description": "Exhaust vacuum pressure reading",
+          "dataType": "float",
+          "propertyType": "input",
+          "unit": "cm Hg",
+          "allowNull": false,
+          "defaultValue": null,
+          "required": true,
+          "isActive": true,
+          "precisionLevel": "±0.1 cm Hg",
+          "samplingFrequency": "Every 5 seconds",
+          "validation": {
+            "min": 0,
+            "max": 100,
+            "optimal": "50-80"
+          },
+          "dataValidationRules": {
+            "rule": "value between 0 and 100",
+            "onValidationFail": "ALERT_IMMEDIATELY",
+            "outlierDetection": true
+          }
+        },
+        {
+          "id": 3,
+          "name": "Pressure",
+          "displayName": "Atmospheric Pressure",
+          "description": "Ambient atmospheric pressure",
+          "dataType": "float",
+          "propertyType": "input",
+          "unit": "millibar",
+          "allowNull": true,
+          "defaultValue": 1013.25,
+          "required": false,
+          "isActive": true,
+          "precisionLevel": "±0.5 mbar",
+          "samplingFrequency": "Every 15 seconds",
+          "validation": {
+            "min": 900,
+            "max": 1100,
+            "optimal": "1013"
+          }
+        },
+        {
+          "id": 5,
+          "name": "Humidity",
+          "displayName": "Relative Humidity",
+          "description": "Relative humidity percentage",
+          "dataType": "float",
+          "propertyType": "input",
+          "unit": "percent",
+          "allowNull": false,
+          "defaultValue": null,
+          "required": true,
+          "isActive": true,
+          "precisionLevel": "±2%",
+          "samplingFrequency": "Every 20 seconds",
+          "validation": {
+            "min": 0,
+            "max": 100,
+            "optimal": "40-60"
+          }
+        }
+      ],
+      "outputProperties": [
+        {
+          "id": 4,
+          "name": "PowerOutput",
+          "displayName": "Power Output",
+          "description": "Net hourly electrical energy output",
+          "dataType": "float",
+          "propertyType": "output",
+          "unit": "MW",
+          "allowNull": false,
+          "defaultValue": null,
+          "isActive": true,
+          "calculationFormula": "Sum of all generators - losses",
+          "lastUpdatedAt": "2024-04-09T11:55:00Z",
+          "validation": {
+            "min": 420,
+            "max": 500,
+            "optimal": "450-480"
+          }
+        },
+        {
+          "id": 6,
+          "name": "Efficiency",
+          "displayName": "Equipment Efficiency",
+          "description": "Overall equipment efficiency percentage",
+          "dataType": "float",
+          "propertyType": "output",
+          "unit": "percent",
+          "allowNull": true,
+          "defaultValue": null,
+          "isActive": true,
+          "lastUpdatedAt": "2024-04-09T11:55:00Z",
+          "validation": {
+            "min": 0,
+            "max": 100,
+            "optimal": "85-95"
+          }
+        },
+        {
+          "id": 7,
+          "name": "PredictedFailure",
+          "displayName": "Predicted Failure Flag",
+          "description": "Binary flag indicating potential equipment failure",
+          "dataType": "boolean",
+          "propertyType": "output",
+          "unit": null,
+          "allowNull": true,
+          "defaultValue": false,
+          "isActive": true,
+          "lastUpdatedAt": "2024-04-09T11:55:00Z",
+          "validation": {
+            "min": 0,
+            "max": 1,
+            "predictionAccuracy": "94.2%"
+          }
+        },
+        {
+          "id": 8,
+          "name": "AnomalyScore",
+          "displayName": "Anomaly Detection Score",
+          "description": "Anomaly detection confidence score",
+          "dataType": "float",
+          "propertyType": "output",
+          "unit": null,
+          "allowNull": true,
+          "defaultValue": null,
+          "isActive": true,
+          "lastUpdatedAt": "2024-04-09T11:55:00Z",
+          "validation": {
+            "min": 0,
+            "max": 1,
+            "anomalyThreshold": 0.7
+          }
+        }
+      ]
+    },
+    "models": {
+      "totalModels": 2,
+      "activePublished": 1,
+      "activeInactive": 1,
+      "runningModels": 1,
+      "modelsList": [
+        {
+          "modelId": "MDL-660e8400-e29b-41d4-a716-446655440101",
+          "name": "Production Line 1 Model",
+          "description": "Digital twin model for production line 1 monitoring",
+          "currentVersion": "2.1.0",
+          "currentState": "PUBLISHED",
+          "currentStatus": "ACTIVE",
+          "stage": "PUBLISHED",
+          "createdAt": "2024-01-20T09:00:00Z",
+          "lastModifiedAt": "2024-03-22T14:00:00Z",
+          "isActive": true,
+          "versions": [
+            {
+              "version": "2.1.0",
+              "state": "PUBLISHED",
+              "status": "ACTIVE",
+              "stage": "PUBLISHED",
+              "createdAt": "2024-03-22T11:30:00Z",
+              "changeType": "MINOR",
+              "changes": "Added anomaly detection flow",
+              "isActive": true,
+              "createdBy": "USR-engineer-005",
+              "createdByName": "Jane Engineer"
+            },
+            {
+              "version": "2.0.0",
+              "state": "PUBLISHED",
+              "status": "INACTIVE",
+              "stage": "PUBLISHED",
+              "createdAt": "2024-03-01T14:00:00Z",
+              "changeType": "MAJOR",
+              "changes": "Changed input schema - added speed property",
+              "isActive": false,
+              "createdBy": "USR-engineer-004"
+            },
+            {
+              "version": "1.5.0",
+              "state": "TESTING",
+              "status": "INACTIVE",
+              "stage": "TESTING",
+              "createdAt": "2024-02-15T09:00:00Z",
+              "changeType": "MINOR",
+              "changes": "Added new processor block",
+              "isActive": false
+            },
+            {
+              "version": "1.0.0",
+              "state": "ARCHIVED",
+              "status": "INACTIVE",
+              "stage": "ARCHIVED",
+              "createdAt": "2024-01-20T09:00:00Z",
+              "changeType": "MAJOR",
+              "changes": "Initial version",
+              "isActive": false
+            }
+          ],
+          "stats": {
+            "totalExecutions": 523,
+            "successfulExecutions": 512,
+            "failedExecutions": 11,
+            "successRate": 97.9,
+            "lastExecutedAt": "2024-04-09T11:50:00Z",
+            "averageExecutionTime": "2.5 minutes"
+          },
+          "currentExecution": {
+            "executionId": "EXEC-MDL-001-523",
+            "startTime": "2024-04-09T11:00:00Z",
+            "status": "RUNNING",
+            "progress": 85,
+            "estimatedCompletionTime": "2024-04-09T11:02:30Z",
+            "elapsedTime": "2 minutes 30 seconds"
+          }
+        },
+        {
+          "modelId": "MDL-660e8400-e29b-41d4-a716-446655440102",
+          "name": "Equipment Health Model",
+          "description": "Predictive maintenance model for equipment health",
+          "currentVersion": "1.5.2",
+          "currentState": "DEPLOYMENT",
+          "currentStatus": "INACTIVE",
+          "stage": "DEPLOYMENT",
+          "createdAt": "2024-02-01T09:00:00Z",
+          "lastModifiedAt": "2024-03-10T16:00:00Z",
+          "isActive": false,
+          "versions": [
+            {
+              "version": "1.5.2",
+              "state": "DEPLOYMENT",
+              "status": "INACTIVE",
+              "stage": "DEPLOYMENT",
+              "createdAt": "2024-03-10T16:00:00Z",
+              "changeType": "PATCH",
+              "changes": "UI layout improvements",
+              "isActive": true
+            },
+            {
+              "version": "1.5.0",
+              "state": "PUBLISHED",
+              "status": "INACTIVE",
+              "stage": "PUBLISHED",
+              "createdAt": "2024-02-28T10:00:00Z",
+              "changeType": "MINOR",
+              "changes": "Enhanced prediction accuracy",
+              "isActive": false
+            },
+            {
+              "version": "1.0.0",
+              "state": "ARCHIVED",
+              "status": "INACTIVE",
+              "stage": "ARCHIVED",
+              "createdAt": "2024-02-01T09:00:00Z",
+              "changeType": "MAJOR",
+              "changes": "Initial version",
+              "isActive": false
+            }
+          ],
+          "stats": {
+            "totalExecutions": 350,
+            "successfulExecutions": 340,
+            "failedExecutions": 10,
+            "successRate": 97.1,
+            "lastExecutedAt": "2024-04-08T06:20:00Z",
+            "averageExecutionTime": "1.8 minutes"
+          },
+          "currentExecution": null
+        }
+      ]
+    },
+    "analyses": {
+      "totalAnalyses": 1,
+      "activePublished": 1,
+      "runningAnalyses": 0,
+      "analysesList": [
+        {
+          "analysisId": "ANL-770e8400-e29b-41d4-a716-446655440201",
+          "name": "Monthly Production Analysis",
+          "description": "Comprehensive monthly analysis of production metrics",
+          "currentVersion": "1.2.0",
+          "currentState": "PUBLISHED",
+          "currentStatus": "ACTIVE",
+          "stage": "PUBLISHED",
+          "createdAt": "2024-01-25T10:00:00Z",
+          "lastModifiedAt": "2024-04-01T14:00:00Z",
+          "isActive": true,
+          "versions": [
+            {
+              "version": "1.2.0",
+              "state": "PUBLISHED",
+              "status": "ACTIVE",
+              "stage": "PUBLISHED",
+              "createdAt": "2024-04-01T14:00:00Z",
+              "changeType": "MINOR",
+              "changes": "Enhanced visualization",
+              "isActive": true
+            },
+            {
+              "version": "1.0.0",
+              "state": "PUBLISHED",
+              "status": "INACTIVE",
+              "stage": "PUBLISHED",
+              "createdAt": "2024-01-25T10:00:00Z",
+              "changeType": "MAJOR",
+              "changes": "Initial version",
+              "isActive": false
+            }
+          ],
+          "stats": {
+            "totalExecutions": 1250,
+            "successfulExecutions": 1235,
+            "failedExecutions": 15,
+            "successRate": 98.8,
+            "lastExecutedAt": "2024-04-09T11:45:00Z",
+            "averageExecutionTime": "5.2 minutes"
+          },
+          "schedule": {
+            "isScheduled": true,
+            "frequency": "Monthly",
+            "nextScheduledRun": "2024-05-09T10:00:00Z"
+          },
+          "currentExecution": null
+        }
+      ]
+    },
+    "usageStats": {
+      "currentMonth": "April 2024",
+      "api": {
+        "totalCalls": 2500000,
+        "limit": 10000000,
+        "percentageUsed": 25,
+        "averageCallsPerDay": 312500,
+        "peakCallsInADay": 450000,
+        "peakCallsDate": "2024-04-05"
+      },
+      "dataStorage": {
+        "used": 1250,
+        "limit": 5000,
+        "unit": "GB",
+        "percentageUsed": 25
+      },
+      "executions": {
+        "modelExecutions": {
+          "total": 5400,
+          "successful": 5250,
+          "failed": 100,
+          "running": 50,
+          "successRate": 97.22
+        },
+        "analysisExecutions": {
+          "total": 2800,
+          "successful": 2750,
+          "failed": 40,
+          "running": 10,
+          "successRate": 98.21
+        }
+      },
+      "systemHealth": {
+        "averageUptime": 99.8,
+        "averageResponseTime": "245ms",
+        "errorRate": 0.15,
+        "warningCount": 3
+      }
+    },
+    "activityLogs": {
+      "totalActivities": 150,
+      "pagination": {
+        "page": 1,
+        "pageSize": 20,
+        "total": 150,
+        "hasMore": true
+      },
+      "activitiesList": [
+        {
+          "activityId": "ACT-001",
+          "timestamp": "2024-04-09T11:55:00Z",
+          "type": "EXECUTION",
+          "action": "Model execution completed",
+          "entityType": "MODEL",
+          "entityId": "MDL-660e8400-e29b-41d4-a716-446655440101",
+          "entityName": "Production Line 1 Model",
+          "user": "USR-operator-010",
+          "userName": "Mike Operator",
+          "severity": "INFO",
+          "status": "SUCCESS",
+          "details": {
+            "executionId": "EXEC-MDL-001-523",
+            "duration": "2 minutes 30 seconds",
+            "version": "2.1.0"
+          }
+        },
+        {
+          "activityId": "ACT-002",
+          "timestamp": "2024-04-09T11:50:00Z",
+          "type": "ALERT",
+          "action": "Quality defect rate alert triggered",
+          "entityType": "SYSTEM",
+          "entityId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+          "entityName": "Manufacturing Unit ABC",
+          "user": "SYSTEM",
+          "severity": "HIGH",
+          "status": "ACTIVE",
+          "details": {
+            "alertType": "QUALITY_THRESHOLD",
+            "currentValue": 2.1,
+            "threshold": "2%"
+          }
+        },
+        {
+          "activityId": "ACT-003",
+          "timestamp": "2024-04-09T11:45:00Z",
+          "type": "CONFIGURATION",
+          "action": "System configuration updated",
+          "entityType": "SYSTEM",
+          "entityId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+          "entityName": "Manufacturing Unit ABC",
+          "user": "USR-engineer-005",
+          "userName": "Jane Engineer",
+          "severity": "MEDIUM",
+          "status": "SUCCESS",
+          "details": {
+            "changes": [
+              {
+                "field": "monitoringInterval",
+                "oldValue": "5 minutes",
+                "newValue": "2 minutes"
+              }
+            ]
+          }
+        },
+        {
+          "activityId": "ACT-004",
+          "timestamp": "2024-04-09T11:40:00Z",
+          "type": "MODIFICATION",
+          "action": "Model version deployed",
+          "entityType": "MODEL",
+          "entityId": "MDL-660e8400-e29b-41d4-a716-446655440101",
+          "entityName": "Production Line 1 Model",
+          "user": "USR-engineer-005",
+          "userName": "Jane Engineer",
+          "severity": "MEDIUM",
+          "status": "SUCCESS",
+          "details": {
+            "deployedVersion": "2.1.0",
+            "previousVersion": "2.0.0",
+            "changeType": "MINOR"
+          }
+        },
+        {
+          "activityId": "ACT-005",
+          "timestamp": "2024-04-09T11:30:00Z",
+          "type": "ERROR",
+          "action": "Data validation failed",
+          "entityType": "SYSTEM",
+          "entityId": "SYS-550e8400-e29b-41d4-a716-446655440001",
+          "entityName": "Manufacturing Unit ABC",
+          "user": "SYSTEM",
+          "severity": "CRITICAL",
+          "status": "RESOLVED",
+          "details": {
+            "errorType": "DATA_VALIDATION",
+            "failureReason": "Temperature value out of range",
+            "invalidValue": 155,
+            "validRange": "[-50, 150]",
+            "resolvedAt": "2024-04-09T11:32:00Z"
+          }
+        }
+      ],
+      "activitySummary": {
+        "today": {
+          "executions": 45,
+          "alerts": 8,
+          "modifications": 3,
+          "errors": 2
+        },
+        "thisWeek": {
+          "executions": 280,
+          "alerts": 35,
+          "modifications": 12,
+          "errors": 5
+        }
+      }
+    }
+  },
+  "metadata": {
+    "requestDuration": "456ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "dataFreshness": "Real-time",
+    "lastUpdated": "2024-04-09T11:55:00Z"
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

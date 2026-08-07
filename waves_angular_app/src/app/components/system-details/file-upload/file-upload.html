@@ -1,0 +1,255 @@
+<div class="page-container">
+    <div class="main-layout">
+
+        <!-- LEFT PANEL -->
+        <div class="left-panel">
+            <!-- Tabs Switcher -->
+            <div class="tabs-header">
+                <button class="tab-btn" [class.active]="activeTab() === 'model'" (click)="setActiveTab('model')">
+                    Model
+                </button>
+                <button class="tab-btn" [class.active]="activeTab() === 'analysis'" (click)="setActiveTab('analysis')">
+                    Analysis
+                </button>
+            </div>
+
+            <!-- Analysis Dropdown -->
+            @if (activeTab() === 'analysis') {
+            <div class="analysis-select-box">
+                <label class="select-label">Choose Analysis</label>
+                <nz-select [ngModel]="selectedAnalysis()" (ngModelChange)="onAnalysisChange($event)" class="full-width">
+                    @for (key of analysisKeys; track key) {
+                    <nz-option [nzValue]="key" [nzLabel]="key"></nz-option>
+                    }
+                </nz-select>
+            </div>
+            }
+
+            <!-- File History -->
+            <div class="history-list-scroll">
+                @for (group of activeFileGroups(); track group.date) {
+                <div class="date-group">
+                    <div class="date-header">{{ group.date }}</div>
+                    @for (file of group.files; track file.id) {
+                    <div class="file-card" [class.selected]="selectedFile()?.id === file.id" (click)="selectFile(file)">
+                        <div class="file-card-top">
+                            <div class="excel-badge">X</div>
+                            <div class="file-info">
+                                <span class="file-name">{{ file.name }}</span>
+                                <span class="file-size">{{ file.size }}</span>
+                            </div>
+                        </div>
+                        <div class="file-status-wrapper">
+                            <span class="status-badge" [class.pending]="file.status === 'pending'"
+                                [class.completed]="file.status === 'completed'"
+                                [class.processing]="file.status === 'processing'">
+                                {{ file.status | titlecase }}
+                            </span>
+                        </div>
+                    </div>
+                    }
+                </div>
+                }
+            </div>
+
+            <!-- Footer Upload Button -->
+            <div class="left-panel-footer">
+                <nz-upload [nzBeforeUpload]="handleFileUpload" [nzShowUploadList]="false" class="full-width">
+                    <button nz-button nzType="default" class="upload-btn-full">
+                        <span nz-icon nzType="upload"></span> Upload File
+                    </button>
+                </nz-upload>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL WORKFLOW -->
+        <div class="right-panel">
+
+            <!-- STEP 1: DATA OVERVIEW -->
+            @if (workflowStep() === 1) {
+            <div class="workflow-card">
+                <div class="section-title-bar">
+                    <h3 class="step-title">Data Overview</h3>
+                </div>
+
+                <div class="table-toolbar">
+                    <div class="metrics-bar">
+                        <span class="metric-tag null-tag">Null Values: <strong>{{ nullCount() }}</strong></span>
+                        <span class="metric-tag empty-tag">Empty Cells: <strong>{{ emptyCount() }}</strong></span>
+                        <span class="metric-tag col-count-tag">Total Columns: <strong>{{ tableColumns().length + 1
+                                }}</strong></span>
+                        <span class="file-name-label">File: <strong>{{ selectedFile()?.name || 'None' }}</strong></span>
+                    </div>
+
+                    <div class="table-actions-btns">
+                        <button nz-button nzType="default" nzSize="small" (click)="addNewColumn()">+ Add Column</button>
+                        <button nz-button nzType="default" nzSize="small" (click)="addNewRow()">+ Add Row</button>
+                        <button nz-button nzType="default" nzSize="small" (click)="resetToOriginal()">Reset
+                            Data</button>
+                    </div>
+                </div>
+
+                <div class="table-scroll-container">
+                    <table class="custom-data-table">
+                        <thead>
+                            <tr>
+                                <th class="sticky-left-header">Index (File)</th>
+                                @for (col of tableColumns(); track $index; let cIndex = $index) {
+                                <th>
+                                    <div class="th-content">
+                                        <input type="text" class="col-header-input" [value]="col"
+                                            (change)="updateColumnName(cIndex, $event)" />
+                                        <button class="btn-icon-delete" (click)="dropColumn(cIndex)">&times;</button>
+                                    </div>
+                                </th>
+                                }
+                                <th class="sticky-right-header">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (row of tableData(); track $index; let rIndex = $index) {
+                            <tr>
+                                <td class="sticky-left-cell">{{ row['index'] }}</td>
+                                @for (col of tableColumns(); track col) {
+                                <td [class.invalid-cell-border]="isInvalidCell(row[col])">
+                                    <input type="text" class="cell-input" [(ngModel)]="row[col]" />
+                                </td>
+                                }
+                                <td class="sticky-right-cell">
+                                    <button class="btn-row-delete" (click)="deleteRow(rIndex)">
+                                        <span nz-icon nzType="delete"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="workflow-footer flex-end">
+                    <button nz-button nzType="primary" (click)="nextStep()" [disabled]="!selectedFile()">Next</button>
+                </div>
+            </div>
+            }
+
+            STEP 2: COLUMN MAPPING
+            @if (workflowStep() === 2) {
+            <div class="workflow-card">
+                <div class="section-title-bar">
+                    <h3 class="step-title">Column Mapping</h3>
+                </div>
+
+                <div class="mapping-wrapper-center">
+                    <div class="mapping-grid">
+                        <div class="mapping-header-labels">
+                            <span>Data Column</span>
+                            <span>System Schema</span>
+                        </div>
+
+                        @for (item of mappingItems(); track item.sourceColumn) {
+                        <div class="mapping-row-wrapper">
+                            <div class="mapping-row">
+                                <!-- Source Data Column Box -->
+                                <div class="mapping-box source-box" [class.warning-box]="item.columnMismatch">
+                                    <span class="source-name">{{ item.sourceColumn }}</span>
+                                    <span class="type-badge"
+                                        [class.type-num]="item.detectedType === 'Numeric' || item.detectedType === 'Decimal'">
+                                        {{ item.detectedType }}
+                                    </span>
+                                </div>
+
+                                <!-- Target Schema Dropdown (All system schemas remain visible here) -->
+                                <div class="mapping-box target-box"
+                                    [class.mismatch-border]="item.typeMismatch || item.columnMismatch">
+                                    <nz-select class="nz-schema-select" [ngModel]="item.targetSchema"
+                                        (ngModelChange)="updateMapping(item.sourceColumn, $event)"
+                                        nzPlaceHolder="Select Schema">
+                                        @for (schema of availableSchemas; track schema.value) {
+                                        <nz-option [nzValue]="schema.value" [nzLabel]="schema.label"></nz-option>
+                                        }
+                                    </nz-select>
+                                </div>
+                            </div>
+
+                            <!-- Mismatch Warning Messages -->
+                            @if (item.columnMismatch) {
+                            <div class="mismatch-warning-below">
+                                Column mismatch
+                            </div>
+                            }
+                            @if (item.typeMismatch && !item.columnMismatch) {
+                            <div class="mismatch-warning-below">
+                                Type mismatch
+                            </div>
+                            }
+                        </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="workflow-footer flex-between">
+                    <button nz-button nzType="primary" (click)="prevStep()">Back</button>
+                    <button nz-button nzType="primary" (click)="nextStep()">Next</button>
+                </div>
+            </div>
+            }
+
+            <!-- STEP 3: RUN MODEL (FIXED REALTIME PROGRESS) -->
+            @if (workflowStep() === 3) {
+            <div class="workflow-card">
+                <div class="section-title-bar">
+                    <h3 class="step-title">Run Model</h3>
+                </div>
+
+                <div class="run-model-container">
+                    <nz-progress nzType="circle" [nzPercent]="modelProgress()" [nzWidth]="140"></nz-progress>
+
+                    <div class="model-meta-info">
+                        <p><strong>Model:</strong> Manufacturing Unit ABC Pipeline</p>
+                        <p><strong>System ID:</strong> {{ selectedFile()?.id || 'N/A' }}</p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span class="status-pill">{{ (isModelRunning() ? 'processing' : selectedFile()?.status) |
+                                titlecase }}</span>
+                        </p>
+                    </div>
+
+                    <button nz-button nzType="primary" (click)="startModelRun()" [nzLoading]="isModelRunning()">
+                        {{ modelProgress() === 100 ? 'Re-run Model' : 'Run Model' }}
+                    </button>
+                </div>
+
+                <div class="workflow-footer flex-between">
+                    <button nz-button nzType="primary" (click)="prevStep()">Back</button>
+                    <button nz-button nzType="primary" (click)="nextStep()" [disabled]="modelProgress() < 100">
+                        Next
+                    </button>
+                </div>
+            </div>
+            }
+
+            <!-- STEP 4: RESULT VIEW -->
+            @if (workflowStep() === 4) {
+            <div class="workflow-card">
+                <div class="section-title-bar">
+                    <h3 class="step-title">Result</h3>
+                </div>
+
+                <div class="result-json-wrapper">
+                    <pre class="json-display"><code>{{ jsonResultFormatted() }}</code></pre>
+                </div>
+
+                <div class="workflow-footer flex-between">
+                    <button nz-button nzType="primary" (click)="prevStep()">Back</button>
+                    <div class="action-btn-group">
+                        <button nz-button nzType="default" class="btn-retry"
+                            (click)="workflowStep.set(3)">Retry</button>
+                        <button nz-button nzType="primary" (click)="saveToResultDB()">Save to Result DB</button>
+                    </div>
+                </div>
+            </div>
+            }
+
+        </div>
+    </div>
+</div>

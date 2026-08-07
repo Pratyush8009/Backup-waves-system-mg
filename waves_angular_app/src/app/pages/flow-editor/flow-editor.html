@@ -1,0 +1,131 @@
+<div class="page-container">
+    <div class="left-panel">
+        <div class="title">
+            <h3>Flow Editor</h3>
+            <nz-divider />
+        </div>
+
+        <nz-splitter nzLayout="vertical">
+            <nz-splitter-panel [nzSize]="'35%'">
+                <div class="flows-header">
+                    <div class="flows-title">Flows</div>
+                    <div class="flows-actions">
+                        <nz-icon nzType="plus" nzTheme="outline" class="header-icon"></nz-icon>
+                        <nz-icon nzType="reload" nzTheme="outline" class="header-icon"
+                            (click)="loadBlockFlows()"></nz-icon>
+                    </div>
+                </div>
+
+                <div class="flows-search">
+                    <input nz-input placeholder="Search flows..." />
+                </div>
+
+                <nz-divider />
+
+                <div class="flows-list-container">
+                    <div *ngIf="isLoadingFlows" class="loading-container">
+                        <nz-spin nzSimple nzTip="Fetching flows..."></nz-spin>
+                    </div>
+
+                    <ng-container *ngIf="!isLoadingFlows">
+                        <div class="saved-flow" [class.active-flow]="activeFlowId === flow.id"
+                            *ngFor="let flow of savedFlows" (click)="loadSavedFlow(flow)">
+                            <nz-icon nzType="partition" nzTheme="outline" />
+                            <span
+                                style="margin-left: 8px; flex: 1; overflow: hidden; text-overflow: ellipsis;">{{flow.name}}</span>
+                            <nz-icon nzType="delete" nzTheme="outline" (click)="deleteFlow($event, flow.id)"
+                                class="flow-delete-icon" />
+                        </div>
+
+                        <nz-empty *ngIf="savedFlows.length === 0" nzNotFoundImage="simple"
+                            nzNotFoundContent="No flows found for this block">
+                        </nz-empty>
+                    </ng-container>
+                </div>
+
+            </nz-splitter-panel>
+
+            <nz-splitter-panel>
+                <nz-collapse>
+                    <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
+                        <div class="nodes">
+                            <div *ngFor="let node of panel.nodes" class="library-node"
+                                [style.background-color]="node.uiLayout.color" draggable="true"
+                                (dragstart)="onDragStart($event, node)">
+
+                                <ng-container *ngFor="let port of node.ports">
+                                    <span
+                                        [ngClass]="{'endpoint': true, 'left': port.portType === 'INPUT', 'right': port.portType === 'OUTPUT'}"></span>
+                                </ng-container>
+
+                                <div class="lib-node-content">
+                                    <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"></nz-icon>
+                                    <span style="margin-left: 8px;">{{ node.name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </nz-collapse-panel>
+                </nz-collapse>
+            </nz-splitter-panel>
+        </nz-splitter>
+    </div>
+
+    <nz-splitter nzLayout="vertical" class="main-splitter">
+        <nz-splitter-panel nzMin="20%" [nzCollapsible]="true">
+            <div class="center-panel" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+                <div class="top-bar">
+                    <nz-breadcrumb>
+                        <nz-breadcrumb-item>
+                            <nz-select [(ngModel)]="selectedBlockId" (ngModelChange)="onBlockChange($event)"
+                                style="width: 220px;">
+                                <nz-option *ngFor="let b of blocks" [nzLabel]="b.label" [nzValue]="b.value"></nz-option>
+                            </nz-select>
+                        </nz-breadcrumb-item>
+                        <!-- <nz-breadcrumb-item>Flow Canvas</nz-breadcrumb-item> -->
+                    </nz-breadcrumb>
+
+                    <div class="controlles">
+                        <button nz-button nzType="primary" (click)="saveCurrentFlow()">
+                            <nz-icon nzType="save"></nz-icon> Save
+                        </button>
+                        <div class="screen-mode" (click)="toggleFullscreen()" nz-tooltip
+                            nzTooltipTitle="Toggle Fullscreen">
+                            <nz-icon [nzType]="isFullscreen ? 'fullscreen-exit' : 'fullscreen'" />
+                        </div>
+                    </div>
+                </div>
+
+                <div #container class="canvas">
+                    <div *ngIf="!activeFlowId && flowNodes.length === 0" class="canvas-hint">
+                        <nz-empty nzNotFoundContent="Select a flow from the left or drag nodes here"></nz-empty>
+                    </div>
+
+                    <div *ngFor="let node of flowNodes" [id]="node.instanceId || node.id" class="block-instance-node"
+                        [style.left.px]="node.uiLayout.canvasX" [style.top.px]="node.uiLayout.canvasY"
+                        [style.width.px]="node.uiLayout.canvasWidth" [style.height.px]="node.uiLayout.canvasHeight"
+                        [style.background-color]="node.uiLayout.color" (contextmenu)="openContextMenu($event, node)"
+                        (click)="selectNode(node)">
+
+                        <div class="name-icon">
+                            <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"></nz-icon>
+                            <span>{{ node.name }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nz-splitter-panel>
+    </nz-splitter>
+
+    <div class="right-panel">
+        <app-flow-config-panel [selectedNode]="selectedNode"></app-flow-config-panel>
+    </div>
+
+    <div class="context-menu" *ngIf="isContextMenuVisible" [style.top.px]="contextMenuPosition.y"
+        [style.left.px]="contextMenuPosition.x">
+        <div class="menu-item delete" (click)="deleteNode()">
+            <nz-icon nzType="delete" style="margin-right: 8px;"></nz-icon> Delete
+        </div>
+    </div>
+</div>
+
+<!-- <p class="flow-debug">{{showFlow}}</p> -->

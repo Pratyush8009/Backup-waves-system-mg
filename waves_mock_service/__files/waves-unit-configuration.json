@@ -1,0 +1,278 @@
+{
+  "code": 200,
+  "message": "Unit details retrieved successfully",
+  "data": {
+    "unitMetadata": {
+      "unitId": "UNIT-001",
+      "name": "Global Manufacturing Division",
+      "type": "MANUFACTURING",
+      "description": "Primary manufacturing operations division",
+      "location": "Plant A, Bengaluru, India",
+      "state": "ACTIVE",
+      "status": "ACTIVE",
+      "clientId": "CLIENT-550e8400-e29b-41d4-a716-446655440001",
+      "clientName": "Acme Manufacturing Corp",
+      "clientEmail": "admin@acmemfg.com",
+      "createdAt": "2024-01-15T10:00:00Z",
+      "createdBy": "USR-support-001",
+      "createdByName": "Support Agent Smith",
+      "updatedAt": "2024-04-09T10:30:00Z",
+      "updatedBy": "USR-support-005",
+      "updatedByName": "Support Agent Johnson",
+      "lastActivityAt": "2024-04-09T11:50:00Z",
+      "isActive": true,
+      "isArchived": false
+    },
+    "configuration": {
+      "alerting": {
+        "emailAlerts": {
+          "enabled": true,
+          "recipients": [
+            {
+              "recipientId": "ALERT-001",
+              "email": "admin@acmemfg.com",
+              "role": "ADMIN",
+              "name": "John Manager",
+              "alertTypes": [
+                "CRITICAL",
+                "HIGH",
+                "MEDIUM"
+              ],
+              "isActive": true,
+              "addedAt": "2024-01-15T10:00:00Z",
+              "verificationStatus": "VERIFIED"
+            },
+            {
+              "recipientId": "ALERT-002",
+              "email": "ops@acmemfg.com",
+              "role": "OPERATOR",
+              "name": "Ops Team",
+              "alertTypes": [
+                "CRITICAL",
+                "HIGH"
+              ],
+              "isActive": true,
+              "addedAt": "2024-01-16T09:00:00Z",
+              "verificationStatus": "VERIFIED"
+            }
+          ],
+          "frequency": "Real-time for CRITICAL, Daily digest for others",
+          "retryAttempts": 3,
+          "retryIntervalMinutes": 5
+        },
+        "mobileAlerts": {
+          "enabled": true,
+          "pushNotificationEnabled": true,
+          "smsAlerts": {
+            "enabled": true,
+            "recipients": [
+              {
+                "recipientId": "SMS-001",
+                "phoneNumber": "+1-313-555-0100",
+                "name": "John Manager",
+                "alertTypes": [
+                  "CRITICAL"
+                ],
+                "isActive": true,
+                "timeWindow": "24x7"
+              }
+            ]
+          },
+          "appNotifications": {
+            "enabled": true,
+            "alertTypes": [
+              "CRITICAL",
+              "HIGH",
+              "MEDIUM"
+            ]
+          }
+        },
+        "inAppAlerts": {
+          "enabled": true,
+          "alertTypes": [
+            "CRITICAL",
+            "HIGH",
+            "MEDIUM",
+            "LOW",
+            "INFO"
+          ],
+          "notificationCenter": true,
+          "unreadAlertCount": 5,
+          "alertsSince24Hours": 12,
+          "soundEnabled": true,
+          "desktopNotifications": true
+        },
+        "quietHours": {
+          "enabled": false,
+          "startTime": "22:00",
+          "endTime": "06:00",
+          "allowCriticalOnly": true
+        }
+      },
+      "usageLimit": {
+        "enabled": true,
+        "limits": {
+          "monthlyApiCalls": {
+            "limit": 10000000,
+            "used": 2500000,
+            "percentageUsed": 25,
+            "alertThreshold": 8000000,
+            "softLimit": true,
+            "hardLimit": false,
+            "alertsTriggered": 0
+          },
+          "monthlyDataIngestion": {
+            "limitGB": 1000,
+            "usedGB": 250,
+            "percentageUsed": 25,
+            "alertThresholdGB": 800,
+            "softLimit": true,
+            "hardLimit": false
+          },
+          "concurrentConnections": {
+            "limit": 500,
+            "current": 145,
+            "percentageUsed": 29,
+            "peak": 325,
+            "alertThreshold": 400,
+            "softLimit": true,
+            "hardLimit": true
+          },
+          "maxSystems": {
+            "limit": 50,
+            "used": 12,
+            "percentageUsed": 24,
+            "hardLimit": true
+          },
+          "maxModels": {
+            "limit": 200,
+            "used": 45,
+            "percentageUsed": 22.5,
+            "hardLimit": true
+          },
+          "maxAnalyses": {
+            "limit": 100,
+            "used": 28,
+            "percentageUsed": 28,
+            "hardLimit": true
+          },
+          "maxUsers": {
+            "limit": 100,
+            "used": 35,
+            "percentageUsed": 35,
+            "hardLimit": true
+          },
+          "storageGB": {
+            "limit": 5000,
+            "usedGB": 1250,
+            "percentageUsed": 25,
+            "alertThresholdGB": 3750,
+            "softLimit": true,
+            "hardLimit": false
+          }
+        },
+        "overage": {
+          "allowOverage": true,
+          "currentOveragePercentage": 0,
+          "maxOveragePercentage": 20,
+          "overageChargePerUnit": 0.01,
+          "totalOverageCharges": 0,
+          "overageNotification": "Monthly invoice"
+        },
+        "resetPolicy": {
+          "resetFrequency": "Monthly",
+          "resetDay": "First day of month",
+          "resetTime": "00:00 UTC",
+          "lastResetDate": "2024-04-01T00:00:00Z",
+          "nextResetDate": "2024-05-01T00:00:00Z"
+        }
+      },
+      "template": {
+        "templateId": "TEMPLATE-MANUFACTURING-STANDARD-001",
+        "templateName": "Manufacturing Standard Configuration",
+        "templateVersion": "3.2.1",
+        "appliedAt": "2024-01-15T10:00:00Z",
+        "preConfiguredElements": {
+          "systemCount": 2,
+          "systems": [
+            {
+              "systemId": "SYS-PROD-001",
+              "systemName": "Production Line 1",
+              "systemType": "PRODUCTION",
+              "status": "ACTIVE"
+            },
+            {
+              "systemId": "SYS-TEST-001",
+              "systemName": "Quality Testing Lab",
+              "systemType": "TESTING",
+              "status": "ACTIVE"
+            }
+          ],
+          "modelCount": 1,
+          "dashboardCount": 2
+        }
+      },
+      "operatingConfiguration": {
+        "businessHours": {
+          "timezone": "America/Detroit",
+          "weekdayStart": "06:00",
+          "weekdayEnd": "22:00",
+          "weekendStart": "08:00",
+          "weekendEnd": "18:00",
+          "holidays": [
+            "2024-12-25",
+            "2025-01-01"
+          ]
+        },
+        "maintenanceWindow": {
+          "enabled": true,
+          "day": "Sunday",
+          "startTime": "02:00",
+          "endTime": "04:00",
+          "timezone": "UTC",
+          "notificationAdvanceHours": 24,
+          "lastMaintenance": "2024-04-07T02:00:00Z",
+          "nextMaintenance": "2024-04-14T02:00:00Z"
+        },
+        "dataRetention": {
+          "operationalData": 180,
+          "analyticalData": 365,
+          "archiveData": 2555,
+          "auditLogs": 2555,
+          "deletionPolicy": "Soft delete then archive"
+        },
+        "backup": {
+          "backupFrequency": "Daily",
+          "backupTime": "02:00 UTC",
+          "backupLocation": "Cloud (US-East)",
+          "backupRetentionCopies": 30,
+          "testRestoreFrequency": "Monthly",
+          "lastBackupDate": "2024-04-09T02:00:00Z",
+          "nextBackupDate": "2024-04-10T02:00:00Z",
+          "lastBackupStatus": "SUCCESS",
+          "lastRestoreTestDate": "2024-04-08T10:00:00Z",
+          "lastRestoreTestStatus": "SUCCESS"
+        }
+      },
+      "monitoring": {
+        "realTimeMonitoring": true,
+        "monitoringFrequency": "Every 5 minutes",
+        "healthCheckInterval": "Every 60 seconds",
+        "metricsCollected": 9,
+        "customMetricsEnabled": true,
+        "customMetricsCount": 3,
+        "systemHealthStatus": "HEALTHY",
+        "lastHealthCheckTime": "2024-04-09T11:55:00Z"
+      }
+    }
+  },
+  "metadata": {
+    "requestDuration": "245ms",
+    "cacheHit": false,
+    "currentUtilization": 72.3,
+    "lastUpdated": "2024-04-09T11:55:00Z",
+    "dataFreshness": "Real-time"
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00002",
+  "timestamp": "2024-04-09T12:00:00Z"
+}

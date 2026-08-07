@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/api/v1/waves/unit/[a-zA-Z0-9-]+system/[a-zA-Z0-9-]+/analyses/[a-zA-Z0-9-]+/execute"
+  },
+  "response": {
+    "status": 202,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "bodyFileName": "execute-analysis-pipeline-response.json"
+  }
+}

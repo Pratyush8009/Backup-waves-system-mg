@@ -1,0 +1,191 @@
+<div class="config-container">
+    <nz-card nzTitle="Choose Template" class="section-card">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="12">
+                <nz-form-item>
+                    <nz-form-label nzNoColon>Active Configuration Template</nz-form-label>
+                    <nz-form-control>
+                        <nz-select [formControl]="$any(configForm).get('template')">
+                            <nz-option nzValue="TEMPLATE-MANUFACTURING-STANDARD-001"
+                                nzLabel="Standard Mfg v3.2.1"></nz-option>
+                            <nz-option nzValue="TEMPLATE-LAB-002" nzLabel="Lab Testing v1.0.0"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+        </div>
+    </nz-card>
+
+    <form nz-form [formGroup]="configForm" nzLayout="vertical">
+
+        <nz-card nzTitle="1. Data Management & Retention" class="section-card">
+            <div formGroupName="dataManagement">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label>Operational Data (Days)</nz-form-label>
+                            <nz-input-number formControlName="operationalData" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label>Archive Retention (Days)</nz-form-label>
+                            <nz-input-number formControlName="analyticalData" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label>Monitoring Frequency</nz-form-label>
+                            <nz-select formControlName="monitoringFrequency">
+                                <nz-option nzValue="Every 1 minute" nzLabel="Every 1 minute"></nz-option>
+                                <nz-option nzValue="Every 5 minutes" nzLabel="Every 5 minutes"></nz-option>
+                            </nz-select>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Deletion Policy</nz-form-label>
+                            <input nz-input formControlName="deletionPolicy" readonly />
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Backup Location</nz-form-label>
+                            <input nz-input formControlName="backupLocation" placeholder="Enter cloud path" />
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="2. Alerting & Notifications" class="section-card">
+            <div formGroupName="alerting">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label>Email Alerts</nz-form-label>
+                            <nz-switch formControlName="emailEnabled"></nz-switch>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="4">
+                        <nz-form-item>
+                            <nz-form-label>App Notification</nz-form-label>
+                            <nz-switch formControlName="inAppEnabled"></nz-switch>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label>Retry Attempts</nz-form-label>
+                            <nz-input-number formControlName="retryAttempts" [nzMin]="1"
+                                class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="8">
+                        <nz-form-item>
+                            <nz-form-label>Retry Interval (Min)</nz-form-label>
+                            <nz-input-number formControlName="retryInterval" [nzMin]="1"
+                                class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="3. Usage Limits & Quotas" class="section-card">
+            <div formGroupName="usage">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Monthly API Call Limit</nz-form-label>
+                            <nz-input-number formControlName="apiLimit" class="w-100" [nzFormatter]="formatterNumber"
+                                [nzParser]="parserNumber">
+                            </nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="12">
+                        <nz-form-item>
+                            <nz-form-label>Monthly Data Ingestion (GB)</nz-form-label>
+                            <nz-input-number formControlName="dataIngestion" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div nz-row [nzGutter]="24" class="m-t-15">
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Max Systems</nz-form-label>
+                            <nz-input-number formControlName="maxSystems" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Max Models</nz-form-label>
+                            <nz-input-number formControlName="maxModels" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Max Users</nz-form-label>
+                            <nz-input-number formControlName="maxUsers" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Storage Cap (GB)</nz-form-label>
+                            <nz-input-number formControlName="storageGB" class="w-100"></nz-input-number>
+                        </nz-form-item>
+                    </div>
+                </div>
+
+                <div class="overage-info">
+                    <span>Allow resource overage? (Subject to <strong>$0.01</strong> charge per unit)</span>
+                    <nz-switch formControlName="allowOverage"></nz-switch>
+                </div>
+            </div>
+        </nz-card>
+
+        <nz-card nzTitle="4. Maintenance Window" class="section-card">
+            <div formGroupName="maintenance">
+                <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Active Day</nz-form-label>
+                            <nz-select formControlName="day">
+                                <nz-option nzValue="Sunday" nzLabel="Sunday"></nz-option>
+                                <nz-option nzValue="Saturday" nzLabel="Saturday"></nz-option>
+                            </nz-select>
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Start Time</nz-form-label>
+                            <input nz-input type="time" formControlName="startTime" />
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>End Time</nz-form-label>
+                            <input nz-input type="time" formControlName="endTime" />
+                        </nz-form-item>
+                    </div>
+                    <div nz-col [nzSpan]="6">
+                        <nz-form-item>
+                            <nz-form-label>Timezone</nz-form-label>
+                            <input nz-input formControlName="timezone" readonly />
+                        </nz-form-item>
+                    </div>
+                </div>
+            </div>
+        </nz-card>
+
+        <div class="action-footer">
+            <button nz-button nzType="default" type="button" class="mgr-10">Cancel</button>
+            <button nz-button nzType="primary" (click)="submitForm()" [disabled]="configForm.invalid">
+                Apply Configuration
+            </button>
+        </div>
+    </form>
+</div>

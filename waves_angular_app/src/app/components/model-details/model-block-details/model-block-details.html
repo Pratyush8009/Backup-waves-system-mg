@@ -1,0 +1,121 @@
+<!-- subsystem-details.html -->
+<div class="subsystem-container">
+    <div class="header">
+        <h3>Available Blocks</h3>
+        <!-- <div class="actions">
+            <button nz-button nzType="primary" nzSize="default" (click)="createSubsystem()" [nzLoading]="isLoading">
+                Create Subsystem
+            </button>
+            <button nz-button nzType="default" nzSize="default" (click)="configure()">
+                Configure
+            </button>
+        </div> -->
+    </div>
+
+    <!-- Loading State -->
+    <div class="loading-state" *ngIf="isLoading">
+        <nz-spin nzSimple></nz-spin>
+        <p>Loading models...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state"s *ngIf="!isLoading && subsystems.length === 0">
+        <nz-icon nzType="appstore" nzTheme="outline"></nz-icon>
+        <p>No models found</p>
+    </div>
+
+    <!-- Subsystems Grid -->
+    <div class="card-grid" *ngIf="!isLoading && subsystems.length > 0">
+        <nz-card *ngFor="let sub of subsystems" nzHoverable class="subsystem-card">
+            <div class="card-header">
+                <h3>{{ sub.subsystem_name }}</h3>
+                <div class="status-indicator" [class.configured]="sub.is_configured">
+                    <nz-icon [nzType]="sub.is_configured ? 'link' : 'disconnect'" nzTheme="outline"
+                        [nzTooltipTitle]="sub.is_configured ? 'Configured' : 'Not Configured'" nz-tooltip>
+                    </nz-icon>
+                    <span class="status-text">{{ sub.is_configured ? 'Configured' : 'Not Configured' }}</span>
+                </div>
+            </div>
+
+            <p class="description">{{ sub.description || 'No description provided' }}</p>
+
+            <div class="card-footer">
+                <span class="flow-count">
+                    <nz-icon nzType="partition" nzTheme="outline"></nz-icon>
+                    Flow count: {{ sub.flowcount }}
+                </span>
+                <span nz-icon nzType="delete" class="delete-icon" (click)="confirmDelete(sub, $event)"
+                    nz-tooltip="Delete"></span>
+            </div>
+        </nz-card>
+    </div>
+
+    <!-- Create Subsystem Modal -->
+    <nz-modal [(nzVisible)]="isModalVisible" [nzContent]="modalContent" nzTitle="Create New Subsystem"
+        (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading" nzOkText="Create"
+        nzCancelText="Cancel">
+        <ng-template #modalContent>
+            <div class="create-form">
+                <div class="form-group">
+                    <label>
+                        <nz-icon nzType="font-size" nzTheme="outline"></nz-icon>
+                        Subsystem Name
+                    </label>
+                    <input nz-input [(ngModel)]="newSubsystem.subsystem_name" placeholder="Enter subsystem name"
+                        [ngClass]="{'error': nameError}" (input)="validateName()" />
+                    <small class="error-message" *ngIf="nameError">Name is required</small>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <nz-icon nzType="file-text" nzTheme="outline"></nz-icon>
+                        Description
+                    </label>
+                    <textarea nz-input [(ngModel)]="newSubsystem.description" placeholder="Enter subsystem description"
+                        rows="4"></textarea>
+                </div>
+
+                <div class="form-group switch-group">
+                    <label>
+                        <nz-icon nzType="arrow-up" nzTheme="outline"></nz-icon>
+                        Is it top level subsystem
+                    </label>
+                    <nz-switch [(ngModel)]="newSubsystem.is_top" [nzCheckedChildren]="'Yes'"
+                        [nzUnCheckedChildren]="'No'">
+                    </nz-switch>
+                </div>
+
+                <div class="form-group switch-group">
+                    <label>
+                        <nz-icon nzType="arrow-down" nzTheme="outline"></nz-icon>
+                        Is it bottom level subsystem
+                    </label>
+                    <nz-switch [(ngModel)]="newSubsystem.is_bottom" [nzCheckedChildren]="'Yes'"
+                        [nzUnCheckedChildren]="'No'">
+                    </nz-switch>
+                </div>
+
+                <div class="info-message" *ngIf="!newSubsystem.is_top && !newSubsystem.is_bottom">
+                    <nz-icon nzType="info-circle" nzTheme="outline"></nz-icon>
+                    <span>When both top and bottom are false, the subsystem will be both source and target.</span>
+                </div>
+            </div>
+        </ng-template>
+    </nz-modal>
+
+    <!-- Delete Confirmation Modal -->
+    <nz-modal [(nzVisible)]="isDeleteModalVisible" nzTitle="Confirm Delete" nzOkText="Delete" nzOkType="primary"
+        nzOkDanger nzCancelText="Cancel" (nzOnOk)="handleDeleteConfirm()" (nzOnCancel)="handleDeleteCancel()"
+        [nzOkLoading]="isDeleteLoading" [nzContent]="nzModalContent">
+        <ng-template #nzModalContent>
+            <div class="delete-confirmation">
+                <nz-icon nzType="exclamation-circle" nzTheme="outline" class="warning-icon"></nz-icon>
+                <p class="confirmation-message">
+                    Are you sure you want to delete the subsystem
+                    <strong>"{{ subsystemToDelete?.subsystem_name }}"</strong>?
+                </p>
+
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

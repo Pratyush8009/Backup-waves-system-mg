@@ -1,0 +1,52 @@
+{
+  "code": 200,
+  "message": "Model execution has been initiated.",
+  "data": {
+    "executionId": "EXEC-MDL-20260408-001",
+    "pipelineId": "PIP-MDL-ccpp-001",
+    "entityType": "MODEL",
+    "entityId": "MDL-660e8400-e29b-41d4-a716-446655440101",
+    "status": "INITIATED",
+    "message": "Model pipeline execution started",
+    "startTime": "2026-04-08T10:30:00Z",
+    "estimatedDuration": "180s",
+    "blocks": [
+      {
+        "blockId": "BKI-CCPP-INPUT-001",
+        "status": "PENDING",
+        "order": 1
+      },
+      {
+        "blockId": "BKI-CCPP-PREP-001",
+        "status": "PENDING",
+        "order": 2
+      },
+      {
+        "blockId": "BKI-CCPP-ML-001",
+        "status": "PENDING",
+        "order": 3
+      },
+      {
+        "blockId": "BKI-CCPP-EVAL-001",
+        "status": "PENDING",
+        "order": 4
+      },
+      {
+        "blockId": "BKI-CCPP-OUTPUT-001",
+        "status": "PENDING",
+        "order": 5
+      }
+    ],
+    "notificationSettings": {
+      "notifyOnComplete": true,
+      "notifyOnError": true,
+      "channels": [
+        "IN_APP",
+        "EMAIL"
+      ]
+    }
+  },
+  "metadata": {},
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

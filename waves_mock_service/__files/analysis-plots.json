@@ -1,0 +1,214 @@
+{
+  "code": 200,
+  "message": "",
+  "data": {
+    "analysisId": "ANL-770e8400-e29b-41d4-a716-446655440201",
+    "pipelineId": "PIP-ANL-denoise-001",
+    "executionId": "EXEC-ANL-20260408-001",
+    "plotsByCategory": {
+      "SIGNAL_PROCESSING": {
+        "heading": "Signal Filtering Results",
+        "description": "Comparison of different filtering techniques",
+        "plots": [
+          {
+            "plotId": "anl-plot-001",
+            "title": "Signal Denoising Comparison",
+            "chartType": "multi-line-index",
+            "metadata": {
+              "label": "Original vs Filtered Signals",
+              "xAxis": "Sample #",
+              "yAxis": "Signal Value",
+              "series": [
+                "Noisy Signal",
+                "SMA Filtered",
+                "SG Filtered"
+              ],
+              "unit": "Arbitrary Units",
+              "lineStyles": {
+                "Noisy Signal": {
+                  "opacity": 0.3,
+                  "width": 1
+                },
+                "SMA Filtered": {
+                  "opacity": 1.0,
+                  "width": 2,
+                  "color": "#FF00FF"
+                },
+                "SG Filtered": {
+                  "opacity": 1.0,
+                  "width": 2,
+                  "color": "#FFA500"
+                }
+              }
+            },
+            "plotData": [
+              {
+                "sampleNumbers": 0,
+                "noisySignal": 52.3,
+                "smaFiltered": 50.2,
+                "sgFiltered": 50.3
+              },
+              {
+                "sampleNumbers": 50,
+                "noisySignal": 48.7,
+                "smaFiltered": 50.1,
+                "sgFiltered": 50.2
+              },
+              {
+                "sampleNumbers": 100,
+                "noisySignal": 51.2,
+                "smaFiltered": 50.3,
+                "sgFiltered": 50.1
+              },
+              {
+                "sampleNumbers": 150,
+                "noisySignal": 49.8,
+                "smaFiltered": 50.0,
+                "sgFiltered": 50.2
+              },
+              {
+                "sampleNumbers": 200,
+                "noisySignal": 50.5,
+                "smaFiltered": 50.2,
+                "sgFiltered": 50.1
+              },
+              {
+                "sampleNumbers": 250,
+                "noisySignal": 51.8,
+                "smaFiltered": 50.1,
+                "sgFiltered": 50.2
+              },
+              {
+                "sampleNumbers": 300,
+                "noisySignal": 49.3,
+                "smaFiltered": 50.0,
+                "sgFiltered": 50.1
+              },
+              {
+                "sampleNumbers": 350,
+                "noisySignal": 50.7,
+                "smaFiltered": 50.2,
+                "sgFiltered": 50.2
+              },
+              {
+                "sampleNumbers": 400,
+                "noisySignal": 52.1,
+                "smaFiltered": 50.1,
+                "sgFiltered": 50.1
+              },
+              {
+                "sampleNumbers": 450,
+                "noisySignal": 48.9,
+                "smaFiltered": 50.0,
+                "sgFiltered": 50.2
+              },
+              {
+                "sampleNumbers": 500,
+                "noisySignal": 50.4,
+                "smaFiltered": 50.2,
+                "sgFiltered": 50.1
+              }
+            ]
+          }
+        ]
+      },
+      "COMPARATIVE_ANALYSIS": {
+        "heading": "Filter Performance Metrics",
+        "description": "SNR and noise reduction comparison",
+        "plots": [
+          {
+            "plotId": "anl-plot-002",
+            "title": "Filter Performance Comparison",
+            "chartType": "bar",
+            "metadata": {
+              "label": "Signal-to-Noise Ratio Improvement",
+              "xAxis": "Filter Type",
+              "yAxis": "SNR (dB)",
+              "showValues": true
+            },
+            "plotData": [
+              {
+                "categories": "Original",
+                "snrValues": 12.3
+              },
+              {
+                "categories": "SMA-15",
+                "snrValues": 24.7
+              },
+              {
+                "categories": "SG(15,2)",
+                "snrValues": 26.1
+              }
+            ]
+          }
+        ]
+      },
+      "STATISTICAL_ANALYSIS": {
+        "heading": "Statistical Summary",
+        "description": "Descriptive statistics of signals",
+        "plots": [
+          {
+            "plotId": "anl-plot-003",
+            "title": "Statistical Comparison",
+            "chartType": "grouped-bar",
+            "metadata": {
+              "label": "Signal Statistics Comparison",
+              "xAxis": "Statistic",
+              "yAxis": "Value",
+              "series": [
+                "Original",
+                "SMA",
+                "SG"
+              ]
+            },
+            "plotData": [
+              {
+                "categories": "Mean",
+                "original": 50.234,
+                "sma": 50.198,
+                "sg": 50.215
+              },
+              {
+                "categories": "Std Dev",
+                "original": 8.456,
+                "sma": 2.134,
+                "sg": 1.987
+              },
+              {
+                "categories": "Min",
+                "original": 28.123,
+                "sma": 42.567,
+                "sg": 43.012
+              },
+              {
+                "categories": "Max",
+                "original": 72.891,
+                "sma": 58.234,
+                "sg": 57.891
+              },
+              {
+                "categories": "Median",
+                "original": 50.012,
+                "sma": 50.123,
+                "sg": 50.145
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "totalPlots": 3,
+    "categories": [
+      "SIGNAL_PROCESSING",
+      "COMPARATIVE_ANALYSIS",
+      "STATISTICAL_ANALYSIS"
+    ]
+  },
+  "metadata": {
+    "requestDuration": "156ms",
+    "cacheHit": false,
+    "currentUtilization": 87.5
+  },
+  "requestId": "req-550e8400-e29b-41d4-a716-4466554st00345",
+  "timestamp": "2024-03-15T23:50:00Z"
+}

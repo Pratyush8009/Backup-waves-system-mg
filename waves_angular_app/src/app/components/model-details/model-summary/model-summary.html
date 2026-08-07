@@ -1,0 +1,67 @@
+<div class="system-container">
+    <div *ngIf="loading" class="loading-container">
+        <nz-spin nzSimple></nz-spin>
+        <p>Loading model details...</p>
+    </div>
+
+    <div *ngIf="!loading">
+        <div class="header">
+            <h3>Model Details</h3>
+            <div class="header-actions">
+                <div class="status-indicator" [class.active]="system.status === 'active'">
+                    <span class="status-dot"></span>
+                    <span class="status-text">{{ system.status === 'active' ? 'Active' : 'Inactive' }}</span>
+                </div>
+                <button nz-button nzType="primary" nzSize="default" (click)="editSystem()">
+                    Edit
+                </button>
+            </div>
+        </div>
+
+        <div class="details-grid">
+            <div>
+                <p><strong>Model Name:</strong> {{ system.name }}</p>
+                <p><strong>Model Version:</strong> {{ system.version }}</p>
+                <p><strong>Block Count:</strong> {{ system.subsystemCount }}</p>
+                <p><strong>Flow Count:</strong> {{ system.flowCount }}</p>
+
+                <p><strong>Updated At:</strong> {{ system.updatedAt }}</p>
+            </div>
+
+            <div>
+                <p><strong>System ID:</strong> {{ system.id }}</p>
+                <p><strong>Model ID:</strong> {{ system.modelId }}</p>
+                <p><strong>Created At:</strong> {{ system.createdAt }}</p>
+                <p><strong>Description:</strong> {{ system.description }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Modal -->
+    <nz-modal [(nzVisible)]="isModalVisible" [nzContent]="modalContent" nzTitle="Edit System"
+        (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+
+        <ng-template #modalContent>
+            <div class="edit-form">
+                <div class="form-group">
+                    <label>System Name</label>
+                    <input nz-input [(ngModel)]="editData.name" placeholder="Enter system name" />
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea nz-input [(ngModel)]="editData.description" placeholder="Enter description"
+                        rows="4"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <nz-select [(ngModel)]="editData.status" nzPlaceHolder="Select status">
+                        <nz-option nzValue="active" nzLabel="Active"></nz-option>
+                        <nz-option nzValue="inactive" nzLabel="Inactive"></nz-option>
+                    </nz-select>
+                </div>
+            </div>
+        </ng-template>
+    </nz-modal>
+</div>

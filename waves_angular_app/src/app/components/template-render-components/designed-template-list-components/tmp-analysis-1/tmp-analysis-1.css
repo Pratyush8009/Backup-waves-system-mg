@@ -1,0 +1,89 @@
+.tmpl-root {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.tmpl-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.tmpl-icon {
+  font-size: 22px;
+  color: #1677ff;
+}
+
+.tmpl-heading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tmpl-title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.tmpl-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+}
+
+.tmpl-section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tmpl-section-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tmpl-section-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.tmpl-section-category {
+  text-transform: uppercase;
+  font-size: 11px;
+}
+
+.tmpl-section-desc {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 13px;
+}
+
+.tmpl-section-empty {
+  padding: 24px 0;
+}
+
+.tmpl-category-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.tmpl-category-label {
+  align-self: flex-start;
+  text-transform: uppercase;
+  font-size: 11px;
+}
