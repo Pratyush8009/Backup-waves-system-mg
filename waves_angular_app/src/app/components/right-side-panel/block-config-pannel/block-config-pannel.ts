@@ -15,6 +15,12 @@ export interface SystemSchemaConfig {
   INPUT: SchemaField[];
   OUTPUT: SchemaField[];
 }
+export interface ConsoleError {
+  type: string;
+  source: string;
+  timestamp: string;
+  messages: string[];
+}
 
 @Component({
   selector: 'app-block-config-pannel',
@@ -34,7 +40,7 @@ export class BlockConfigPannel implements OnChanges {
   @Input() systemId: string = '';
   @Input() unitId: string = '';
   @Input() systemSchema: SystemSchemaConfig = { INPUT: [], OUTPUT: [] };
-
+  @Input() consoleErrors: ConsoleError[] = [];
   @Output() nodeUpdated = new EventEmitter<NodeModel>();
   activeTab = 0;
   activeModelTab = 0;
@@ -53,6 +59,10 @@ export class BlockConfigPannel implements OnChanges {
   selectedSystemSchemaName: string = '';
   selectedGroupPortId: string = '';
 
+  clearErrors(): void {
+    this.consoleErrors = [];
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['blockData'] && this.blockData) {
       this.activeTab = 0;
@@ -60,8 +70,7 @@ export class BlockConfigPannel implements OnChanges {
       this.selectedGroupPortId = '';
       this.selectedSystemSchemaName = '';
       this.newPortName = '';
-
-      // Set enforced default port types for system nodes
+      console.log("Block data changed:", this.blockData)
       if (this.blockData.category === 'system') {
         if (this.blockData.blockType === 'INPUT') {
           this.newPortType = 'OUTPUT';

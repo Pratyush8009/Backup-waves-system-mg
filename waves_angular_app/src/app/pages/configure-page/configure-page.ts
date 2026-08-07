@@ -53,7 +53,13 @@ export interface NodeModel {
   uiLayout: UiLayout;
   flows: any[];
   hasError?: boolean;
-  errors?: string[];
+}
+
+export interface ConsoleError {
+  type: string;
+  source: string;
+  timestamp: string;
+  messages: string[];
 }
 
 @Component({
@@ -80,6 +86,9 @@ export class ConfigurePage implements AfterViewInit, OnInit {
   pipelineId: string = '958769348796';
   isFullscreen: boolean = false;
   showFlow: any;
+
+  // Global console errors list
+  consoleErrors: ConsoleError[] = [];
 
   // Prevent event loops during programmatic updates
   private isProgrammaticConnecting = false;
@@ -157,20 +166,20 @@ export class ConfigurePage implements AfterViewInit, OnInit {
   blockNodes: NodeModel[] = [
     {
       blockId: "BLK-processor-001",
-      name: "Custom Block",
+      name: "Custom ",
       blockType: "PROCESSOR",
       category: "custom",
       ports: [
         {
           id: "PORT-IN-001", name: "input_1", portType: "INPUT", portOrder: 1, schema: [
-            { name: "AT", type: "decimal", description: "Ambient Temperature" },
-            { name: "V", type: "number", description: "Exhaust Vacuum" }
+            // { name: "AT", type: "decimal", description: "Ambient Temperature" },
+            // { name: "V", type: "number", description: "Exhaust Vacuum" }
           ]
         },
         {
           id: "PORT-OUT-001", name: "output_1", portType: "OUTPUT", portOrder: 1, schema: [
-            { name: "PO", type: "decimal", description: "Power Output" },
-            { name: "AP", type: "decimal", description: "Average Output" }
+            // { name: "PO", type: "decimal", description: "Power Output" },
+            // { name: "AP", type: "decimal", description: "Average Output" }
           ]
         }
       ],
@@ -209,11 +218,9 @@ export class ConfigurePage implements AfterViewInit, OnInit {
       endpointStyle: { fill: '#4a4a4a' }
     });
 
-    // Handle connection events
     this.instance.bind('connection', (info: any) => {
       if (this.isProgrammaticConnecting) return;
 
-      // Prevent duplicate connection on drop
       if (this.isDuplicateConnection(info.connection)) {
         this.instance.deleteConnection(info.connection);
         return;
@@ -222,10 +229,15 @@ export class ConfigurePage implements AfterViewInit, OnInit {
       this.validateConnection(info);
     });
 
-    this.instance.bind('connection:detach', () => {
+    const handleDetach = () => {
       if (this.isProgrammaticConnecting) return;
-      this.validateAllConnections();
-    });
+      setTimeout(() => {
+        this.validateAllConnections();
+      }, 20);
+    };
+
+    this.instance.bind('connection:detach', handleDetach);
+    this.instance.bind('connection:remove', handleDetach);
   }
 
   private loadFlowData() { }
@@ -270,61 +282,7 @@ export class ConfigurePage implements AfterViewInit, OnInit {
     return false;
   }
 
-  // --- Connection & Schema Validation ---
-  // Replace your existing validateConnection method with this one:
   private validateConnection(info: any) {
-    const conn = info.connection;
-    if (!conn) return;
-
-    const sourcePortId = this.getPortIdFromEndpoint(info.sourceEndpoint) || this.getPortIdFromEndpoint(conn.endpoints?.[0]);
-    const targetPortId = this.getPortIdFromEndpoint(info.targetEndpoint) || this.getPortIdFromEndpoint(conn.endpoints?.[1]);
-
-    const sourceInstId = info.source?.id || conn.sourceId;
-    const targetInstId = info.target?.id || conn.targetId;
-
-    const sourceNode = this.flowNodes.find(n => n.instanceId === sourceInstId);
-    const targetNode = this.flowNodes.find(n => n.instanceId === targetInstId);
-
-    if (!sourceNode || !targetNode) return;
-
-    const sourcePort = sourceNode.ports.find(p => p.id === sourcePortId);
-    const targetPort = targetNode.ports.find(p => p.id === targetPortId);
-
-    if (!sourcePort || !targetPort) return;
-
-    let isValid = true;
-    const errorMessages: string[] = [];
-
-    // Check 1: Port schema field count
-    if (sourcePort.schema.length !== targetPort.schema.length) {
-      isValid = false;
-      errorMessages.push(`Field count mismatch: Source '${sourceNode.name}' (${sourcePort.name}) has ${sourcePort.schema.length} fields, target '${targetNode.name}' (${targetPort.name}) has ${targetPort.schema.length} fields.`);
-    }
-
-    // Check 2: Schema field existence and data type match
-    targetPort.schema.forEach(targetField => {
-      const matchingSourceField = sourcePort.schema.find(s => s.name === targetField.name);
-
-      if (!matchingSourceField) {
-        isValid = false;
-        errorMessages.push(`Missing Field: Field '${targetField.name}' is missing in source '${sourceNode.name}' (${sourcePort.name}).`);
-      } else if (matchingSourceField.type.toLowerCase() !== targetField.type.toLowerCase()) {
-        isValid = false;
-        errorMessages.push(`Type Mismatch: Field '${targetField.name}' expected '${targetField.type}', but received '${matchingSourceField.type}' from '${sourceNode.name}'.`);
-      }
-    });
-
-    // --- FIX HERE: Update target node error state ---
-    if (!isValid) {
-      targetNode.hasError = true;
-      if (!targetNode.errors) targetNode.errors = [];
-      targetNode.errors.push(...errorMessages);
-    }
-
-    // Highlight connector line red or clear error style
-    this.markConnectorStyle(conn, isValid);
-
-    // Re-run validateAllConnections to recalculate error states across all nodes cleanly
     this.validateAllConnections();
   }
 
@@ -342,14 +300,18 @@ export class ConfigurePage implements AfterViewInit, OnInit {
   }
 
   public validateAllConnections() {
-    // Step 1: Reset errors on all nodes first
-    this.flowNodes.forEach(n => {
-      n.hasError = false;
-      n.errors = [];
+    this.flowNodes.forEach(node => {
+      node.hasError = false;
     });
 
     const raw = this.instance.getConnections();
     const connectionsArray = Array.isArray(raw) ? raw : Object.values(raw);
+
+    const now = new Date();
+    const timestampStr = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`;
+
+    // Map to collect error messages grouped by target node instanceId
+    const errorsByTargetNode = new Map<string, { targetNode: NodeModel; messages: string[] }>();
 
     connectionsArray.forEach((conn: any) => {
       if (!conn) return;
@@ -372,8 +334,26 @@ export class ConfigurePage implements AfterViewInit, OnInit {
 
       let connError = false;
 
+      if (!errorsByTargetNode.has(targetInstId)) {
+        errorsByTargetNode.set(targetInstId, { targetNode, messages: [] });
+      }
+
+      const nodeErrorEntry = errorsByTargetNode.get(targetInstId)!;
+
       if (sourcePort.schema.length !== targetPort.schema.length) {
         connError = true;
+
+        const sourceFieldNames = sourcePort.schema.map(s => s.name);
+        const targetFieldNames = targetPort.schema.map(s => s.name);
+
+        const extraFields = sourceFieldNames.filter(name => !targetFieldNames.includes(name));
+
+
+        extraFields.forEach(fieldName => {
+          nodeErrorEntry.messages.push(
+            `Field '${fieldName}' is coming from ${sourceNode.name} block port (${sourcePort.name}) but not mentioned in ${targetNode.name} block port (${targetPort.name}) `
+          );
+        });
       }
 
       targetPort.schema.forEach(targetField => {
@@ -381,30 +361,45 @@ export class ConfigurePage implements AfterViewInit, OnInit {
 
         if (!matchingSourceField) {
           connError = true;
-          const err = `Field '${targetField.name}' is missing in connection from ${sourceNode.name} (${sourcePort.name})`;
-          targetNode.hasError = true;
-          if (!targetNode.errors) targetNode.errors = [];
-          targetNode.errors.push(err);
+          nodeErrorEntry.messages.push(
+            `Field '${targetField.name}' is missing  in ${sourceNode.name} block port: (${sourcePort.name})`
+          );
         } else if (matchingSourceField.type.toLowerCase() !== targetField.type.toLowerCase()) {
           connError = true;
-          const err = `Type mismatch for field '${targetField.name}': required '${targetField.type}', but received '${matchingSourceField.type}' from ${sourceNode.name}`;
-          targetNode.hasError = true;
-          if (!targetNode.errors) targetNode.errors = [];
-          targetNode.errors.push(err);
+          nodeErrorEntry.messages.push(
+            `Type mismatch for field '${targetField.name}' required '${targetField.type}' in ${targetNode.name} block port: (${targetPort.name}), but received '${matchingSourceField.type}' from ${sourceNode.name} block port: (${sourcePort.name})`
+          );
         }
       });
 
       if (connError) {
-        targetNode.hasError = true; // --- Mark the Block Red ---
+        targetNode.hasError = true;
       }
 
-      this.markConnectorStyle(conn, !connError); // --- Mark the Connector Red ---
+      this.markConnectorStyle(conn, !connError);
     });
 
+    // Rebuild consoleErrors array from collected errors
+    const generatedErrors: ConsoleError[] = [];
+    errorsByTargetNode.forEach(({ targetNode, messages }) => {
+      if (messages.length > 0) {
+        generatedErrors.push({
+          type: '[ERROR]',
+          source: `[${targetNode.name}]`,
+          timestamp: timestampStr,
+          messages
+        });
+      }
+    });
+
+    this.consoleErrors = generatedErrors;
     this.cdr.detectChanges();
   }
 
-  // --- Zoom Logic & Mouse Wheel Support ---
+  public clearConsoleErrors() {
+    this.consoleErrors = [];
+  }
+
   public onWheel(event: WheelEvent) {
     if (event.ctrlKey || event.metaKey) {
       event.preventDefault();
@@ -481,7 +476,6 @@ export class ConfigurePage implements AfterViewInit, OnInit {
       const rawConns = this.instance.getConnections();
       const connectionsArray = Array.isArray(rawConns) ? rawConns : Object.values(rawConns);
 
-      // Collect unique connection pairs
       const uniqueConnectionKeys = new Set<string>();
 
       connectionsArray.forEach((conn: any) => {
@@ -498,13 +492,11 @@ export class ConfigurePage implements AfterViewInit, OnInit {
       this.instance.removeAllEndpoints(el);
       this.setupNode(node);
 
-      // Re-connect using strict deduplication
       uniqueConnectionKeys.forEach(key => {
         const [sourceUuid, targetUuid] = key.split('==>');
         try {
           this.instance.connect({ uuids: [sourceUuid, targetUuid] });
         } catch (e) {
-          // Ignore invalid connection attempts during port rebuild
         }
       });
 
@@ -515,7 +507,6 @@ export class ConfigurePage implements AfterViewInit, OnInit {
     this.validateAllConnections();
   }
 
-  // Drag and Drop
   onDragStart(event: DragEvent, node: NodeModel) {
     this.draggedNode = node;
     event.dataTransfer?.setData('text/plain', node.blockId);
@@ -535,7 +526,6 @@ export class ConfigurePage implements AfterViewInit, OnInit {
     newNode.uiLayout.canvasX = (event.clientX - rect.left) / this.zoomLevel;
     newNode.uiLayout.canvasY = (event.clientY - rect.top) / this.zoomLevel;
     newNode.hasError = false;
-    newNode.errors = [];
 
     this.flowNodes.push(newNode);
     this.cdr.detectChanges();
@@ -543,7 +533,6 @@ export class ConfigurePage implements AfterViewInit, OnInit {
     this.draggedNode = null;
   }
 
-  // Context Menu & Node Management
   openContextMenu(event: MouseEvent, node: NodeModel) {
     event.preventDefault();
     event.stopPropagation();
@@ -566,7 +555,10 @@ export class ConfigurePage implements AfterViewInit, OnInit {
     if (this.selectedNode?.instanceId === this.contextMenuNode.instanceId) {
       this.selectedNode = null;
     }
-    this.validateAllConnections();
+
+    setTimeout(() => {
+      this.validateAllConnections();
+    }, 20);
   }
 
   saveCurrentFlow() {

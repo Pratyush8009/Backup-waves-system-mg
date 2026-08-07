@@ -71,7 +71,7 @@
                             [style.left.px]="node.uiLayout.canvasX" [style.top.px]="node.uiLayout.canvasY"
                             [style.width.px]="node.uiLayout.canvasWidth" [style.height.px]="node.uiLayout.canvasHeight"
                             [style.background-color]="node.hasError ? '#ff4d4f' : node.uiLayout.color"
-                            (contextmenu)="openContextMenu($event, node)" (click)="selectNode(node, $event)">
+                            (contextmenu)="openContextMenu($event, node)" (dblclick)="selectNode(node, $event)">
                             <div class="name-icon">
                                 <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"
                                     style="margin-right: 5px;"></nz-icon>
@@ -88,7 +88,7 @@
     <div class="right-panel">
         <app-block-config-pannel [blockData]="selectedNode" [pipelineId]="pipelineId" [modelId]="modelId"
             [systemId]="systemId" [unitId]="unitId" [systemSchema]="systemSchema"
-            (nodeUpdated)="refreshNodeEndpoints($event)">
+            (nodeUpdated)="refreshNodeEndpoints($event)" [consoleErrors]="consoleErrors">
         </app-block-config-pannel>
     </div>
 

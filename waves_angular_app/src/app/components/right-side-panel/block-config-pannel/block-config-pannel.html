@@ -259,16 +259,46 @@
           </div>
           <div class="form-group">
             <label>Status</label>
-            <input nz-input [disabled]="true" value="Ready for Validation" />
+            <input nz-input [disabled]="true" value="Active" />
           </div>
         </div>
       </div>
 
       <div class="tab-body" *ngIf="activeModelTab === 1">
-        <div class="model-config-view">
-          <div class="info-callout">
-            <nz-icon nzType="info-circle" nzTheme="outline" style="color: #ff0000; margin-right: 8px;"></nz-icon>
-            <span style="color: #ff0000">Error</span>
+        <div class="tab-body" *ngIf="activeModelTab === 1">
+          <div class="console-wrapper">
+            <!-- Top Bar with Clear Button -->
+            <div class="console-header-bar">
+              <button nz-button nzType="primary" nzSize="small" (click)="clearErrors()">
+                clear
+              </button>
+            </div>
+
+            <!-- Error Items Container -->
+            <div class="console-list">
+              <div *ngFor="let err of consoleErrors" class="console-card">
+                <!-- Error Log Title Line -->
+                <div class="console-card-header">
+                  <div class="title-group">
+                    <span class="error-tag">{{ err.type }}</span>
+                    <span class="source-tag">{{ err.source }}</span>
+                  </div>
+                  <span class="timestamp">{{ err.timestamp }}</span>
+                </div>
+
+                <!-- Error Messages List -->
+                <div class="console-card-body">
+                  <p *ngFor="let msg of err.messages" class="error-message-text">
+                    {{ msg }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Fallback when cleared -->
+              <div *ngIf="consoleErrors.length === 0" class="empty-console">
+                <span>No errors logged</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
