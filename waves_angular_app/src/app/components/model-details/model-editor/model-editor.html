@@ -12,7 +12,7 @@
 </div>
 <div class="tab-content" [class.fullscreen]="isFullScreen">
     <div class="config-wrapper" [class.fullscreen]="isFullScreen">
-        <app-configure-page *ngIf="!isFlowMode" (fullscreenChange)="onFullscreenChange($event)"></app-configure-page>
+        <app-block-editor *ngIf="!isFlowMode" (fullscreenChange)="onFullscreenChange($event)"></app-block-editor>
         <app-flow-editor (fullscreenChange)="onFullscreenChange($event)" *ngIf="isFlowMode"></app-flow-editor>
     </div>
 

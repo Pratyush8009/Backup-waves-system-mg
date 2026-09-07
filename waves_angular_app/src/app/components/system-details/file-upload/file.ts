@@ -1,4 +1,4 @@
-export const systemSchema = {
+export const modelSchema = {
     "id": "SYS-550e8400-e29b-41d4-a716-446655440001",
     "name": "Manufacturing Unit ABC",
     "inputProperties": [
@@ -196,13 +196,13 @@ export const fileData = [
         "fileName": "thermal_power_plant.csv",
         "type": "csv",
         "totalRows": 5,
-        "columns": ["index", "temperature", "vacuum", "pressure", "humidity", "energyThreshold", "powerOutput", "efficiency", "predictedFailure", "anomalyScore"],
+        "columns": ["index", "temperature", "vacuum", "pressure", "humidity", "energy"],
         "tableData": [
-            { "index": 1, "temperature": 100.33, "vacuum": 200.11, "pressure": 30.44, "humidity": 40.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 2, "temperature": 101.33, "vacuum": 23.11, "pressure": 18.44, "humidity": 22.6, "energyThreshold": 81.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 3, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 4, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 5, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null }
+            { "index": 1, "temperature": 100.33, "vacuum": 200.11, "pressure": 30.44, "humidity": 40.6, "energy": 44.6 },
+            { "index": 2, "temperature": 101.33, "vacuum": 23.11, "pressure": 18.44, "humidity": 22.6, "energy": 81.6 },
+            { "index": 3, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energy": 44.6 },
+            { "index": 4, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energy": 44.6 },
+            { "index": 5, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energy": 44.6 }
         ]
     },
     {
@@ -210,13 +210,13 @@ export const fileData = [
         "fileName": "sugar_power_plant.excel",
         "type": "excel",
         "totalRows": 5,
-        "columns": ["index", "temperature", "vacuum", "pressure", "humidity", "energyThreshold", "powerOutput", "efficiency", "predictedFailure", "anomalyScore"],
+        "columns": ["index", "temperature", "vacuum", "pressure", "humidity", "energy"],
         "tableData": [
-            { "index": 1, "temperature": 100.33, "vacuum": 200.11, "pressure": 30.44, "humidity": 40.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 2, "temperature": 101.33, "vacuum": 23.11, "pressure": 18.44, "humidity": 22.6, "energyThreshold": 81.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 3, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 4, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null },
-            { "index": 5, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energyThreshold": 44.6, "powerOutput": null, "efficiency": null, "predictedFailure": null, "anomalyScore": null }
+            { "index": 1, "temperature": 100.33, "vacuum": 200.11, "pressure": 30.44, "humidity": 40.6, "energy": 44.6 },
+            { "index": 2, "temperature": 101.33, "vacuum": 23.11, "pressure": 18.44, "humidity": 22.6, "energy": 81.6 },
+            { "index": 3, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energy": 44.6 },
+            { "index": 4, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energy": 44.6 },
+            { "index": 5, "temperature": 200.33, "vacuum": 19.11, "pressure": 30.44, "humidity": 16.6, "energy": 44.6 }
         ]
     }
 ]

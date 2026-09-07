@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // --- Base API Envelope ---
 export interface BaseApiResponse<T> {
@@ -87,35 +88,37 @@ export interface PipelineDetails {
   providedIn: 'root'
 })
 export class ModelService {
-  private baseUrl = 'http://localhost:8080/api/v1/waves';
+  private apiUrl = environment.apiUrl;
+
+
 
   constructor(private http: HttpClient) { }
 
   getModelDetails(unitId: string, systemId: string, modelId: string): Observable<BaseApiResponse<ModelDetails>> {
-    return this.http.get<BaseApiResponse<ModelDetails>>(`${this.baseUrl}/unit/${unitId}/system/${systemId}/models/${modelId}`);
+    return this.http.get<BaseApiResponse<ModelDetails>>(`${this.apiUrl}/v1/waves/unit/${unitId}/system/${systemId}/models/${modelId}`);
   }
 
   getModelSummary(unitId: string, systemId: string, modelId: string): Observable<BaseApiResponse<ModelSummary>> {
-    return this.http.get<BaseApiResponse<ModelSummary>>(`${this.baseUrl}/unit/${unitId}/system/${systemId}/models/${modelId}/results/summary`);
+    return this.http.get<BaseApiResponse<ModelSummary>>(`${this.apiUrl}/v1/waves/unit/${unitId}/system/${systemId}/models/${modelId}/results/summary`);
   }
 
   createModel(unitId: string, systemId: string, payload: ModelPayload): Observable<BaseApiResponse<any>> {
-    return this.http.post<BaseApiResponse<any>>(`${this.baseUrl}/unit/${unitId}/system/${systemId}/models`, payload);
+    return this.http.post<BaseApiResponse<any>>(`${this.apiUrl}/v1/waves/unit/${unitId}/system/${systemId}/models`, payload);
   }
 
   updateModel(unitId: string, systemId: string, modelId: string, payload: ModelPayload): Observable<BaseApiResponse<any>> {
-    return this.http.put<BaseApiResponse<any>>(`${this.baseUrl}/unit/${unitId}/system/${systemId}/models/${modelId}`, payload);
+    return this.http.put<BaseApiResponse<any>>(`${this.apiUrl}/v1/waves/unit/${unitId}/system/${systemId}/models/${modelId}`, payload);
   }
 
   getModelPlots(unitId: string, systemId: string, modelId: string): Observable<BaseApiResponse<ModelPlots>> {
-    return this.http.get<BaseApiResponse<ModelPlots>>(`${this.baseUrl}/unit/${unitId}/system/${systemId}/models/${modelId}/plots`);
+    return this.http.get<BaseApiResponse<ModelPlots>>(`${this.apiUrl}/v1/waves/unit/${unitId}/system/${systemId}/models/${modelId}/plots`);
   }
 
   getModelPipeline(modelId: string, pipelineId: string): Observable<BaseApiResponse<PipelineDetails>> {
-    return this.http.get<BaseApiResponse<PipelineDetails>>(`${this.baseUrl}/models/${modelId}/pipelines/${pipelineId}/`);
+    return this.http.get<BaseApiResponse<PipelineDetails>>(`${this.apiUrl}/v1/waves/models/${modelId}/pipelines/${pipelineId}/`);
   }
 
   updateModelStatus(unitId: string, systemId: string, modelId: string, status: string): Observable<BaseApiResponse<any>> {
-    return this.http.put<BaseApiResponse<any>>(`${this.baseUrl}/unit/${unitId}/system/${systemId}/models/${modelId}/status`, { status });
+    return this.http.put<BaseApiResponse<any>>(`${this.apiUrl}/v1/waves/unit/${unitId}/system/${systemId}/models/${modelId}/status`, { status });
   }
 }

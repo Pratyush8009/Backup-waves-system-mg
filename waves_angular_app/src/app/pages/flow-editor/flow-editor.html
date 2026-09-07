@@ -1,115 +1,206 @@
 <div class="page-container">
     <div class="left-panel">
-        <div class="title">
-            <h3>Flow Editor</h3>
-            <nz-divider />
+        <!-- Header -->
+        <div class="left-panel-header">
+            <nz-icon class="back-icon" nzType="arrow-left" nzTheme="outline" (click)="onBack()"></nz-icon>
+            <span class="header-title">Flow Editor</span>
         </div>
 
-        <nz-splitter nzLayout="vertical">
-            <nz-splitter-panel [nzSize]="'35%'">
-                <div class="flows-header">
-                    <div class="flows-title">Flows</div>
-                    <div class="flows-actions">
-                        <nz-icon nzType="plus" nzTheme="outline" class="header-icon"></nz-icon>
-                        <nz-icon nzType="reload" nzTheme="outline" class="header-icon"
-                            (click)="loadBlockFlows()"></nz-icon>
+        <!-- Segmented Toggle Button -->
+        <div class="segmented-container">
+            <nz-segmented [nzOptions]="panelOptions" [(ngModel)]="leftPanelMode" nzBlock></nz-segmented>
+        </div>
+
+        <!-- BLOCK MODE CONTENT -->
+        <ng-container *ngIf="leftPanelMode === 'Block'">
+            <div class="panel-section-body">
+                <div class="flows-header-row">
+                    <span class="flows-label">Flows</span>
+                    <div class="header-actions">
+                        <button class="icon-btn" (click)="createNewFlow()" nz-tooltip nzTooltipTitle="Add Flow">
+                            <nz-icon nzType="plus"></nz-icon>
+                        </button>
+                        <button class="icon-btn" (click)="syncActiveFlowForBlock(selectedBlockId)" nz-tooltip
+                            nzTooltipTitle="Refresh">
+                            <nz-icon nzType="reload"></nz-icon>
+                        </button>
                     </div>
                 </div>
 
-                <div class="flows-search">
-                    <input nz-input placeholder="Search flows..." />
+                <div class="search-filter-row">
+                    <nz-input-group [nzPrefix]="prefixSearch" class="custom-search-input">
+                        <input type="text" nz-input placeholder="Search Flows" [(ngModel)]="flowSearchQuery" />
+                    </nz-input-group>
+                    <ng-template #prefixSearch>
+                        <nz-icon nzType="search" style="color: #8c8c8c;"></nz-icon>
+                    </ng-template>
+
+                    <button class="filter-btn" nz-tooltip nzTooltipTitle="Filter">
+                        <nz-icon nzType="filter" nzTheme="outline"></nz-icon>
+                    </button>
                 </div>
 
-                <nz-divider />
+                <div class="view-block-link">
+                    <a (click)="onBack()">View Block</a>
+                </div>
 
-                <div class="flows-list-container">
-                    <div *ngIf="isLoadingFlows" class="loading-container">
-                        <nz-spin nzSimple nzTip="Fetching flows..."></nz-spin>
-                    </div>
-
-                    <ng-container *ngIf="!isLoadingFlows">
-                        <div class="saved-flow" [class.active-flow]="activeFlowId === flow.id"
-                            *ngFor="let flow of savedFlows" (click)="loadSavedFlow(flow)">
-                            <nz-icon nzType="partition" nzTheme="outline" />
-                            <span
-                                style="margin-left: 8px; flex: 1; overflow: hidden; text-overflow: ellipsis;">{{flow.name}}</span>
-                            <nz-icon nzType="delete" nzTheme="outline" (click)="deleteFlow($event, flow.id)"
-                                class="flow-delete-icon" />
+                <div class="flow-cards-list">
+                    <div *ngFor="let flow of filteredFlows" class="flow-card" [class.active]="flow.id === activeFlowId"
+                        (click)="selectFlow(flow.id)">
+                        <div class="flow-card-icon">
+                            <nz-icon nzType="branches"></nz-icon>
                         </div>
-
-                        <nz-empty *ngIf="savedFlows.length === 0" nzNotFoundImage="simple"
-                            nzNotFoundContent="No flows found for this block">
-                        </nz-empty>
-                    </ng-container>
-                </div>
-
-            </nz-splitter-panel>
-
-            <nz-splitter-panel>
-                <nz-collapse>
-                    <nz-collapse-panel *ngFor="let panel of panels" [nzHeader]="panel.name" [nzActive]="panel.active">
-                        <div class="nodes">
-                            <div *ngFor="let node of panel.nodes" class="library-node"
-                                [style.background-color]="node.uiLayout.color" draggable="true"
-                                (dragstart)="onDragStart($event, node)">
-
-                                <ng-container *ngFor="let port of node.ports">
-                                    <span
-                                        [ngClass]="{'endpoint': true, 'left': port.portType === 'INPUT', 'right': port.portType === 'OUTPUT'}"></span>
-                                </ng-container>
-
-                                <div class="lib-node-content">
-                                    <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"></nz-icon>
-                                    <span style="margin-left: 8px;">{{ node.name }}</span>
-                                </div>
+                        <div class="flow-card-content">
+                            <div class="flow-card-title">{{ flow.name }}</div>
+                            <div class="flow-card-sub">
+                                {{ flow.nodes?.length || 0 }} Node | updated 2h ago
                             </div>
                         </div>
-                    </nz-collapse-panel>
-                </nz-collapse>
-            </nz-splitter-panel>
-        </nz-splitter>
+                        <div class="flow-card-action" (click)="$event.stopPropagation()">
+                            <button nz-button nzType="text" nz-dropdown [nzDropdownMenu]="flowMenu" nzTrigger="click">
+                                <nz-icon nzType="more" nzTheme="outline" style="transform: rotate(90deg);"></nz-icon>
+                            </button>
+                            <nz-dropdown-menu #flowMenu="nzDropdownMenu">
+                                <ul nz-menu>
+                                    <li nz-menu-item (click)="editFlow(flow.id)">
+                                        <nz-icon nzType="edit" style="margin-right: 8px;"></nz-icon>Edit
+                                    </li>
+                                    <li nz-menu-item nzDanger (click)="deleteFlow(flow.id)">
+                                        <nz-icon nzType="delete" style="margin-right: 8px;"></nz-icon>Delete
+                                    </li>
+                                </ul>
+                            </nz-dropdown-menu>
+                        </div>
+                    </div>
+
+                    <div *ngIf="filteredFlows.length === 0" class="empty-state">
+                        No flows under this block
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Footer -->
+            <div class="summary-box">
+                <div class="summary-title">Summary</div>
+                <div class="summary-row">
+                    <span>Total Flow</span>
+                    <span class="val bold">{{ totalFlowsCount }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Valid Flow</span>
+                    <span class="val green">{{ validFlowsCount }}</span>
+                </div>
+                <div class="summary-row">
+                    <span>Invalid Flow</span>
+                    <span class="val red">{{ invalidFlowsCount }}</span>
+                </div>
+            </div>
+        </ng-container>
+
+        <!-- NODES MODE CONTENT -->
+        <ng-container *ngIf="leftPanelMode === 'Nodes'">
+            <div class="panel-section-body">
+                <div class="search-filter-row" style="margin-bottom: 12px;">
+                    <nz-input-group [nzPrefix]="prefixNodeSearch" class="custom-search-input">
+                        <input type="text" nz-input placeholder="Search Nodes" [(ngModel)]="nodeSearchQuery" />
+                    </nz-input-group>
+                    <ng-template #prefixNodeSearch>
+                        <nz-icon nzType="search" style="color: #8c8c8c;"></nz-icon>
+                    </ng-template>
+                </div>
+
+                <div class="nodes-accordion-container">
+                    <nz-collapse nzAccordion [nzBordered]="false" class="custom-node-collapse">
+                        <nz-collapse-panel *ngFor="let panel of filteredPanels" [nzHeader]="panel.name"
+                            [nzActive]="panel.active">
+                            <div class="nodes-list">
+                                <div *ngFor="let node of panel.nodes" class="pill-node-item"
+                                    [style.background-color]="node.uiLayout.color" draggable="true"
+                                    (dragstart)="onDragStart($event, node)">
+                                    <span class="node-port-indicator input" *ngIf="node.nodeType !== 'INPUT'"></span>
+                                    <span class="node-label">{{ node.name }}</span>
+                                    <span class="node-port-indicator output" *ngIf="node.nodeType !== 'OUTPUT'"></span>
+                                </div>
+                            </div>
+                        </nz-collapse-panel>
+                    </nz-collapse>
+                </div>
+            </div>
+        </ng-container>
     </div>
 
     <nz-splitter nzLayout="vertical" class="main-splitter">
         <nz-splitter-panel nzMin="20%" [nzCollapsible]="true">
-            <div class="center-panel" (dragover)="onDragOver($event)" (drop)="onDrop($event)">
+            <div class="center-panel">
                 <div class="top-bar">
-                    <nz-breadcrumb>
-                        <nz-breadcrumb-item>
-                            <nz-select [(ngModel)]="selectedBlockId" (ngModelChange)="onBlockChange($event)"
-                                style="width: 220px;">
-                                <nz-option *ngFor="let b of blocks" [nzLabel]="b.label" [nzValue]="b.value"></nz-option>
-                            </nz-select>
-                        </nz-breadcrumb-item>
-                        <!-- <nz-breadcrumb-item>Flow Canvas</nz-breadcrumb-item> -->
-                    </nz-breadcrumb>
+                    <div class="breadcrumbs-block-select">
+                        <nz-select [ngModel]="selectedBlockId" (ngModelChange)="onBlockChange($event)"
+                            style="width: 200px;">
+                            <nz-option *ngFor="let b of blocks" [nzValue]="b.value" [nzLabel]="b.label"></nz-option>
+                        </nz-select>
+                        <span class="slash">/</span>
+                        <span class="active-flow-title">{{ activeFlow?.name || 'No Flow Selected' }}</span>
+                    </div>
 
                     <div class="controlles">
-                        <button nz-button nzType="primary" (click)="saveCurrentFlow()">
-                            <nz-icon nzType="save"></nz-icon> Save
+                        <button nz-button nzType="default" (click)="zoomIn()" nz-tooltip nzTooltipTitle="Zoom In">
+                            <nz-icon nzType="zoom-in"></nz-icon>
                         </button>
-                        <div class="screen-mode" (click)="toggleFullscreen()" nz-tooltip
-                            nzTooltipTitle="Toggle Fullscreen">
-                            <nz-icon [nzType]="isFullscreen ? 'fullscreen-exit' : 'fullscreen'" />
+                        <button nz-button nzType="default" (click)="resetZoom()" nz-tooltip nzTooltipTitle="Reset Zoom">
+                            {{ (zoomLevel * 100) | number:'1.0-0' }}%
+                        </button>
+                        <button nz-button nzType="default" (click)="zoomOut()" nz-tooltip nzTooltipTitle="Zoom Out">
+                            <nz-icon nzType="zoom-out"></nz-icon>
+                        </button>
+                        <button nz-button nzType="primary" (click)="saveCurrentFlow()">Save</button>
+                        <div class="screen-mode" (click)="toggleFullscreen()">
+                            <nz-icon [nzType]="isFullscreen ? 'fullscreen-exit' : 'fullscreen'"></nz-icon>
                         </div>
                     </div>
                 </div>
 
-                <div #container class="canvas">
-                    <div *ngIf="!activeFlowId && flowNodes.length === 0" class="canvas-hint">
-                        <nz-empty nzNotFoundContent="Select a flow from the left or drag nodes here"></nz-empty>
-                    </div>
+                <div class="canvas-viewport" (wheel)="onWheel($event)" (dragover)="onDragOver($event)"
+                    (drop)="onDrop($event)">
+                    <div #container class="canvas" [style.transform]="'scale(' + zoomLevel + ')'"
+                        (click)="deselectNode($event)">
 
-                    <div *ngFor="let node of flowNodes" [id]="node.instanceId || node.id" class="block-instance-node"
-                        [style.left.px]="node.uiLayout.canvasX" [style.top.px]="node.uiLayout.canvasY"
-                        [style.width.px]="node.uiLayout.canvasWidth" [style.height.px]="node.uiLayout.canvasHeight"
-                        [style.background-color]="node.uiLayout.color" (contextmenu)="openContextMenu($event, node)"
-                        (click)="selectNode(node)">
+                        <ng-container *ngIf="activeFlow">
+                            <div *ngFor="let node of activeFlow.nodes" [id]="node.instanceId"
+                                class="block-instance-node"
+                                [class.selected-node]="selectedNode?.instanceId === node.instanceId"
+                                [style.left.px]="node.uiLayout.canvasX" [style.top.px]="node.uiLayout.canvasY"
+                                [style.width.px]="node.uiLayout.canvasWidth"
+                                [style.height.px]="node.uiLayout.canvasHeight"
+                                [style.background-color]="node.uiLayout.color"
+                                (contextmenu)="openContextMenu($event, node)" (dblclick)="selectNode(node, $event)">
+                                <div class="name-icon">
+                                    <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"
+                                        style="margin-right: 5px;"></nz-icon>
+                                    {{ node.name }}
+                                    <nz-icon nzType="info-circle" nzTheme="fill" class="canvas-node-info-icon"
+                                        nz-popover [nzPopoverTitle]="node.name" [nzPopoverContent]="canvasNodePopover"
+                                        nzPopoverPlacement="topRight"
+                                        (click)="$event.stopPropagation(); $event.preventDefault();">
+                                    </nz-icon>
+                                    <ng-template #canvasNodePopover>
+                                        <div class="popover-details">
+                                            <p><strong>Instance ID:</strong> {{ node.instanceId }}</p>
+                                            <p><strong>Node ID:</strong> {{ node.nodeId }}</p>
+                                            <p><strong>Category:</strong> {{ node.category || 'General' }}</p>
+                                            <p><strong>Description:</strong> {{ node.description || 'No description
+                                                available' }}</p>
+                                            <p><strong>Ports Count:</strong> {{ node.ports?.length || 0 }}</p>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </ng-container>
 
-                        <div class="name-icon">
-                            <nz-icon *ngIf="node.uiLayout.icon" [nzType]="node.uiLayout.icon"></nz-icon>
-                            <span>{{ node.name }}</span>
+                        <div *ngIf="!activeFlow"
+                            style="display: flex; height: 100%; align-items: center; justify-content: center; color: #a0a0a0; font-size: 14px;">
+                            No flows found for this block. Click "+" in the sidebar to create one.
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -117,15 +208,40 @@
     </nz-splitter>
 
     <div class="right-panel">
-        <app-flow-config-panel [selectedNode]="selectedNode"></app-flow-config-panel>
+        <app-flow-config-panel [nodeData]="selectedNode" [flowNodes]="activeFlow?.nodes || []"
+            [connections]="activeConnections" [pipelineId]="pipelineId" [modelId]="modelId" [systemId]="systemId"
+            [unitId]="unitId" [selectedBlock]="selectedBlock" [activeFlowId]="activeFlow?.id || ''"
+            (nodeUpdated)="refreshNodeEndpoints($event)">
+        </app-flow-config-panel>
     </div>
 
+    <!-- Context Menu -->
     <div class="context-menu" *ngIf="isContextMenuVisible" [style.top.px]="contextMenuPosition.y"
         [style.left.px]="contextMenuPosition.x">
-        <div class="menu-item delete" (click)="deleteNode()">
-            <nz-icon nzType="delete" style="margin-right: 8px;"></nz-icon> Delete
-        </div>
+        <div class="menu-item delete" (click)="deleteNode()">Delete</div>
     </div>
 </div>
 
-<!-- <p class="flow-debug">{{showFlow}}</p> -->
+<nz-modal [(nzVisible)]="isFlowModalVisible" [nzTitle]="isEditMode ? 'Edit Flow' : 'Create New Flow'"
+    (nzOnCancel)="handleFlowModalCancel()" (nzOnOk)="handleFlowModalOk()" nzOkText="Save">
+    <ng-container *nzModalContent>
+        <form nz-form nzLayout="vertical">
+            <nz-form-item>
+                <nz-form-label nzRequired>Flow Name</nz-form-label>
+                <nz-form-control nzErrorTip="Please enter flow name!">
+                    <input nz-input placeholder="Enter flow name" [(ngModel)]="flowFormName" name="flowFormName" />
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label>Description</nz-form-label>
+                <nz-form-control>
+                    <textarea nz-input rows="3" placeholder="Enter flow description" [(ngModel)]="flowFormDescription"
+                        name="flowFormDescription"></textarea>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
+<p class="flow-debug">{{showFlowDebug}}</p>
+
+<!-- Fix code Version-1 -->

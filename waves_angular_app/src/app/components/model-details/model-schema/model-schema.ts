@@ -1,17 +1,18 @@
 import { Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
+// NG-ZORRO Imports
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { NzSwitchModule } from 'ng-zorro-antd/switch';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTypographyModule } from 'ng-zorro-antd/typography';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+
+import { model, getModelSchema, SchemaField, ModelSchemas } from '../../../pages/block-editor/data';
 
 interface AppStateField {
   _id?: string;
@@ -20,8 +21,8 @@ interface AppStateField {
   type: 'input' | 'output';
   isRequired: boolean;
   defaultValue: any;
-  isEditing?: boolean;
-  originalData?: any;
+  description?: string;
+  isModelSchema: boolean; // Flag to designate model-level schema fields
 }
 
 @Component({
@@ -34,9 +35,9 @@ interface AppStateField {
     NzButtonModule,
     NzInputModule,
     NzSelectModule,
-    NzSwitchModule,
     NzIconModule,
-    NzTypographyModule
+    NzTypographyModule,
+    NzTagModule,
   ],
   templateUrl: './model-schema.html',
   styleUrl: './model-schema.css',
@@ -44,134 +45,90 @@ interface AppStateField {
 export class ModelSchema implements OnInit {
   searchText = '';
   systemId!: string;
+  modelId: string = '';
+  modelVersion: string = '';
   isLoading = false;
-  initialLoadComplete = false;
+  unitId = ''
 
-  dataTypes = ['string', 'number', 'boolean', 'date', 'float', 'object', 'array', 'null'];
+  dataTypes = ['string', 'number', 'decimal', 'boolean', 'date', 'float', 'object', 'array', 'null'];
   typeOptions: ('input' | 'output')[] = ['input', 'output'];
 
-  // Static Data
-  appStateFields: AppStateField[] = [
-    { _id: '1', fieldName: 'user_name', dataType: 'string', type: 'input', isRequired: true, defaultValue: 'Guest', isEditing: false },
-    { _id: '2', fieldName: 'retry_count', dataType: 'number', type: 'input', isRequired: false, defaultValue: 3, isEditing: false },
-    { _id: '3', fieldName: 'is_authenticated', dataType: 'boolean', type: 'output', isRequired: true, defaultValue: false, isEditing: false }
-  ];
+  appStateFields: AppStateField[] = [];
 
   constructor(
-    private activeroute: ActivatedRoute,
-    private message: NzMessageService,
-    private modal: NzModalService,
-    private cdr: ChangeDetectorRef
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef,
+    private router: Router
+
   ) { }
 
   ngOnInit() {
-    this.activeroute.paramMap.subscribe(params => {
-      this.systemId = params.get('id') || 'STATIC-SYS-001';
+    this.route.paramMap.subscribe(params => {
+      this.systemId = params.get('systemId') || 'b8fb0ff1-f1fb-4e68-9938-046d73f1631';
+      this.unitId = params.get('unitId') || 'b8fb0ff1-f1fb-4e68-9938-046d73f16f5c';
+      this.modelId = params.get('modelId') || 'MDL-660e8400-e29b-41d4-a716-446655440101';
+      this.loadModelSchema();
 
-      // Simulate initial loading
-      this.isLoading = true;
-      setTimeout(() => {
-        this.isLoading = false;
-        this.initialLoadComplete = true;
-        this.cdr.detectChanges();
-      }, 500);
     });
   }
 
-  addField() {
-    const newField: AppStateField = {
-      fieldName: '',
-      dataType: 'string',
-      type: 'input',
-      isRequired: false,
-      defaultValue: '',
-      isEditing: true
-    };
-    // Add to the top or bottom of the list
-    this.appStateFields = [...this.appStateFields, newField];
-    this.cdr.detectChanges();
-  }
-
-  saveField(field: AppStateField, index: number) {
-    if (!field.fieldName || field.fieldName.trim() === '') {
-      this.message.error('Field name is required');
-      return;
-    }
-
-    // Simulate "Saving"
+  /**
+   * Reads dynamic input and output schemas directly from data.ts via getModelSchema(model)
+   */
+  loadModelSchema() {
     this.isLoading = true;
 
-    setTimeout(() => {
-      if (!field._id) {
-        // Create Logic (assign a fake ID)
-        field._id = Math.random().toString(36).substr(2, 9);
-        this.message.success('Field created locally');
-      } else {
-        // Update Logic
-        this.message.success('Field updated locally');
-      }
+    const summary: ModelSchemas = getModelSchema(model);
+    this.modelId = summary.modelId ?? 'MDL-660e8400-e29b-41d4-a716-446655440101';
+    this.modelVersion = summary.modelVersion ?? '';
 
-      field.isEditing = false;
-      this.appStateFields = [...this.appStateFields];
-      this.isLoading = false;
-      this.cdr.detectChanges();
-    }, 400);
-  }
+    const loadedFields: AppStateField[] = [];
 
-  deleteField(index: number) {
-    const field = this.appStateFields[index];
-
-    // If it's a new unsaved row, just remove it
-    if (!field._id) {
-      this.removeAt(index);
-      return;
-    }
-
-    this.modal.confirm({
-      nzTitle: 'Confirm Delete',
-      nzContent: 'Are you sure you want to delete this field?',
-      nzOkText: 'Yes',
-      nzOkDanger: true,
-      nzOnOk: () => {
-        this.removeAt(index);
-        this.message.success('Field removed');
-      }
+    // Map model input schema
+    summary.schema.inputSchema.forEach((field: SchemaField) => {
+      loadedFields.push({
+        _id: field.id,
+        fieldName: field.name,
+        dataType: field.type || 'string',
+        type: 'input',
+        isRequired: false,
+        defaultValue: '',
+        description: field.description || '',
+        isModelSchema: true
+      });
     });
-  }
 
-  private removeAt(index: number) {
-    this.appStateFields.splice(index, 1);
-    this.appStateFields = [...this.appStateFields];
-    this.cdr.detectChanges();
-  }
+    // Map model output schema
+    summary.schema.outputSchema.forEach((field: SchemaField) => {
+      loadedFields.push({
+        _id: field.id,
+        fieldName: field.name,
+        dataType: field.type || 'string',
+        type: 'output',
+        isRequired: false,
+        defaultValue: '',
+        description: field.description || '',
+        isModelSchema: true
+      });
+    });
 
-  cancelEdit(field: AppStateField, index: number) {
-    if (!field._id) {
-      // If it was a new row being added, remove it
-      this.appStateFields.splice(index, 1);
-    } else {
-      // Restore original data
-      if (field.originalData) {
-        this.appStateFields[index] = { ...field.originalData, isEditing: false };
-      } else {
-        field.isEditing = false;
-      }
-    }
-    this.appStateFields = [...this.appStateFields];
-    this.cdr.detectChanges();
-  }
-
-  editField(field: AppStateField) {
-    // Store original data in case of cancel
-    field.originalData = JSON.parse(JSON.stringify(field));
-    field.isEditing = true;
+    this.appStateFields = loadedFields;
+    this.isLoading = false;
     this.cdr.detectChanges();
   }
 
   get filteredFields() {
     if (!this.searchText) return this.appStateFields;
     return this.appStateFields.filter(f =>
-      f.fieldName?.toLowerCase().includes(this.searchText.toLowerCase())
+      f.fieldName?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      f.type?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      f.dataType?.toLowerCase().includes(this.searchText.toLowerCase()) ||
+      f.description?.toLowerCase().includes(this.searchText.toLowerCase())
     );
+  }
+
+  goToEditor() {
+    this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/MDL-660e8400-e29b-41d4-a716-446655440101/schema/block-editor`]);
+
   }
 }

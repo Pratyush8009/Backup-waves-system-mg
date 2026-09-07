@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 /** * --- Interfaces for the New API Structure ---
  */
@@ -77,59 +78,37 @@ export interface UpdateUnitDto {
   providedIn: 'root'
 })
 export class UnitService {
-  private apiUrl = 'http://localhost:8080/api/v1/waves';
+
+  private apiUrl = environment.apiUrl;
+
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * API 1: Get units for a specific user
-   * GET /users/<user_id>/units
-   */
   getUnitsByUserId(userId: string): Observable<ApiResponse<{ units: UnitListItem[], total: number }>> {
     return this.http.get<ApiResponse<{ units: UnitListItem[], total: number }>>(
-      `${this.apiUrl}/users/${userId}/units`
+      `${this.apiUrl}/v1/waves/users/${userId}/units`
     );
   }
 
-  /**
-   * API 2: Get systems for a specific unit
-   * GET /units/<unit_id>/systems
-   */
   getSystemsByUnitId(unitId: string): Observable<ApiResponse<{ systems: SystemListItem[], total: number, systemSummary: any }>> {
     return this.http.get<ApiResponse<{ systems: SystemListItem[], total: number, systemSummary: any }>>(
-      `http://localhost:8080/api/waves/units/${unitId}/systems`
+      `${this.apiUrl}/v1/waves/units/${unitId}/systems`
     );
   }
 
-  /**
-   * API 3: Create unit for a specific user
-   * POST /units
-   */
   createUnit(unitData: CreateUnitDto): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`http://localhost:8080/api/waves/units`, unitData);
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/v1/waves/units`, unitData);
   }
 
-  /**
-   * API 4: Get a unit details (Comprehensive details)
-   * GET /units/<unit_id>
-   */
   getUnitById(unitId: string): Observable<ApiResponse<{ unitMetadata: UnitMetadata, subscription: any, members: any, systems: any }>> {
-    return this.http.get<ApiResponse<any>>(`http://localhost:8080/api/waves/units/${unitId}`);
+    return this.http.get<ApiResponse<any>>(`${this.apiUrl}/waves/units/${unitId}`);
   }
 
-  /**
-   * API 5: Update unit
-   * PUT /units/<unit_id>
-   */
   updateUnit(unitId: string, unitData: UpdateUnitDto): Observable<ApiResponse<any>> {
-    return this.http.put<ApiResponse<any>>(`http://localhost:8080/api/waves/units/${unitId}`, unitData);
+    return this.http.put<ApiResponse<any>>(`${this.apiUrl}/waves/units/${unitId}`, unitData);
   }
 
-  /**
-   * API 6: Delete unit
-   * DELETE /units/<unit_id>
-   */
   deleteUnit(unitId: string): Observable<ApiResponse<{ success: boolean }>> {
-    return this.http.delete<ApiResponse<{ success: boolean }>>(`http://localhost:8080/api/waves/units/${unitId}`);
+    return this.http.delete<ApiResponse<{ success: boolean }>>(`${this.apiUrl}/waves/units/${unitId}`);
   }
 }

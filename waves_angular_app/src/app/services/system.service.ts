@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // --- Shared Response Interface ---
 
@@ -96,67 +97,38 @@ export interface ActionResponseData {
   providedIn: 'root'
 })
 export class SystemService {
-  // Base URL updated to match your new API endpoints
-  private baseUrl = 'http://localhost:8080/api/v1/waves/units';
+  private apiUrl = environment.apiUrl;
+
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * API 1: Create System
-   * POST /api/v1/waves/units/<unit_id>/systems
-   */
   createSystem(unitId: string, payload: { name: string; type: string }): Observable<ApiResponse<any>> {
-    return this.http.post<ApiResponse<any>>(`${this.baseUrl}/${unitId}/systems`, payload);
+    return this.http.post<ApiResponse<any>>(`${this.apiUrl}/v1/waves/units/${unitId}/systems`, payload);
   }
 
-  /**
-   * API 2: Get all systems for a unit
-   * GET /api/v1/waves/units/<unit_id>/systems
-   */
   getSystemsByUnit(unitId: string): Observable<ApiResponse<UnitSystemsData>> {
-    // Note: API 2 in your example uses /api/waves/ (no v1), 
-    // but typically these are consistent. Adjusting to match your list URL:
-    const listUrl = `http://localhost:8080/api/waves/units/${unitId}/systems`;
+    const listUrl = `${this.apiUrl}/waves/units/${unitId}/systems`;
     return this.http.get<ApiResponse<UnitSystemsData>>(listUrl);
   }
 
-  /**
-   * API 3: Get specific system details
-   * GET /api/v1/waves/units/<unit_id>/systems/<system_id>
-   */
+
   getSystemById(unitId: string, systemId: string): Observable<ApiResponse<SystemDetail>> {
-    return this.http.get<ApiResponse<SystemDetail>>(`${this.baseUrl}/${unitId}/systems/${systemId}`);
+    return this.http.get<ApiResponse<SystemDetail>>(`${this.apiUrl}/v1/waves/units/${unitId}/systems/${systemId}`);
   }
 
-  /**
-   * API 4: Update a system
-   * PUT /api/v1/waves/units/<unit_id>/systems/<system_id>
-   */
   updateSystem(unitId: string, systemId: string, data: { name: string; description: string }): Observable<ApiResponse<ActionResponseData>> {
-    return this.http.put<ApiResponse<ActionResponseData>>(`${this.baseUrl}/${unitId}/systems/${systemId}`, data);
+    return this.http.put<ApiResponse<ActionResponseData>>(`${this.apiUrl}/v1/waves/units/${unitId}/systems/${systemId}`, data);
   }
 
-  /**
-   * API 5: Delete a system
-   * DELETE /api/v1/waves/units/<unit_id>/systems/<system_id>
-   */
   deleteSystem(unitId: string, systemId: string): Observable<ApiResponse<ActionResponseData>> {
-    return this.http.delete<ApiResponse<ActionResponseData>>(`${this.baseUrl}/${unitId}/systems/${systemId}`);
+    return this.http.delete<ApiResponse<ActionResponseData>>(`${this.apiUrl}/v1/waves/units/${unitId}/systems/${systemId}`);
   }
 
-  /**
-   * API 6: Deactivate system
-   * PUT /api/v1/waves/units/<unit_id>/systems/<system_id>/deactivate
-   */
   deactivateSystem(unitId: string, systemId: string): Observable<ApiResponse<ActionResponseData>> {
-    return this.http.put<ApiResponse<ActionResponseData>>(`${this.baseUrl}/${unitId}/systems/${systemId}/deactivate`, {});
+    return this.http.put<ApiResponse<ActionResponseData>>(`${this.apiUrl}/v1/waves/units/${unitId}/systems/${systemId}/deactivate`, {});
   }
 
-  /**
-   * API 7: Activate a system
-   * PUT /api/v1/waves/units/<unit_id>/systems/<system_id>/activate
-   */
   activateSystem(unitId: string, systemId: string): Observable<ApiResponse<ActionResponseData>> {
-    return this.http.put<ApiResponse<ActionResponseData>>(`${this.baseUrl}/${unitId}/systems/${systemId}/activate`, {});
+    return this.http.put<ApiResponse<ActionResponseData>>(`${this.apiUrl}/v1/waves/units/${unitId}/systems/${systemId}/activate`, {});
   }
 }

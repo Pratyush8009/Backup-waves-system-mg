@@ -9,7 +9,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import * as XLSX from 'xlsx';
-import { systemSchema, modelFileGroups, analysisFileGroups, fileData } from './file';
+import { modelSchema, modelFileGroups, analysisFileGroups, fileData } from './file';
 
 export interface ExecutableFile {
   id: string;
@@ -133,16 +133,16 @@ export class FileUpload implements OnDestroy {
     }
   }
 
-  // Extract ALL input and output schema items from systemSchema
+  // Extract ALL input and output schema items from modelSchema
   private extractSystemSchemas(): void {
-    const inputs = systemSchema.inputProperties.map(p => ({
+    const inputs = modelSchema.inputProperties.map(p => ({
       label: `${p.name} (${p.propertyType.toUpperCase()})`,
       value: p.name,
       dataType: p.dataType,
       type: p.propertyType
     }));
 
-    const outputs = systemSchema.outputProperties.map(p => ({
+    const outputs = modelSchema.outputProperties.map(p => ({
       label: `${p.name} (${p.propertyType.toUpperCase()})`,
       value: p.name,
       dataType: p.dataType,

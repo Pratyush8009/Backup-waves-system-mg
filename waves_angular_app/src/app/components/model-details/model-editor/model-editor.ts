@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ConfigurePage } from '../../../pages/configure-page/configure-page';
+import { BlockEditor } from '../../../pages/block-editor/block-editor';
 import { FlowEditor } from '../../../pages/flow-editor/flow-editor';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-model-editor',
-  imports: [ConfigurePage, FlowEditor, FormsModule,CommonModule],
+  imports: [BlockEditor, FlowEditor, FormsModule, CommonModule],
   templateUrl: './model-editor.html',
   styleUrl: './model-editor.css',
 })

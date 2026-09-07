@@ -19,7 +19,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { NzInputModule } from 'ng-zorro-antd/input';
 
-import { FlowConfigPanel } from '../../right-side-panel/flow-config-panel/flow-config-panel';
+// import { FlowConfigPanel } from '../../right-side-panel/flow-config-panel/flow-config-panel';
 // Importing your flowNodes data
 import { block as BlockData } from './flow.data';
 interface Port {
@@ -70,7 +70,8 @@ interface Panel {
   imports: [
     CommonModule, FormsModule, NzButtonModule, NzBreadCrumbModule,
     NzSplitterModule, NzIconModule, NzTooltipModule,
-    FlowConfigPanel, NzDividerModule, NzModalModule, NzSelectModule,
+    // FlowConfigPanel, 
+    NzDividerModule, NzModalModule, NzSelectModule,
     NzCollapseModule, NzInputModule
   ],
   templateUrl: './analysis-flow-editor.html',

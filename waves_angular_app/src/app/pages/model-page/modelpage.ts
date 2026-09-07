@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Required for *ngIf
+import { CommonModule } from '@angular/common';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb'; // Added Breadcrumb module
 import { RouterModule, Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
@@ -17,7 +16,6 @@ import { filter } from 'rxjs/operators';
     NzMenuModule,
     NzIconModule,
     NzButtonModule,
-    NzBreadCrumbModule,
     RouterModule
   ],
   templateUrl: './model-page.html',
@@ -27,9 +25,13 @@ export class ModelPage implements OnInit {
   systemId!: string;
   unitId!: string;
   modelId!: string;
-  currentPage: string = 'Overview'; // Track the breadcrumb state
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  isConfigOpen = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
@@ -37,47 +39,53 @@ export class ModelPage implements OnInit {
       this.unitId = params.get('unitId') || '';
       this.modelId = params.get('modelId') || '';
 
-      this.updateCurrentPage(this.router.url);
+      this.checkConfigSubMenu(this.router.url);
     });
 
-    // Listen to route changes to update breadcrumbs automatically
+    // Auto-expand Configuration sub-menu if route matches on load/navigation
     this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: any) => {
-      this.updateCurrentPage(event.url);
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe((event: NavigationEnd) => {
+      this.checkConfigSubMenu(event.urlAfterRedirects || event.url);
     });
-    console.log("THE UNIT ID AND USER ID IN UNIT PAGE 2 ARE", this.systemId, this.unitId, this.modelId)
   }
 
-  // Helper to determine which breadcrumb to show based on URL
-  updateCurrentPage(url: string) {
-    if (url.includes('/configuration')) this.currentPage = 'Configuration';
-    else if (url.includes('/testing')) this.currentPage = 'Testing';
-    else if (url.includes('/editor')) this.currentPage = 'Editor';
-    else if (url.includes('/deploy')) this.currentPage = 'Deploy';
-    else if (url.includes('/template')) this.currentPage = 'Template';
-    else this.currentPage = 'Overview';
+  private checkConfigSubMenu(url: string) {
+    if (url.includes('/configuration') || url.includes('/schema') || url.includes('/template')) {
+      this.isConfigOpen = true;
+    }
   }
 
-  modelOverviewPage() {
+  // --- Navigation Methods ---
+
+  navigateToOverview() {
     this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/`]);
   }
-  modeleditorPage() {
+
+  navigateToEditor() {
     this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/editor`]);
   }
 
-  modelConfigurationPage() {
-    this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/configuration`]);
+  navigateToConfigSchema() {
+    this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/schema`]);
   }
-  modelTemplateConfigurationPage() {
+
+  navigateToConfigTemplate() {
     this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/template`]);
   }
-  modelTestingPage() {
+
+  navigateToConfigSettings() {
+    this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/configuration`]);
+  }
+
+  navigateToTesting() {
     this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/testing`]);
   }
-  modelDeployPage() {
+
+  navigateToDeploy() {
     this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models/${this.modelId}/deploy`]);
   }
+
   goBackToUnits() {
     this.router.navigate([`/units/${this.unitId}/systems/${this.systemId}/models`]);
   }

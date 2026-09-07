@@ -8,27 +8,43 @@
         </div>
 
         <ul nz-menu nzMode="inline">
-            <li nz-menu-item [nzSelected]="currentPage === 'Overview'" (click)="modelOverviewPage()">
+            <li nz-menu-item [routerLink]="['/units', unitId, 'systems', systemId, 'models', modelId]"
+                routerLinkActive="ant-menu-item-selected" [routerLinkActiveOptions]="{ exact: true }"
+                (click)="navigateToOverview()">
                 <span nz-icon nzType="pie-chart"></span>
                 <span>Overview</span>
             </li>
-            <li nz-menu-item [nzSelected]="currentPage === 'Editor'" (click)="modeleditorPage()">
-                <span nz-icon nzType="node-index"></span>
-                <span>Editor</span>
+
+            <li nz-submenu nzTitle="Configuration" [(nzOpen)]="isConfigOpen">
+                <ul>
+                    <li nz-menu-item [routerLink]="['/units', unitId, 'systems', systemId, 'models', modelId, 'schema']"
+                        routerLinkActive="ant-menu-item-selected" (click)="navigateToConfigSchema()">
+                        <span nz-icon nzType="table"></span>
+                        <span>Schema</span>
+                    </li>
+                    <li nz-menu-item
+                        [routerLink]="['/units', unitId, 'systems', systemId, 'models', modelId, 'template']"
+                        routerLinkActive="ant-menu-item-selected" (click)="navigateToConfigTemplate()">
+                        <span nz-icon nzType="profile"></span>
+                        <span>Template</span>
+                    </li>
+                    <li nz-menu-item
+                        [routerLink]="['/units', unitId, 'systems', systemId, 'models', modelId, 'configuration']"
+                        routerLinkActive="ant-menu-item-selected" (click)="navigateToConfigSettings()">
+                        <span nz-icon nzType="setting"></span>
+                        <span>Settings</span>
+                    </li>
+                </ul>
             </li>
-            <li nz-menu-item [nzSelected]="currentPage === 'Configuration'" (click)="modelConfigurationPage()">
-                <span nz-icon nzType="edit"></span>
-                <span>Configuration</span>
-            </li>
-            <li nz-menu-item [nzSelected]="currentPage === 'Template'" (click)="modelTemplateConfigurationPage()">
-                <span nz-icon nzType="profile"></span>
-                <span>Template</span>
-            </li>
-            <li nz-menu-item [nzSelected]="currentPage === 'Testing'" (click)="modelTestingPage()">
+
+            <li nz-menu-item [routerLink]="['/units', unitId, 'systems', systemId, 'models', modelId, 'testing']"
+                routerLinkActive="ant-menu-item-selected" (click)="navigateToTesting()">
                 <span nz-icon nzType="experiment"></span>
                 <span>Testing</span>
             </li>
-            <li nz-menu-item [nzSelected]="currentPage === 'Deploy'" (click)="modelDeployPage()">
+
+            <li nz-menu-item [routerLink]="['/units', unitId, 'systems', systemId, 'models', modelId, 'deploy']"
+                routerLinkActive="ant-menu-item-selected" (click)="navigateToDeploy()">
                 <span nz-icon nzType="rocket"></span>
                 <span>Deployment</span>
             </li>
@@ -37,21 +53,9 @@
 
     <nz-layout>
         <nz-header class="top-bar">
-            <nz-breadcrumb>
-                <nz-breadcrumb-item>Home</nz-breadcrumb-item>
-                <nz-breadcrumb-item>User</nz-breadcrumb-item>
-                <nz-breadcrumb-item>Unit</nz-breadcrumb-item>
-                <nz-breadcrumb-item>System</nz-breadcrumb-item>
-                <nz-breadcrumb-item>Model</nz-breadcrumb-item>
-
-                <nz-breadcrumb-item *ngIf="currentPage === 'Overview'">Overview</nz-breadcrumb-item>
-                <nz-breadcrumb-item *ngIf="currentPage === 'Editor'">Editor</nz-breadcrumb-item>
-                <nz-breadcrumb-item *ngIf="currentPage === 'Configuration'">Configuration</nz-breadcrumb-item>
-                <nz-breadcrumb-item *ngIf="currentPage === 'Template'">Template</nz-breadcrumb-item>
-                <nz-breadcrumb-item *ngIf="currentPage === 'Testing'">Testing</nz-breadcrumb-item>
-                <nz-breadcrumb-item *ngIf="currentPage === 'Deploy'">Deploy</nz-breadcrumb-item>
-
-            </nz-breadcrumb>
+            <div class="header-title">
+                <span>Model Workspace</span>
+            </div>
         </nz-header>
 
         <nz-content>

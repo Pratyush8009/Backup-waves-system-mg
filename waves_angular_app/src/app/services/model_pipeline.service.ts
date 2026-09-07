@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 // --- Base API Envelope ---
 export interface BaseApiResponse<T> {
@@ -75,20 +76,17 @@ export interface BlockFlowDetails {
   providedIn: 'root'
 })
 export class ModelPipelineService {
-  private baseUrl = 'http://localhost:8080/api/v1/waves';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
-  /**
-   * API: Get flow details for a specific block
-   * GET /api/v1/waves/models/<model_id>/pipelines/<pipeline_id>/block/<block_id>
-   */
+
   getBlockFlow(
-    modelId: string, 
-    pipelineId: string, 
+    modelId: string,
+    pipelineId: string,
     blockId: string
   ): Observable<BaseApiResponse<BlockFlowDetails>> {
-    const url = `${this.baseUrl}/models/${modelId}/pipelines/${pipelineId}/block/${blockId}`;
+    const url = `${this.apiUrl}/v1/waves/models/${modelId}/pipelines/${pipelineId}/block/${blockId}`;
     return this.http.get<BaseApiResponse<BlockFlowDetails>>(url);
   }
 }

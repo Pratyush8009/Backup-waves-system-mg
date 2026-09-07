@@ -38,6 +38,12 @@ nz-sider {
     border-bottom: 1px solid #e5e7eb;
 }
 
+.header-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
 /* Menu Customization */
 [nz-menu] {
     border-right: none;
@@ -47,14 +53,12 @@ nz-sider {
 /* Content Area */
 nz-content {
     height: calc(100vh - 64px);
-    /* Subtract header height */
     overflow-y: auto;
     background: #f8fafc;
 }
 
 .inner-content {
-    padding: 10px;
-    /* Slightly more padding for a modern feel */
+    padding: 16px;
     min-height: 100%;
 }
 

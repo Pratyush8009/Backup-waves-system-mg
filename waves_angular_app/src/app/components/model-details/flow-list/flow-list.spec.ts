@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ConfigurePage } from './configure-page';
+import { FlowList } from './flow-list';
 
-describe('ConfigurePage', () => {
-  let component: ConfigurePage;
-  let fixture: ComponentFixture<ConfigurePage>;
+describe('FlowList', () => {
+  let component: FlowList;
+  let fixture: ComponentFixture<FlowList>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ConfigurePage]
+      imports: [FlowList]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ConfigurePage);
+    fixture = TestBed.createComponent(FlowList);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

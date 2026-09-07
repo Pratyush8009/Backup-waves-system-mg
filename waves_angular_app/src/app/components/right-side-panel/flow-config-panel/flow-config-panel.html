@@ -1,14 +1,111 @@
-<div class="config-panel">
-    <h3>Configuration</h3>
-
-    <div class="icons">
-        <div class="icon-box" nz-tooltip nzTooltipTitle="Info">
-            <nz-icon nzType="info" nzTheme="outline"></nz-icon>
-        </div>
-        <div class="icon-box" nz-tooltip nzTooltipTitle="Setting">
-            <nz-icon nzType="setting" nzTheme="outline"></nz-icon>
+<div class="config-container">
+    <!-- Sticky Header Section -->
+    <div class="header-section">
+        <h2 class="panel-title">{{ nodeData ? 'Node Configuration' : 'Block Configuration' }}</h2>
+        <div class="header-actions">
+            <div class="action-btn" nz-tooltip nzTooltipTitle="Info">
+                <nz-icon nzType="info" nzTheme="outline"></nz-icon>
+            </div>
+            <div class="action-btn" nz-tooltip nzTooltipTitle="Settings">
+                <nz-icon nzType="setting" nzTheme="outline"></nz-icon>
+            </div>
         </div>
     </div>
-</div>
 
-<p *ngIf="selectedNode">{{selectedNode.name}}</p>
+    <!-- Scrollable Panel Body -->
+    <div class="panel-scroll-body">
+        <div *ngIf="nodeData; else defaultBlockConfig" class="content-section">
+
+            <!-- I/O Nodes Tabs (INPUT & OUTPUT) -->
+            <div class="tab-header"
+                *ngIf="['INPUT', 'OUTPUT','ML', 'FILTER', 'PROCESSOR','VALIDATOR','JSONTOCSV','CSVTOJSON'].includes(nodeData.nodeType)">
+                <div class="tab-item" [class.active]="activeTab === 0" (click)="activeTab = 0">Info</div>
+                <div class="tab-item" [class.active]="activeTab === 1" (click)="activeTab = 1">Schemas</div>
+                <div class="tab-item" [class.active]="activeTab === 2" (click)="activeTab = 2">Connector</div>
+                <div class="tab-item" [class.active]="activeTab === 3" (click)="activeTab = 3">Config</div>
+            </div>
+
+            <!-- TAB 0: INFO -->
+            <div class="tab-body" *ngIf="activeTab === 0">
+                <div class="form-group">
+                    <label>Name</label>
+                    <input nz-input [disabled]="true" [ngModel]="nodeData.name" />
+                </div>
+                <div class="form-group">
+                    <label>Type</label>
+                    <input nz-input [disabled]="true" [ngModel]="nodeData.nodeType" />
+                </div>
+                <div class="form-group">
+                    <label>Category</label>
+                    <input nz-input [disabled]="true" [ngModel]="nodeData.category" />
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea nz-input [disabled]="true" rows="4"
+                        [ngModel]="nodeData.description || 'No description available'"></textarea>
+                </div>
+            </div>
+
+            <!-- TAB 1: Schemas -->
+            <div class="tab-body" *ngIf="activeTab === 1">
+                <div class="add-section">
+                </div>
+            </div>
+
+            <!-- TAB 2: Connector -->
+            <div class="tab-body" *ngIf="activeTab === 2 ">
+                <div class="add-section">
+                </div>
+            </div>
+
+            <!-- TAB 4 / TAB 3: config -->
+            <div class="tab-body" *ngIf="activeTab === 3 ">
+                <div class="add-section">
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Default View: Parent Block Configuration (When no node is selected) -->
+        <ng-template #defaultBlockConfig>
+            <div class="tab-header">
+                <div class="tab-item" [class.active]="activeModelTab === 0" (click)="activeModelTab = 0">Info</div>
+                <div class="tab-item" [class.active]="activeModelTab === 1" (click)="activeModelTab = 1">Schemas</div>
+                <div class="tab-item" [class.active]="activeModelTab === 2" (click)="activeModelTab = 2">Flows</div>
+
+            </div>
+
+            <div class="tab-body" *ngIf="activeModelTab === 0">
+                <div class="model-config-view">
+                    <div class="form-group">
+                        <label>Model ID</label>
+                        <input nz-input [disabled]="true" [ngModel]="modelId" />
+                    </div>
+                    <div class="form-group">
+                        <label>Block ID</label>
+                        <input nz-input [disabled]="true" [ngModel]="selectedBlock?.value" />
+                    </div>
+                    <div class="form-group">
+                        <label>Flow ID</label>
+                        <input nz-input [disabled]="true" [ngModel]="activeFlowId" />
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <input nz-input [disabled]="true" value="Active" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-body" *ngIf="activeModelTab === 1">
+                <div class="schemas-wrapper">
+                    Schemas
+                </div>
+            </div>
+            <div class="tab-body" *ngIf="activeModelTab === 2">
+                <div class="flows-wrapper">
+                    Flows
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>

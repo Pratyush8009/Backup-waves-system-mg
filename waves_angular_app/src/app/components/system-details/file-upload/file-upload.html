@@ -1,9 +1,7 @@
 <div class="page-container">
     <div class="main-layout">
 
-        <!-- LEFT PANEL -->
         <div class="left-panel">
-            <!-- Tabs Switcher -->
             <div class="tabs-header">
                 <button class="tab-btn" [class.active]="activeTab() === 'model'" (click)="setActiveTab('model')">
                     Model
@@ -13,7 +11,6 @@
                 </button>
             </div>
 
-            <!-- Analysis Dropdown -->
             @if (activeTab() === 'analysis') {
             <div class="analysis-select-box">
                 <label class="select-label">Choose Analysis</label>
@@ -25,7 +22,6 @@
             </div>
             }
 
-            <!-- File History -->
             <div class="history-list-scroll">
                 @for (group of activeFileGroups(); track group.date) {
                 <div class="date-group">
@@ -52,7 +48,6 @@
                 }
             </div>
 
-            <!-- Footer Upload Button -->
             <div class="left-panel-footer">
                 <nz-upload [nzBeforeUpload]="handleFileUpload" [nzShowUploadList]="false" class="full-width">
                     <button nz-button nzType="default" class="upload-btn-full">
@@ -62,10 +57,8 @@
             </div>
         </div>
 
-        <!-- RIGHT PANEL WORKFLOW -->
         <div class="right-panel">
 
-            <!-- STEP 1: DATA OVERVIEW -->
             @if (workflowStep() === 1) {
             <div class="workflow-card">
                 <div class="section-title-bar">
@@ -132,7 +125,6 @@
             </div>
             }
 
-            STEP 2: COLUMN MAPPING
             @if (workflowStep() === 2) {
             <div class="workflow-card">
                 <div class="section-title-bar">
@@ -143,13 +135,12 @@
                     <div class="mapping-grid">
                         <div class="mapping-header-labels">
                             <span>Data Column</span>
-                            <span>System Schema</span>
+                            <span>Model Schema</span>
                         </div>
 
                         @for (item of mappingItems(); track item.sourceColumn) {
                         <div class="mapping-row-wrapper">
                             <div class="mapping-row">
-                                <!-- Source Data Column Box -->
                                 <div class="mapping-box source-box" [class.warning-box]="item.columnMismatch">
                                     <span class="source-name">{{ item.sourceColumn }}</span>
                                     <span class="type-badge"
@@ -158,7 +149,6 @@
                                     </span>
                                 </div>
 
-                                <!-- Target Schema Dropdown (All system schemas remain visible here) -->
                                 <div class="mapping-box target-box"
                                     [class.mismatch-border]="item.typeMismatch || item.columnMismatch">
                                     <nz-select class="nz-schema-select" [ngModel]="item.targetSchema"
@@ -171,7 +161,6 @@
                                 </div>
                             </div>
 
-                            <!-- Mismatch Warning Messages -->
                             @if (item.columnMismatch) {
                             <div class="mismatch-warning-below">
                                 Column mismatch

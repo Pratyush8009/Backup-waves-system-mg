@@ -107,7 +107,7 @@ nz-table {
     transition: background 0.3s;
 }
 
-::ng-deep .ant-table-tbody>tr:hover>td {
+::ng-deep .ant-table-tbody>tr:hover>td { 
     background: #f5f9ff;
 }
 
@@ -283,7 +283,6 @@ td nz-switch {
     transform: scale(1.1);
 }
 
-/* Tooltip Styles */
 ::ng-deep .ant-tooltip-inner {
     border-radius: 4px;
     font-size: 12px;

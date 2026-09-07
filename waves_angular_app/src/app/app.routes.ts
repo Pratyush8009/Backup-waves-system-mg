@@ -3,7 +3,7 @@ import { UnitsPage } from './pages/units-page/units-page';
 import { ModelPage } from './pages/model-page/modelpage';
 import { SystemPage } from './pages/system-page/system-page';
 import { Home } from './pages/home/home';
-import { ConfigurePage } from './pages/configure-page/configure-page';
+import { BlockEditor } from './pages/block-editor/block-editor';
 import { UnitPage } from './pages/unit-page/unit-page';
 import { SystemOverview } from './components/system-details/system-overview/system-overview';
 import { AnalysisPage } from './pages/analysis-page/analysis-page';
@@ -24,10 +24,14 @@ import { ModelEditor } from './components/model-details/model-editor/model-edito
 import { Testing } from './components/testing/testing';
 import { ModelDeploy } from './components/model-details/model-deploy/model-deploy';
 import { ModelTemplate } from './components/model-details/model-template/model-template';
+import { ModelSchema } from './components/model-details/model-schema/model-schema';
+
+
 import { RenderTemplateWithPlotsConfigurationWithFeedData } from './components/template-render-components/pages/render-template-with-plots-configuration-with-feed-data/render-template-with-plots-configuration-with-feed-data';
 import { LandingPagesForAllTemplatePage } from './components/template-render-components/pages/landing-pages-for-all-template-page/landing-pages-for-all-template-page';
 import { RenderTemplateOnly } from './components/template-render-components/pages/render-template-only/render-template-only';
 import { RenderTemplateWithPlotsConfiguration } from './components/template-render-components/pages/render-template-with-plots-configuration/render-template-with-plots-configuration';
+import { FlowEditor } from './pages/flow-editor/flow-editor';
 export const routes: Routes = [
     { path: 'units/:id', component: UnitsPage },
     {
@@ -70,13 +74,24 @@ export const routes: Routes = [
         component: ModelPage,
         children: [
             { path: '', component: ModelOverview },
-            { path: 'editor', component: ModelEditor },
             { path: 'configuration', component: ModelConfiguration },
             { path: 'template', component: ModelTemplate },
             { path: 'testing', component: Testing },
             { path: 'deploy', component: ModelDeploy },
+            // { path: 'block-editor', component: BlockEditor },
+            // { path: 'flow-editor/:blockId', component: FlowEditor },
+            { path: 'schema', component: ModelSchema },
+
 
         ]
+    },
+    {
+        path: 'units/:unitId/systems/:systemId/models/:modelId/schema/block-editor',
+        component: BlockEditor
+    },
+    {
+        path: 'units/:unitId/systems/:systemId/models/:modelId/schema/flow-editor/:blockId',
+        component: FlowEditor
     },
 
 
@@ -97,6 +112,6 @@ export const routes: Routes = [
     },
 
     { path: 'units/:unitId/systems/:systemId/analysis/:analysisId', component: AnalysisPage },
-    { path: 'unit/system/subsystem/configure/:id', component: ConfigurePage },
+    { path: 'unit/system/subsystem/configure/:id', component: BlockEditor },
     { path: '', component: Home },
 ];

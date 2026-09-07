@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ModelSummary } from '../model-summary/model-summary';
-// import { ModelSchema } from '../model-schema/model-schema';
 import { ModelBlockDetails } from '../model-block-details/model-block-details';
 @Component({
   selector: 'app-model-configuration',
