@@ -11,6 +11,8 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
+import { Router } from '@angular/router';
+
 import { FlowList } from '../../model-details/flow-list/flow-list';
 import {
   SchemaField,
@@ -27,6 +29,8 @@ import {
   getMappedConnectionDetails,
   ModelConnectionSummary
 } from '../../../pages/block-editor/data';
+import { SavedFlow, getSavedFlows, getDataTypeColor, getDataTypeTextColor } from '../../../pages/code-safety/flow-data'
+
 
 export interface SchemaPopoverState {
   visible: boolean;
@@ -61,9 +65,15 @@ export class BlockConfigPannel implements OnChanges {
   @Input() consoleErrors: ConsoleError[] = [];
   @Output() nodeUpdated = new EventEmitter<BlockModel>();
 
+  constructor(private router: Router) {
+
+  }
+
+
   activeTab = 0;
   activeModelTab = 0;
-
+  getSavedFlows = getSavedFlows
+  savedFlows: SavedFlow[] = [];
   // Model-level accumulated schemas
   modelSchemas: ModelSchemas = {
     schema: {
@@ -92,20 +102,17 @@ export class BlockConfigPannel implements OnChanges {
     description: '',
     targetKey: null
   };
-
-  // Block Validation State
+  getDataTypeColor = getDataTypeColor
+  getDataTypeTextColor = getDataTypeTextColor
   guidanceState: BlockGuidanceState = validateBlockGuidance(null, []);
 
-  clearErrors(): void {
-    this.consoleErrors = [];
-  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['blockData'] && this.blockData) {
       this.activeTab = 0;
       this.resetPopoverState();
     }
-    
+    this.savedFlows = getSavedFlows();
     this.updateModelSchemas();
     this.updateGuidanceState();
     this.updateBlocksConfigStatus();
@@ -151,7 +158,11 @@ export class BlockConfigPannel implements OnChanges {
     if (!this.blockData) return;
     this.nodeUpdated.emit(this.blockData);
   }
-
+  //get block flows
+  get filteredFlows(): SavedFlow[] {
+    return this.savedFlows.filter(f =>
+      f.blockId === this.blockData?.instanceId);
+  }
   // Schema Capability Checks
   get canHaveInputSchema(): boolean {
     if (!this.blockData) return false;
@@ -279,33 +290,13 @@ export class BlockConfigPannel implements OnChanges {
     this.nodeUpdated.emit(this.blockData);
   }
 
-  getDataTypeColor(type: string): string {
-    const t = type?.toLowerCase();
-    switch (t) {
-      case 'number':
-      case 'integer':
-        return '#e6f7ff';
-      case 'decimal':
-        return '#fff0f6';
-      case 'string':
-        return '#f6ffed';
-      default:
-        return '#f5f5f5';
-    }
+  selectFlow(flowId: string) {
+    console.log("FLOWID FROM THE FLOW-LIST TO BLOCK CONFIG-PANEL:", flowId)
+    this.router.navigate([
+      `/units/${this.unitId}/systems/${this.systemId}/models/MDL-660e8400-e29b-41d4-a716-446655440101/schema/flow-editor/${this.blockData?.instanceId}/${flowId}`
+    ]);
   }
 
-  getDataTypeTextColor(type: string): string {
-    const t = type?.toLowerCase();
-    switch (t) {
-      case 'number':
-      case 'integer':
-        return '#1890ff';
-      case 'decimal':
-        return '#eb2f96';
-      case 'string':
-        return '#52c41a';
-      default:
-        return '#595959';
-    }
-  }
+
+
 }

@@ -23,12 +23,19 @@ import {
   model, updateModel, getBlocks, getModelSchema,
   BlockModel, ConnectionRecord, SavedConnectionRecord, ConsoleError, systemNodes, blockNodes, validateFlowGuidance,
   GuidanceState, getBlocksConfigurationStatus, getMappedConnectionDetails, SchemaField, Port,
-  addSchemaFieldToPort, addOrUpdateConnectionMapping, removeConnectionMapping, isInputSchemaMapped
+  addSchemaFieldToPort, addOrUpdateConnectionMapping, removeConnectionMapping, isInputSchemaMapped, getDataTypeColor, getDataTypeTextColor
 } from './data';
 
 interface FieldMappingPair {
   sourceField: SchemaField | null;
   targetField: SchemaField | null;
+}
+
+interface ConnectedBlockMappingGroup {
+  connectedBlockName: string;
+  connectedPortName: string;
+  connection: ConnectionRecord;
+  mappings: FieldMappingPair[];
 }
 
 interface ExpandedPopoverState {
@@ -39,6 +46,7 @@ interface ExpandedPopoverState {
   targetPort: Port | null;
   connection: ConnectionRecord | null;
   mappings: FieldMappingPair[];
+  connectedGroups: ConnectedBlockMappingGroup[];
 }
 
 interface SchemaPopoverState {
@@ -67,6 +75,8 @@ export class BlockEditor implements AfterViewInit, OnInit {
   @Output() fullscreenChange = new EventEmitter<boolean>();
   @ViewChild('container') container!: ElementRef;
   guidance: GuidanceState = validateFlowGuidance([], []);
+  getDataTypeTextColor = getDataTypeTextColor;
+  getDataTypeColor = getDataTypeColor;
 
   instance!: BrowserJsPlumbInstance;
   selectedNode: BlockModel | null = null;
@@ -106,7 +116,8 @@ export class BlockEditor implements AfterViewInit, OnInit {
     targetNode: null,
     targetPort: null,
     connection: null,
-    mappings: []
+    mappings: [],
+    connectedGroups: []
   };
 
   // Inline Field Add/Edit Popover Form State
@@ -270,7 +281,8 @@ export class BlockEditor implements AfterViewInit, OnInit {
         targetNode: targetNode || null,
         targetPort: targetPort,
         connection: activeConn,
-        mappings: this.buildMappingPairs(sourcePort, targetPort, activeConn)
+        mappings: this.buildMappingPairs(sourcePort, targetPort, activeConn),
+        connectedGroups: []
       };
 
       this.resetPopoverState();
@@ -311,6 +323,8 @@ export class BlockEditor implements AfterViewInit, OnInit {
     this.popoverPosition = { x: rect.left + rect.width / 2, y: rect.top - 10 };
 
     const isOutput = port.portType === 'OUTPUT';
+    const connectedGroups = this.getConnectedGroupsForPort(node, port);
+
     this.popoverState = {
       activeMode: isOutput ? 'OUTPUT_ONLY' : 'INPUT_ONLY',
       sourceNode: isOutput ? node : null,
@@ -318,11 +332,66 @@ export class BlockEditor implements AfterViewInit, OnInit {
       targetNode: !isOutput ? node : null,
       targetPort: !isOutput ? port : null,
       connection: null,
-      mappings: []
+      mappings: [],
+      connectedGroups
     };
 
     this.resetPopoverState();
     this.isPopoverVisible = true;
+    this.cdr.detectChanges();
+  }
+
+  private getConnectedGroupsForPort(node: BlockModel, port: Port): ConnectedBlockMappingGroup[] {
+    const isOutput = port.portType === 'OUTPUT';
+    const groups: ConnectedBlockMappingGroup[] = [];
+
+    this.activeConnections.forEach(conn => {
+      let otherNode: BlockModel | undefined;
+      let otherPort: Port | undefined;
+
+      if (isOutput && conn.sourceInstanceId === node.instanceId && conn.sourcePortId === port.id) {
+        otherNode = this.flowNodes.find(n => n.instanceId === conn.targetInstanceId);
+        otherPort = otherNode?.ports.find(p => p.id === conn.targetPortId);
+      } else if (!isOutput && conn.targetInstanceId === node.instanceId && conn.targetPortId === port.id) {
+        otherNode = this.flowNodes.find(n => n.instanceId === conn.sourceInstanceId);
+        otherPort = otherNode?.ports.find(p => p.id === conn.sourcePortId);
+      }
+
+      if (otherNode && otherPort) {
+        const sourcePort = isOutput ? port : otherPort;
+        const targetPort = isOutput ? otherPort : port;
+        const mappings = this.buildMappingPairs(sourcePort, targetPort, conn);
+
+        groups.push({
+          connectedBlockName: otherNode.name,
+          connectedPortName: otherPort.name,
+          connection: conn,
+          mappings
+        });
+      }
+    });
+
+    return groups;
+  }
+
+  editConnectionGroup(group: ConnectedBlockMappingGroup) {
+    const conn = group.connection;
+    const sourceNode = this.flowNodes.find(n => n.instanceId === conn.sourceInstanceId) || null;
+    const targetNode = this.flowNodes.find(n => n.instanceId === conn.targetInstanceId) || null;
+    const sourcePort = sourceNode?.ports.find(p => p.id === conn.sourcePortId) || null;
+    const targetPort = targetNode?.ports.find(p => p.id === conn.targetPortId) || null;
+
+    this.popoverState = {
+      activeMode: 'MAPPER_ACTIVE',
+      sourceNode,
+      sourcePort,
+      targetNode,
+      targetPort,
+      connection: conn,
+      mappings: this.buildMappingPairs(sourcePort, targetPort, conn),
+      connectedGroups: []
+    };
+
     this.cdr.detectChanges();
   }
 
@@ -467,7 +536,6 @@ export class BlockEditor implements AfterViewInit, OnInit {
     this.cdr.detectChanges();
   }
 
-  // Schema Popover Handlers
   openAddPopover(type: 'OUTPUT' | 'INPUT') {
     const isOutput = type === 'OUTPUT';
     this.schemaPopoverState = {
@@ -870,34 +938,5 @@ export class BlockEditor implements AfterViewInit, OnInit {
       `/units/${this.unitId}/systems/${this.systemId}/models/MDL-660e8400-e29b-41d4-a716-446655440101/schema/flow-editor/${nodeToUse.instanceId}`
     ]);
   }
-
-  getDataTypeColor(type: string): string {
-    const t = type?.toLowerCase();
-    switch (t) {
-      case 'number':
-      case 'integer':
-        return '#e6f7ff';
-      case 'decimal':
-        return '#fff0f6';
-      case 'string':
-        return '#f6ffed';
-      default:
-        return '#f5f5f5';
-    }
-  }
-
-  getDataTypeTextColor(type: string): string {
-    const t = type?.toLowerCase();
-    switch (t) {
-      case 'number':
-      case 'integer':
-        return '#1890ff';
-      case 'decimal':
-        return '#eb2f96';
-      case 'string':
-        return '#52c41a';
-      default:
-        return '#595959';
-    }
-  }
 }
+// Switching between mapping configuration panel v1

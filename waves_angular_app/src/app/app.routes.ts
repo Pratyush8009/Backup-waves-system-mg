@@ -20,7 +20,6 @@ import { SystemTemplate } from './components/system-details/system-template/syst
 
 import { ModelConfiguration } from './components/model-details/model-configuration/model-configuration';
 import { ModelOverview } from './components/model-details/model-overview/model-overview';
-import { ModelEditor } from './components/model-details/model-editor/model-editor';
 import { Testing } from './components/testing/testing';
 import { ModelDeploy } from './components/model-details/model-deploy/model-deploy';
 import { ModelTemplate } from './components/model-details/model-template/model-template';
@@ -32,6 +31,8 @@ import { LandingPagesForAllTemplatePage } from './components/template-render-com
 import { RenderTemplateOnly } from './components/template-render-components/pages/render-template-only/render-template-only';
 import { RenderTemplateWithPlotsConfiguration } from './components/template-render-components/pages/render-template-with-plots-configuration/render-template-with-plots-configuration';
 import { FlowEditor } from './pages/flow-editor/flow-editor';
+import { FlowEditor2 } from './pages/code-safety/flow-editor'
+
 export const routes: Routes = [
     { path: 'units/:id', component: UnitsPage },
     {
@@ -78,8 +79,6 @@ export const routes: Routes = [
             { path: 'template', component: ModelTemplate },
             { path: 'testing', component: Testing },
             { path: 'deploy', component: ModelDeploy },
-            // { path: 'block-editor', component: BlockEditor },
-            // { path: 'flow-editor/:blockId', component: FlowEditor },
             { path: 'schema', component: ModelSchema },
 
 
@@ -91,7 +90,11 @@ export const routes: Routes = [
     },
     {
         path: 'units/:unitId/systems/:systemId/models/:modelId/schema/flow-editor/:blockId',
-        component: FlowEditor
+        component: FlowEditor2
+    },
+    {
+        path: 'units/:unitId/systems/:systemId/models/:modelId/schema/flow-editor/:blockId/:flowId',
+        component: FlowEditor2
     },
 
 

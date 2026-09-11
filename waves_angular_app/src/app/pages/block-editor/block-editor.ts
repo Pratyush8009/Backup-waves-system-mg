@@ -23,7 +23,7 @@ import {
   model, updateModel, getBlocks, getModelSchema,
   BlockModel, ConnectionRecord, SavedConnectionRecord, ConsoleError, systemNodes, blockNodes, validateFlowGuidance,
   GuidanceState, getBlocksConfigurationStatus, getMappedConnectionDetails, SchemaField, Port,
-  addSchemaFieldToPort, addOrUpdateConnectionMapping, removeConnectionMapping, isInputSchemaMapped
+  addSchemaFieldToPort, addOrUpdateConnectionMapping, removeConnectionMapping, isInputSchemaMapped, getDataTypeColor, getDataTypeTextColor
 } from './data';
 
 interface FieldMappingPair {
@@ -67,6 +67,8 @@ export class BlockEditor implements AfterViewInit, OnInit {
   @Output() fullscreenChange = new EventEmitter<boolean>();
   @ViewChild('container') container!: ElementRef;
   guidance: GuidanceState = validateFlowGuidance([], []);
+  getDataTypeTextColor = getDataTypeTextColor
+  getDataTypeColor=getDataTypeColor
 
   instance!: BrowserJsPlumbInstance;
   selectedNode: BlockModel | null = null;
@@ -871,33 +873,6 @@ export class BlockEditor implements AfterViewInit, OnInit {
     ]);
   }
 
-  getDataTypeColor(type: string): string {
-    const t = type?.toLowerCase();
-    switch (t) {
-      case 'number':
-      case 'integer':
-        return '#e6f7ff';
-      case 'decimal':
-        return '#fff0f6';
-      case 'string':
-        return '#f6ffed';
-      default:
-        return '#f5f5f5';
-    }
-  }
-
-  getDataTypeTextColor(type: string): string {
-    const t = type?.toLowerCase();
-    switch (t) {
-      case 'number':
-      case 'integer':
-        return '#1890ff';
-      case 'decimal':
-        return '#eb2f96';
-      case 'string':
-        return '#52c41a';
-      default:
-        return '#595959';
-    }
-  }
 }
+
+// Fixed Version Final Code 

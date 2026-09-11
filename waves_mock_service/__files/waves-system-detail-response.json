@@ -413,59 +413,6 @@
             "estimatedCompletionTime": "2024-04-09T11:02:30Z",
             "elapsedTime": "2 minutes 30 seconds"
           }
-        },
-        {
-          "modelId": "MDL-660e8400-e29b-41d4-a716-446655440102",
-          "name": "Equipment Health Model",
-          "description": "Predictive maintenance model for equipment health",
-          "currentVersion": "1.5.2",
-          "currentState": "DEPLOYMENT",
-          "currentStatus": "INACTIVE",
-          "stage": "DEPLOYMENT",
-          "createdAt": "2024-02-01T09:00:00Z",
-          "lastModifiedAt": "2024-03-10T16:00:00Z",
-          "isActive": false,
-          "versions": [
-            {
-              "version": "1.5.2",
-              "state": "DEPLOYMENT",
-              "status": "INACTIVE",
-              "stage": "DEPLOYMENT",
-              "createdAt": "2024-03-10T16:00:00Z",
-              "changeType": "PATCH",
-              "changes": "UI layout improvements",
-              "isActive": true
-            },
-            {
-              "version": "1.5.0",
-              "state": "PUBLISHED",
-              "status": "INACTIVE",
-              "stage": "PUBLISHED",
-              "createdAt": "2024-02-28T10:00:00Z",
-              "changeType": "MINOR",
-              "changes": "Enhanced prediction accuracy",
-              "isActive": false
-            },
-            {
-              "version": "1.0.0",
-              "state": "ARCHIVED",
-              "status": "INACTIVE",
-              "stage": "ARCHIVED",
-              "createdAt": "2024-02-01T09:00:00Z",
-              "changeType": "MAJOR",
-              "changes": "Initial version",
-              "isActive": false
-            }
-          ],
-          "stats": {
-            "totalExecutions": 350,
-            "successfulExecutions": 340,
-            "failedExecutions": 10,
-            "successRate": 97.1,
-            "lastExecutedAt": "2024-04-08T06:20:00Z",
-            "averageExecutionTime": "1.8 minutes"
-          },
-          "currentExecution": null
         }
       ]
     },

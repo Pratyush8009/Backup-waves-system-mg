@@ -321,7 +321,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 760px;
+    width: 820px;
     background: #ffffff;
     border-radius: 8px;
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
@@ -409,24 +409,6 @@
     font-size: 13px;
     font-weight: 600;
     color: #262626;
-}
-
-.add-btn {
-    width: 22px;
-    height: 22px;
-    border: 1px solid #d9d9d9;
-    background: #ffffff;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-}
-
-.add-btn:hover {
-    border-color: #1677ff;
-    color: #1677ff;
 }
 
 .schema-list {
@@ -552,11 +534,101 @@
 }
 
 .schema-chip.disabled-chip {
-  opacity: 0.45;
-  cursor: not-allowed;
-  pointer-events: none;
-  background-color: #f5f5f5 !important;
-  border: 1px dashed #d9d9d9;
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+    background-color: #f5f5f5 !important;
+    border: 1px dashed #d9d9d9;
+}
+
+/* Connections Display Card Styles */
+.connections-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.connection-card {
+    display: flex;
+    background: #fafafa;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.card-left-title,
+.card-right-title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+}
+
+.card-left-content,
+.card-right-content {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-left: 1px solid #e8e8e8;
+    padding-left: 10px;
+}
+
+.card-left-content {
+    border-left: none;
+    border-right: 1px solid #e8e8e8;
+    padding-left: 0;
+    padding-right: 10px;
+}
+
+.connected-block-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #1677ff;
+    text-align: center;
+}
+
+.edit-link {
+    font-size: 11px;
+    color: #1677ff;
+    align-self: flex-start;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.edit-link:hover {
+    text-decoration: underline;
+}
+
+.mapping-preview-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+
+.preview-chip {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: #ffffff;
+    border: 1px solid #d9d9d9;
+    border-radius: 12px;
+    padding: 2px 8px;
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.preview-type {
+    font-size: 9px;
+    font-weight: bold;
+}
+
+.link-icon {
+    color: #52c41a;
+    font-size: 12px;
 }
 
 /* Popover Form Compact */
@@ -796,5 +868,4 @@
     color: #1677ff;
     font-size: 12px;
 }
-
-/* Block editor code with mapping functionality(Version-1.0) */
+/* Switching between mapping configuration panel v1 */

@@ -1,35 +1,49 @@
 <div class="config-container">
-    <!-- Sticky Header Section -->
     <div class="header-section">
-        <h2 class="panel-title">{{ nodeData ? 'Node Configuration' : 'Block Configuration' }}</h2>
+        <h2 class="panel-title">
+            <ng-container [ngSwitch]="configViewMode">
+                <span *ngSwitchCase="'NODE'">Node Configuration</span>
+                <span *ngSwitchCase="'BLOCK'">Block Configuration</span>
+                <span *ngSwitchDefault>Flow Configuration</span>
+            </ng-container>
+        </h2>
         <div class="header-actions">
-            <div class="action-btn" nz-tooltip nzTooltipTitle="Info">
-                <nz-icon nzType="info" nzTheme="outline"></nz-icon>
-            </div>
-            <div class="action-btn" nz-tooltip nzTooltipTitle="Settings">
-                <nz-icon nzType="setting" nzTheme="outline"></nz-icon>
-            </div>
+            <button *ngIf="nodeData" nz-button nzSize="small"
+                [nzType]="configViewMode === 'NODE' ? 'primary' : 'default'" (click)="setMode('NODE')">
+                Node
+            </button>
+            <button nz-button nzSize="small" [nzType]="configViewMode === 'FLOW' ? 'primary' : 'default'"
+                (click)="setMode('FLOW')">
+                Flow
+            </button>
+            <button nz-button nzSize="small" [nzType]="configViewMode === 'BLOCK' ? 'primary' : 'default'"
+                (click)="setMode('BLOCK')">
+                Block
+            </button>
         </div>
     </div>
 
-    <!-- Scrollable Panel Body -->
     <div class="panel-scroll-body">
-        <div *ngIf="nodeData; else defaultBlockConfig" class="content-section">
 
-            <!-- I/O Nodes Tabs (INPUT & OUTPUT) -->
-            <div class="tab-header"
-                *ngIf="['INPUT', 'OUTPUT','ML', 'FILTER', 'PROCESSOR','VALIDATOR','JSONTOCSV','CSVTOJSON'].includes(nodeData.nodeType)">
+        <div *ngIf="configViewMode === 'NODE' && nodeData" class="content-section">
+
+            <!-- Node Level Tabs -->
+            <div class="tab-header">
                 <div class="tab-item" [class.active]="activeTab === 0" (click)="activeTab = 0">Info</div>
-                <div class="tab-item" [class.active]="activeTab === 1" (click)="activeTab = 1">Schemas</div>
+                <div class="tab-item" [class.active]="activeTab === 1" (click)="activeTab = 1">Schema</div>
                 <div class="tab-item" [class.active]="activeTab === 2" (click)="activeTab = 2">Connector</div>
-                <div class="tab-item" [class.active]="activeTab === 3" (click)="activeTab = 3">Config</div>
+                <div class="tab-item" [class.active]="activeTab === 3" (click)="activeTab = 3">Style</div>
             </div>
 
             <!-- TAB 0: INFO -->
             <div class="tab-body" *ngIf="activeTab === 0">
                 <div class="form-group">
+                    <label>Instance ID</label>
+                    <input nz-input [disabled]="true" [ngModel]="nodeData.instanceId || 'N/A'" />
+                </div>
+                <div class="form-group">
                     <label>Name</label>
-                    <input nz-input [disabled]="true" [ngModel]="nodeData.name" />
+                    <input nz-input [(ngModel)]="nodeData.name" (ngModelChange)="onInfoChange()" />
                 </div>
                 <div class="form-group">
                     <label>Type</label>
@@ -41,71 +55,639 @@
                 </div>
                 <div class="form-group">
                     <label>Description</label>
-                    <textarea nz-input [disabled]="true" rows="4"
-                        [ngModel]="nodeData.description || 'No description available'"></textarea>
+                    <textarea nz-input rows="4" [(ngModel)]="nodeData.description" (ngModelChange)="onInfoChange()"
+                        placeholder="No description available"></textarea>
                 </div>
             </div>
 
-            <!-- TAB 1: Schemas -->
+            <!-- TAB 1: SCHEMA -->
             <div class="tab-body" *ngIf="activeTab === 1">
-                <div class="add-section">
+                <div class="schema-columns-wrapper">
+
+                    <div class="schema-column-card" *ngIf="nodeData.nodeType === 'INPUT'">
+                        <div class="schema-column-header">
+                            <span class="column-title">Block Input Schema ({{ outputSchemas.length }})</span>
+                            <button nz-button nzType="default" nzSize="small" class="add-schema-btn" nz-popover
+                                [nzPopoverTitle]="'Select Existing Input Schema'"
+                                [nzPopoverVisible]="popoverState.targetKey === 'ADD_OUTPUT'"
+                                (nzPopoverVisibleChange)="$event ? openAddPopover('OUTPUT') : resetPopoverState()"
+                                nzPopoverTrigger="click" [nzPopoverContent]="schemaPopoverTemplate">
+                                <nz-icon nzType="plus" />
+                            </button>
+                        </div>
+
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of outputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+
+                                <div class="schema-item-actions">
+                                    <nz-icon nzType="delete" nzTheme="outline" class="action-icon delete-icon"
+                                        (click)="deleteSchema('OUTPUT', item.id || item.name)" />
+                                </div>
+                            </div>
+                            <div *ngIf="outputSchemas.length === 0" class="empty-schema">
+                                <span>No Input fields attached</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- I/O NODE OUTPUT TYPE SCHEMA -->
+                    <div class="schema-column-card" *ngIf="nodeData.nodeType === 'OUTPUT'">
+                        <div class="schema-column-header">
+                            <span class="column-title">Block Output Schema ({{ inputSchemas.length }})</span>
+                            <button nz-button nzType="default" nzSize="small" class="add-schema-btn" nz-popover
+                                [nzPopoverTitle]="'Select Existing Output Schema'"
+                                [nzPopoverVisible]="popoverState.targetKey === 'ADD_INPUT'"
+                                (nzPopoverVisibleChange)="$event ? openAddPopover('INPUT') : resetPopoverState()"
+                                nzPopoverTrigger="click" [nzPopoverContent]="schemaPopoverTemplate">
+                                <nz-icon nzType="plus" />
+                            </button>
+                        </div>
+
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of inputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+
+                                <div class="schema-item-actions">
+                                    <nz-icon nzType="delete" nzTheme="outline" class="action-icon delete-icon"
+                                        (click)="deleteSchema('INPUT', item.id || item.name)" />
+                                </div>
+                            </div>
+                            <div *ngIf="inputSchemas.length === 0" class="empty-schema">
+                                <span>No Output fields attached</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STANDARD NODE INPUT SCHEMA COLUMN -->
+                    <div class="schema-column-card" *ngIf="!isIoNode && canHaveInputSchema">
+                        <div class="schema-column-header">
+                            <span class="column-title">Input Schema ({{ inputSchemas.length }})</span>
+                            <button nz-button nzType="default" nzSize="small" class="add-schema-btn" nz-popover
+                                [nzPopoverTitle]="'Add Input Field'"
+                                [nzPopoverVisible]="popoverState.targetKey === 'ADD_INPUT'"
+                                (nzPopoverVisibleChange)="$event ? openAddPopover('INPUT') : resetPopoverState()"
+                                nzPopoverTrigger="click" [nzPopoverContent]="schemaPopoverTemplate">
+                                <nz-icon nzType="plus" />
+                            </button>
+                        </div>
+
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of inputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+
+                                <div class="schema-item-actions">
+                                    <nz-icon nzType="edit" nzTheme="outline" class="action-icon edit-icon" nz-popover
+                                        [nzPopoverTitle]="'Edit Input Field'" nzPopoverTrigger="click"
+                                        [nzPopoverVisible]="popoverState.targetKey === 'EDIT_' + (item.id || item.name)"
+                                        (nzPopoverVisibleChange)="$event ? openEditPopover(item, 'INPUT') : resetPopoverState()"
+                                        [nzPopoverContent]="schemaPopoverTemplate" />
+                                    <nz-icon nzType="delete" nzTheme="outline" class="action-icon delete-icon"
+                                        (click)="deleteSchema('INPUT', item.id || item.name)" />
+                                </div>
+                            </div>
+                            <div *ngIf="inputSchemas.length === 0" class="empty-schema">
+                                <span>No Input fields</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- STANDARD NODE OUTPUT SCHEMA COLUMN -->
+                    <div class="schema-column-card" *ngIf="!isIoNode && canHaveOutputSchema">
+                        <div class="schema-column-header">
+                            <span class="column-title">Output Schema ({{ outputSchemas.length }})</span>
+                            <button nz-button nzType="default" nzSize="small" class="add-schema-btn" nz-popover
+                                [nzPopoverTitle]="'Add Output Field'"
+                                [nzPopoverVisible]="popoverState.targetKey === 'ADD_OUTPUT'"
+                                (nzPopoverVisibleChange)="$event ? openAddPopover('OUTPUT') : resetPopoverState()"
+                                nzPopoverTrigger="click" [nzPopoverContent]="schemaPopoverTemplate">
+                                <nz-icon nzType="plus" />
+                            </button>
+                        </div>
+
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of outputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+
+                                <div class="schema-item-actions">
+                                    <nz-icon nzType="edit" nzTheme="outline" class="action-icon edit-icon" nz-popover
+                                        [nzPopoverTitle]="'Edit Output Field'" nzPopoverTrigger="click"
+                                        [nzPopoverVisible]="popoverState.targetKey === 'EDIT_' + (item.id || item.name)"
+                                        (nzPopoverVisibleChange)="$event ? openEditPopover(item, 'OUTPUT') : resetPopoverState()"
+                                        [nzPopoverContent]="schemaPopoverTemplate" />
+                                    <nz-icon nzType="delete" nzTheme="outline" class="action-icon delete-icon"
+                                        (click)="deleteSchema('OUTPUT', item.id || item.name)" />
+                                </div>
+                            </div>
+                            <div *ngIf="outputSchemas.length === 0" class="empty-schema">
+                                <span>No Output fields</span>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+
+                <!-- Shared Popover Template -->
+                <ng-template #schemaPopoverTemplate>
+                    <div class="popover-form">
+
+                        <!-- I/O Nodes: Dropdown Selection -->
+                        <ng-container *ngIf="isIoNode; else customSchemaFields">
+                            <div class="popover-field">
+                                <label>Select Block Schema Field</label>
+                                <nz-select [ngModel]="popoverState.selectedBlockFieldId"
+                                    (ngModelChange)="onBlockFieldSelected($event, nodeData.nodeType === 'INPUT' ? 'INPUT' : 'OUTPUT')"
+                                    style="width: 100%;" nzPlaceHolder="Choose field...">
+                                    <nz-option
+                                        *ngFor="let item of getBlockAvailableSchemas(nodeData.nodeType === 'INPUT' ? 'INPUT' : 'OUTPUT')"
+                                        [nzValue]="item.field.id"
+                                        [nzLabel]="item.field.name + ' (' + item.field.type + ')'"
+                                        [nzDisabled]="item.disabled">
+                                    </nz-option>
+                                </nz-select>
+                            </div>
+                        </ng-container>
+
+                        <!-- Custom Nodes: Manual Field Entry -->
+                        <ng-template #customSchemaFields>
+                            <div class="popover-field">
+                                <label>Field Name</label>
+                                <input nz-input [(ngModel)]="popoverState.name" placeholder="e.g. INI1" />
+                            </div>
+                            <div class="popover-field">
+                                <label>Data Type</label>
+                                <nz-select [(ngModel)]="popoverState.type" style="width: 100%;">
+                                    <nz-option nzValue="decimal" nzLabel="Decimal"></nz-option>
+                                    <nz-option nzValue="integer" nzLabel="Integer"></nz-option>
+                                    <nz-option nzValue="number" nzLabel="Number"></nz-option>
+                                    <nz-option nzValue="string" nzLabel="String"></nz-option>
+                                </nz-select>
+                            </div>
+                            <div class="popover-field">
+                                <label>Description</label>
+                                <input nz-input [(ngModel)]="popoverState.description" placeholder="Description" />
+                            </div>
+                        </ng-template>
+
+                        <div class="popover-actions">
+                            <button nz-button nzSize="small" (click)="resetPopoverState()">Cancel</button>
+                            <button nz-button nzType="primary" nzSize="small" (click)="saveSchema()"
+                                [disabled]="isIoNode ? !popoverState.selectedBlockFieldId : !popoverState.name">
+                                {{ popoverState.mode === 'ADD' ? 'Add' : 'Save' }}
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
             </div>
 
-            <!-- TAB 2: Connector -->
-            <div class="tab-body" *ngIf="activeTab === 2 ">
-                <div class="add-section">
-                </div>
+            <!-- TAB 2: CONNECTOR -->
+            <div class="tab-body" *ngIf="activeTab === 2">
+                <div class="ports-container"></div>
             </div>
 
-            <!-- TAB 4 / TAB 3: config -->
-            <div class="tab-body" *ngIf="activeTab === 3 ">
-                <div class="add-section">
+            <!-- TAB 3: STYLE -->
+            <div class="tab-body" *ngIf="activeTab === 3">
+                <div class="add-section" *ngIf="nodeData.uiLayout">
+                    <div class="form-group">
+                        <label>Position X</label>
+                        <input nz-input [disabled]="true" type="number" [ngModel]="nodeData.uiLayout.canvasX" />
+                    </div>
+                    <div class="form-group">
+                        <label>Position Y</label>
+                        <input nz-input [disabled]="true" type="number" [ngModel]="nodeData.uiLayout.canvasY" />
+                    </div>
+                    <div class="form-group">
+                        <label>Width (px)</label>
+                        <nz-input-number [(ngModel)]="nodeData.uiLayout.canvasWidth" (ngModelChange)="onStyleChange()"
+                            [nzMin]="120" [nzMax]="2000" [nzStep]="1" style="width:100%">
+                        </nz-input-number>
+                    </div>
+                    <div class="form-group">
+                        <label>Height (px)</label>
+                        <nz-input-number [(ngModel)]="nodeData.uiLayout.canvasHeight" (ngModelChange)="onStyleChange()"
+                            [nzMin]="40" [nzMax]="200" [nzStep]="1" style="width:100%">
+                        </nz-input-number>
+                    </div>
+                    <div class="form-group">
+                        <label>Color</label>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <input type="color" [(ngModel)]="nodeData.uiLayout.color" (ngModelChange)="onStyleChange()"
+                                style="width: 42px; height: 32px; padding: 2px; border: 1px solid #d9d9d9; border-radius: 4px; cursor: pointer;" />
+                            <input nz-input [(ngModel)]="nodeData.uiLayout.color" (ngModelChange)="onStyleChange()"
+                                placeholder="#1890ff" style="flex: 1;" />
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
 
-        <!-- Default View: Parent Block Configuration (When no node is selected) -->
-        <ng-template #defaultBlockConfig>
+        <!-- ==================== VIEW 2: FLOW CONFIGURATION ==================== -->
+        <div *ngIf="configViewMode === 'FLOW'" class="content-section">
             <div class="tab-header">
                 <div class="tab-item" [class.active]="activeModelTab === 0" (click)="activeModelTab = 0">Info</div>
-                <div class="tab-item" [class.active]="activeModelTab === 1" (click)="activeModelTab = 1">Schemas</div>
-                <div class="tab-item" [class.active]="activeModelTab === 2" (click)="activeModelTab = 2">Flows</div>
-
+                <div class="tab-item" [class.active]="activeModelTab === 1" (click)="activeModelTab = 1">Schema</div>
+                <div class="tab-item" [class.active]="activeModelTab === 2" (click)="activeModelTab = 2">Nodes</div>
+                <div class="tab-item" [class.active]="activeModelTab === 3" (click)="activeModelTab = 3">Connections
+                </div>
             </div>
 
+            <!-- TAB 0: INFO -->
             <div class="tab-body" *ngIf="activeModelTab === 0">
                 <div class="model-config-view">
                     <div class="form-group">
-                        <label>Model ID</label>
-                        <input nz-input [disabled]="true" [ngModel]="modelId" />
-                    </div>
-                    <div class="form-group">
-                        <label>Block ID</label>
-                        <input nz-input [disabled]="true" [ngModel]="selectedBlock?.value" />
+                        <label>Flow Name</label>
+                        <input nz-input [disabled]="true" [ngModel]="currentFlow?.name || 'N/A'" />
                     </div>
                     <div class="form-group">
                         <label>Flow ID</label>
-                        <input nz-input [disabled]="true" [ngModel]="activeFlowId" />
+                        <input nz-input [disabled]="true" [ngModel]="currentFlow?.id || activeFlowId || 'N/A'" />
                     </div>
                     <div class="form-group">
-                        <label>Status</label>
-                        <input nz-input [disabled]="true" value="Active" />
+                        <label>Block ID</label>
+                        <input nz-input [disabled]="true"
+                            [ngModel]="currentFlow?.blockId || selectedBlock?.value || 'N/A'" />
+                    </div>
+                    <div class="form-group">
+                        <label>Total Nodes</label>
+                        <input nz-input [disabled]="true"
+                            [ngModel]="currentFlow?.nodes?.length || flowNodes.length || 0" />
+                    </div>
+                    <div class="form-group">
+                        <label>Flow Description</label>
+                        <textarea nz-input rows="3" [disabled]="true"
+                            [ngModel]="currentFlow?.description || 'No description provided'"></textarea>
                     </div>
                 </div>
             </div>
 
+            <!-- TAB 1: FLOW SCHEMA SUMMARY -->
             <div class="tab-body" *ngIf="activeModelTab === 1">
-                <div class="schemas-wrapper">
-                    Schemas
+                <div class="schema-columns-wrapper">
+                    <!-- Used Input Block Schemas -->
+                    <div class="schema-column-card">
+                        <div class="schema-column-header">
+                            <span class="column-title">Block Inputs Used ({{ usedFlowInputSchemas.length }})</span>
+                        </div>
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of usedFlowInputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+                            </div>
+                            <div *ngIf="usedFlowInputSchemas.length === 0" class="empty-schema">
+                                <span>No Input fields used in flow</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Used Output Block Schemas -->
+                    <div class="schema-column-card">
+                        <div class="schema-column-header">
+                            <span class="column-title">Block Outputs Used ({{ usedFlowOutputSchemas.length }})</span>
+                        </div>
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of usedFlowOutputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+                            </div>
+                            <div *ngIf="usedFlowOutputSchemas.length === 0" class="empty-schema">
+                                <span>No Output fields used in flow</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+
+            <!-- TAB 2: NODES SUMMARY -->
             <div class="tab-body" *ngIf="activeModelTab === 2">
-                <div class="flows-wrapper">
-                    Flows
+                <div class="model-blocks-list">
+                    <div *ngFor="let node of flowNodes" class="model-block-card">
+                        <div class="model-block-card-header">
+                            <div class="model-block-info">
+                                <div class="block-info-line">
+                                    <span class="info-label">Name:</span>
+                                    <span class="info-val bold">{{ node.name }}</span>
+                                </div>
+                                <div class="block-info-line">
+                                    <span class="info-label">Instance ID:</span>
+                                    <span class="info-val">{{ node.instanceId || node.nodeId }}</span>
+                                </div>
+                            </div>
+
+                            <div class="block-status-pill configured">
+                                <nz-icon nzType="check-circle" nzTheme="outline"></nz-icon>
+                                <span>{{ node.nodeType }}</span>
+                            </div>
+                        </div>
+
+                        <div class="model-block-card-body">
+                            <div class="block-schema-col">
+                                <div class="schema-col-title">Inputs :</div>
+                                <div class="schema-pills-list">
+                                    <ng-container *ngFor="let p of node.ports">
+                                        <ng-container *ngIf="p.portType === 'INPUT'">
+                                            <div *ngFor="let item of p.schema" class="block-schema-pill">
+                                                <span class="pill-name">{{ item.name }}</span>
+                                                <span class="field-type-pill"
+                                                    [style.background-color]="getDataTypeColor(item.type)"
+                                                    [style.color]="getDataTypeTextColor(item.type)">
+                                                    {{ item.type }}
+                                                </span>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="block-col-divider"></div>
+
+                            <div class="block-schema-col">
+                                <div class="schema-col-title">Outputs :</div>
+                                <div class="schema-pills-list">
+                                    <ng-container *ngFor="let p of node.ports">
+                                        <ng-container *ngIf="p.portType === 'OUTPUT'">
+                                            <div *ngFor="let item of p.schema" class="block-schema-pill">
+                                                <span class="pill-name">{{ item.name }}</span>
+                                                <span class="field-type-pill"
+                                                    [style.background-color]="getDataTypeColor(item.type)"
+                                                    [style.color]="getDataTypeTextColor(item.type)">
+                                                    {{ item.type }}
+                                                </span>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="flowNodes.length === 0" class="empty-schema">
+                        <span>No nodes placed in active flow</span>
+                    </div>
                 </div>
             </div>
-        </ng-template>
+
+            <!-- TAB 3: FLOW CONNECTIONS -->
+            <div class="tab-body" *ngIf="activeModelTab === 3">
+                <div class="model-connections-list">
+                    <div *ngFor="let conn of flowConnections.connectionDetails" class="connection-card">
+                        <div class="connection-header">
+                            <div class="connection-col">
+                                <div class="conn-line">
+                                    <span class="conn-label">Source :</span>
+                                    <span class="conn-val">{{ conn.sourceNodeName }}</span>
+                                </div>
+                                <div class="conn-line">
+                                    <span class="conn-label">Connector:</span>
+                                    <span class="conn-val capitalize">{{ conn.sourcePortType | lowercase }}</span>
+                                </div>
+                            </div>
+
+                            <div class="connection-header-divider"></div>
+
+                            <div class="connection-col">
+                                <div class="conn-line">
+                                    <span class="conn-label">Target :</span>
+                                    <span class="conn-val">{{ conn.targetNodeName }}</span>
+                                </div>
+                                <div class="conn-line">
+                                    <span class="conn-label">Connector:</span>
+                                    <span class="conn-val capitalize">{{ conn.targetPortType | lowercase }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="connection-body">
+                            <div class="mapping-title">Mapping:</div>
+                            <div class="mapping-rows">
+                                <div *ngFor="let map of conn.mappings" class="mapping-row">
+                                    <div class="mapping-field-box">
+                                        <span class="field-name">{{ map.sourceField?.name || 'N/A' }}</span>
+                                        <span class="field-type-pill" *ngIf="map.sourceField"
+                                            [style.background-color]="getDataTypeColor(map.sourceField.type)"
+                                            [style.color]="getDataTypeTextColor(map.sourceField.type)">
+                                            {{ map.sourceField.type }}
+                                        </span>
+                                    </div>
+
+                                    <div class="mapping-link-icon">
+                                        <nz-icon nzType="link" nzTheme="outline"></nz-icon>
+                                    </div>
+
+                                    <div class="mapping-field-box">
+                                        <span class="field-name">{{ map.targetField?.name || 'N/A' }}</span>
+                                        <span class="field-type-pill" *ngIf="map.targetField"
+                                            [style.background-color]="getDataTypeColor(map.targetField.type)"
+                                            [style.color]="getDataTypeTextColor(map.targetField.type)">
+                                            {{ map.targetField.type }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="conn.mappings.length === 0" class="empty-schema">
+                                    <span>No field mappings defined</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="flowConnections.connectionDetails.length === 0" class="empty-schema">
+                        <span>No node connections available in flow</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== VIEW 3: BLOCK CONFIGURATION ==================== -->
+        <div *ngIf="configViewMode === 'BLOCK'" class="content-section">
+            <div class="tab-header">
+                <div class="tab-item" [class.active]="activeBlockTab === 0" (click)="activeBlockTab = 0">Info</div>
+                <div class="tab-item" [class.active]="activeBlockTab === 1" (click)="activeBlockTab = 1">Schema</div>
+                <div class="tab-item" [class.active]="activeBlockTab === 2" (click)="activeBlockTab = 2">Flows</div>
+            </div>
+
+            <!-- BLOCK TAB 0: INFO -->
+            <div class="tab-body" *ngIf="activeBlockTab === 0">
+                <div class="model-config-view">
+                    <div class="form-group">
+                        <label>Block Label</label>
+                        <input nz-input [disabled]="true" [ngModel]="selectedBlock?.label || 'N/A'" />
+                    </div>
+                    <div class="form-group">
+                        <label>Block ID / Instance ID</label>
+                        <input nz-input [disabled]="true" [ngModel]="selectedBlock?.value || 'N/A'" />
+                    </div>
+                    <div class="form-group">
+                        <label>Total Saved Flows</label>
+                        <input nz-input [disabled]="true" [ngModel]="currentBlockSavedFlows.length" />
+                    </div>
+                    <div class="form-group">
+                        <label>Input Fields Count</label>
+                        <input nz-input [disabled]="true" [ngModel]="blockInputSchemas.length" />
+                    </div>
+                    <div class="form-group">
+                        <label>Output Fields Count</label>
+                        <input nz-input [disabled]="true" [ngModel]="blockOutputSchemas.length" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- BLOCK TAB 1: SCHEMA -->
+            <div class="tab-body" *ngIf="activeBlockTab === 1">
+                <div class="schema-columns-wrapper">
+
+                    <!-- Block Level Inputs -->
+                    <div class="schema-column-card">
+                        <div class="schema-column-header">
+                            <span class="column-title">Block Inputs ({{ blockInputSchemas.length }})</span>
+                        </div>
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of blockInputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+                            </div>
+                            <div *ngIf="blockInputSchemas.length === 0" class="empty-schema">
+                                <span>No Block Input schema defined</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block Level Outputs -->
+                    <div class="schema-column-card">
+                        <div class="schema-column-header">
+                            <span class="column-title">Block Outputs ({{ blockOutputSchemas.length }})</span>
+                        </div>
+                        <div class="schema-list-container">
+                            <div *ngFor="let item of blockOutputSchemas" class="schema-item-box">
+                                <span class="field-name">{{ item.name }}</span>
+                                <span class="field-type-pill" [style.background-color]="getDataTypeColor(item.type)"
+                                    [style.color]="getDataTypeTextColor(item.type)">
+                                    {{ item.type }}
+                                </span>
+                            </div>
+                            <div *ngIf="blockOutputSchemas.length === 0" class="empty-schema">
+                                <span>No Block Output schema defined</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- BLOCK TAB 2: FLOWS SUMMARY -->
+            <div class="tab-body" *ngIf="activeBlockTab === 2">
+                <div class="model-blocks-list">
+                    <div *ngFor="let flow of currentBlockSavedFlows" class="model-block-card">
+                        <div class="model-block-card-header">
+                            <div class="model-block-info">
+                                <div class="block-info-line">
+                                    <span class="info-label">Flow Name:</span>
+                                    <span class="info-val bold">{{ flow.name || flow.id }}</span>
+                                </div>
+                                <div class="block-info-line">
+                                    <span class="info-label">Flow ID:</span>
+                                    <span class="info-val">{{ flow.id }}</span>
+                                </div>
+                            </div>
+                            <div class="block-status-pill configured" [class.active-flow]="flow.id === activeFlowId">
+                                <span>{{ flow.id === activeFlowId ? 'Active' : 'Saved' }}</span>
+                            </div>
+                        </div>
+                        <div class="model-block-card-body">
+                            <div class="block-info-line">
+                                <span class="info-label">Total Nodes:</span>
+                                <span class="info-val">{{ flow.nodes?.length || 0 }}</span>
+                            </div>
+                            <div class="block-info-line">
+                                <span class="info-label">Total Connections:</span>
+                                <span class="info-val">{{ flow.connections?.length || 0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="currentBlockSavedFlows.length === 0" class="empty-schema">
+                        <span>No saved flows for this block</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="block-guidance-card" *ngIf="nodeData">
+        <div class="block-guidance-header">
+            <div class="block-bulb-container">
+                <nz-icon nzType="bulb" nzTheme="fill"></nz-icon>
+            </div>
+            <div class="block-header-text">
+                <h4>Build A Valid Node</h4>
+                <p>Minimum requirement to create a valid Node</p>
+            </div>
+        </div>
+        <nz-divider />
+        <!-- Guidence -->
+        <div class="block-vertical-stepper">
+            <div class="vertical-step-item">
+                <div class="vertical-step-node">
+                    <div class="vertical-step-badge" [class.green]="guidanceState.step1.state === 'green'"
+                        [class.red]="guidanceState.step1.state === 'red'">1</div>
+                </div>
+                <div class="vertical-step-content">
+                    <div class="vertical-step-title">Schema</div>
+                    <div class="vertical-step-desc">{{ guidanceState.step1.desc }}</div>
+                </div>
+            </div>
+
+            <div class="vertical-step-item">
+                <div class="vertical-step-node">
+                    <div class="vertical-step-badge" [class.green]="guidanceState.step2.state === 'green'"
+                        [class.red]="guidanceState.step2.state === 'red'">2</div>
+                </div>
+                <div class="vertical-step-content">
+                    <div class="vertical-step-title">Connection</div>
+                    <div class="vertical-step-desc">{{ guidanceState.step2.desc }}</div>
+                </div>
+            </div>
+
+            <div class="vertical-step-item">
+                <div class="vertical-step-node">
+                    <div class="vertical-step-badge" [class.green]="guidanceState.step3.state === 'green'"
+                        [class.red]="guidanceState.step3.state === 'red'">3</div>
+                </div>
+                <div class="vertical-step-content">
+                    <div class="vertical-step-title">Mapping</div>
+                    <div class="vertical-step-desc">{{ guidanceState.step3.desc }}</div>
+                </div>
+            </div>
+
+        </div>
     </div>
 </div>
+
+<!-- FIXED VERSION-1 -->

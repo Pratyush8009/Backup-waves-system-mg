@@ -113,6 +113,23 @@
   padding-top: 4px;
 }
 
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: #666;
+  font-family: inherit;
+}
+
+.not-found span {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
 /* Form Styling */
 .form-group {
   margin-bottom: 10px;

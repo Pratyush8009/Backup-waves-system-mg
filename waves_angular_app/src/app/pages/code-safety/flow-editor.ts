@@ -32,8 +32,7 @@ import {
   SavedConnectionRecord,
   getBlocks,
   Port,
-  SchemaField, model, validateFlowGuidance,
-  GuidanceState
+  SchemaField, model
 } from '../block-editor/data';
 
 import {
@@ -50,7 +49,8 @@ import {
   getDataTypeTextColor,
   saveFlow,
   deleteFlow,
-  getSavedFlows
+  getSavedFlows, validateFlowEditorGuidance,
+  FlowGuidanceState
 } from './flow-data';
 
 interface FieldMappingPair {
@@ -100,10 +100,10 @@ export type EditorMode = 'VIEW' | 'EDIT';
   templateUrl: './flow-editor.html',
   styleUrl: './flow-editor.css'
 })
-export class FlowEditor implements AfterViewInit, OnInit {
+export class FlowEditor2 implements AfterViewInit, OnInit {
   @Output() fullscreenChange = new EventEmitter<boolean>();
   @ViewChild('container') container!: ElementRef;
-  guidance: GuidanceState = validateFlowGuidance([], []);
+  guidance: FlowGuidanceState = validateFlowEditorGuidance(null);
 
   panels: Panel[] = panels;
   instance!: BrowserJsPlumbInstance;
@@ -148,6 +148,16 @@ export class FlowEditor implements AfterViewInit, OnInit {
   draggedNode: NodeModel | null = null;
 
   editorMode: EditorMode = 'VIEW';
+
+  private refreshGuidance(): void {
+    const flow = this.activeFlow;
+    if (!flow) {
+      this.guidance = validateFlowEditorGuidance(null);
+    } else {
+      this.guidance = validateFlowEditorGuidance(flow);
+    }
+    this.cdr.detectChanges();
+  }
 
   get isViewMode(): boolean {
     return this.editorMode === 'VIEW';
@@ -224,6 +234,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
           this.syncActiveFlowForBlock(this.selectedBlockId);
         }
       }
+      this.refreshGuidance();
     }, 0);
   }
 
@@ -345,6 +356,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
       this.activeConnections = [];
       this.editorMode = 'VIEW';
       this.closePopover();
+      this.refreshGuidance();
     }
   }
 
@@ -356,6 +368,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
     this.currentConfigViewMode = 'BLOCK';
     this.editorMode = 'VIEW';
     this.closePopover();
+    this.refreshGuidance();
     this.cdr.detectChanges();
   }
 
@@ -408,6 +421,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
       saveFlow(newFlow);
       this.selectFlow(newId);
       this.message.success('Flow created successfully!');
+      this.refreshGuidance();
     }
 
     this.isFlowModalVisible = false;
@@ -437,6 +451,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
         current.nodes.forEach(n => this.setupNode(n));
         this.restoreConnections(current.connections || []);
         this.cdr.detectChanges();
+        this.refreshGuidance();
       }
     }, 50);
   }
@@ -459,6 +474,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
         this.closePopover();
       }
     }
+    this.refreshGuidance();
     this.cdr.detectChanges();
   }
 
@@ -486,7 +502,12 @@ export class FlowEditor implements AfterViewInit, OnInit {
   private restoreConnections(conns: ConnectionRecord[]) {
     this.isProgrammaticConnecting = true;
     try {
+      const seen = new Set<string>();
       conns.forEach(c => {
+        const key = `${c.sourceInstanceId}:${c.sourcePortId}->${c.targetInstanceId}:${c.targetPortId}`;
+        if (seen.has(key)) return;
+        seen.add(key);
+
         const sUuid = `${c.sourceInstanceId}-${c.sourcePortId}`;
         const tUuid = `${c.targetInstanceId}-${c.targetPortId}`;
         try {
@@ -505,7 +526,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
       return;
     }
     this.editorMode = 'EDIT';
-    this.leftPanelMode = 'Nodes'
+    this.leftPanelMode = 'Nodes';
     this.refreshAllEndpointsForMode();
     this.cdr.detectChanges();
     this.message.info('Edit mode enabled. Make your changes and click Save.');
@@ -524,18 +545,43 @@ export class FlowEditor implements AfterViewInit, OnInit {
       this.message.warning('No active flow available to save.');
       return;
     }
+
     this.updateActiveConnections();
+    this.deduplicateActiveConnections();
     this.syncToDataModel();
     saveFlow(this.activeFlow);
     this.showFlowDebug = JSON.stringify(this.activeFlow, null, 2);
     this.message.success('Flow saved successfully!');
-    console.log('SAVED FLOW IS:', this.showFlowDebug)
+    console.log('SAVED FLOW IS:', this.showFlowDebug);
+
     this.editorMode = 'VIEW';
-    this.currentConfigViewMode = 'FLOW'
-    this.leftPanelMode = 'Block'
+    this.currentConfigViewMode = 'FLOW';
+    this.leftPanelMode = 'Block';
     this.refreshAllEndpointsForMode();
     this.closePopover();
+    this.refreshGuidance();
     this.cdr.detectChanges();
+  }
+
+  /**
+   * Removes any duplicate connections (same source+port -> target+port).
+   */
+  private deduplicateActiveConnections() {
+    const seen = new Set<string>();
+    const uniqueConns: ConnectionRecord[] = [];
+
+    for (const c of this.activeConnections) {
+      const key = `${c.sourceInstanceId}:${c.sourcePortId}->${c.targetInstanceId}:${c.targetPortId}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueConns.push(c);
+      }
+    }
+
+    this.activeConnections = uniqueConns;
+    if (this.activeFlow) {
+      this.activeFlow.connections = uniqueConns;
+    }
   }
 
   private initJsPlumb() {
@@ -543,6 +589,8 @@ export class FlowEditor implements AfterViewInit, OnInit {
 
     this.instance = newInstance({
       container: this.container.nativeElement,
+      // NOTE: Do NOT set connectionsDetachable:false globally — we want it
+      // to be mode-dependent (endpoint-level config controls it).
       dragOptions: {
         stop: (params: any) => {
           if (this.isViewMode) return;
@@ -565,6 +613,8 @@ export class FlowEditor implements AfterViewInit, OnInit {
       paintStyle: { stroke: '#4a4a4a', strokeWidth: 3 },
       endpoint: { type: 'Rectangle', options: { width: 6, height: 16 } },
       endpointStyle: { fill: '#c2c2c2' }
+      // NOTE: connectionsDetachable is intentionally NOT set here.
+      // It is set per-endpoint in setupNode() based on current mode.
     });
 
     this.instance.bind(EVENT_CONNECTION_CLICK, (conn: any, originalEvent: MouseEvent) => {
@@ -615,34 +665,77 @@ export class FlowEditor implements AfterViewInit, OnInit {
 
     this.instance.bind('connection', (info: any) => {
       if (this.isProgrammaticConnecting) return;
+
+      // In view mode, immediately undo any user-initiated connection.
       if (this.isViewMode) {
         try { this.instance.deleteConnection(info.connection); } catch (e) { }
         return;
       }
 
       if (info.sourceId === info.targetId) {
-        this.instance.deleteConnection(info.connection);
+        try { this.instance.deleteConnection(info.connection); } catch (e) { }
         return;
       }
 
       if (this.isDuplicateConnection(info.connection)) {
-        this.instance.deleteConnection(info.connection);
+        try { this.instance.deleteConnection(info.connection); } catch (e) { }
         return;
       }
 
       this.updateActiveConnections();
     });
 
-    const handleDetach = () => {
+    // ---- Detach handling ----
+    // VIEW MODE  : disallow detach -> recreate the connection we just lost.
+    // EDIT MODE  : allow detach    -> just refresh connection list.
+    const handleDetach = (info?: any) => {
       if (this.isProgrammaticConnecting) return;
-      if (this.isViewMode) return;
+
+      if (this.isViewMode) {
+        // Recreate connection that was (somehow) detached in view mode.
+        if (info && info.connection) {
+          const sourceId = info.connection.sourceId;
+          const targetId = info.connection.targetId;
+          const sPortId = this.getPortIdFromEndpoint(info.connection.endpoints?.[0]);
+          const tPortId = this.getPortIdFromEndpoint(info.connection.endpoints?.[1]);
+
+          if (sourceId && targetId && sPortId && tPortId) {
+            setTimeout(() => {
+              try {
+                this.isProgrammaticConnecting = true;
+                this.instance.connect({
+                  uuids: [`${sourceId}-${sPortId}`, `${targetId}-${tPortId}`]
+                });
+              } catch (e) { } finally {
+                this.isProgrammaticConnecting = false;
+              }
+              this.updateActiveConnections();
+            }, 0);
+          }
+        }
+        return;
+      }
+
+      // EDIT MODE: refresh connection list after detach.
       setTimeout(() => {
         this.updateActiveConnections();
       }, 20);
     };
 
     this.instance.bind('connection:detach', handleDetach);
-    this.instance.bind('connection:remove', handleDetach);
+    this.instance.bind('connection:remove', (info: any) => {
+      if (this.isProgrammaticConnecting) return;
+
+      // If view mode and something got removed, restore it.
+      if (this.isViewMode) {
+        handleDetach(info);
+        return;
+      }
+
+      setTimeout(() => {
+        this.updateActiveConnections();
+      }, 20);
+    });
   }
 
   onPortClick(event: MouseEvent, node: NodeModel, port: Port) {
@@ -795,6 +888,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
       this.cdr.detectChanges();
       this.resetPopoverState();
       this.message.success('Block schema field added successfully!');
+      this.refreshGuidance();
     } else {
       this.message.error('Failed to add schema field.');
     }
@@ -820,9 +914,9 @@ export class FlowEditor implements AfterViewInit, OnInit {
       this.cdr.detectChanges();
       this.resetPopoverState();
       this.message.success('Schema field added successfully!');
+      this.refreshGuidance();
     }
   }
-
 
   isOutputDisabled(field: SchemaField): boolean {
     const { connection, mappings } = this.popoverState;
@@ -935,6 +1029,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
         currentPair.targetField.id
       );
       this.syncToDataModel();
+      this.refreshGuidance();
     }
 
     this.draggedSchemaField = null;
@@ -958,6 +1053,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
         pair.targetField.id
       );
       this.syncToDataModel();
+      this.refreshGuidance();
     }
 
     this.popoverState.mappings.splice(index, 1);
@@ -1075,6 +1171,7 @@ export class FlowEditor implements AfterViewInit, OnInit {
     if (this.activeFlow) {
       this.activeFlow.connections = list;
     }
+    this.refreshGuidance();
     this.cdr.detectChanges();
   }
 
@@ -1097,6 +1194,8 @@ export class FlowEditor implements AfterViewInit, OnInit {
     const inputs = node.ports.filter(p => p.portType === 'INPUT');
     const outputs = node.ports.filter(p => p.portType === 'OUTPUT');
 
+    // This is the key flag: in VIEW mode, endpoints cannot create OR detach.
+    // In EDIT mode, they can create AND detach.
     const endpointsActive = !this.isViewMode;
 
     node.ports.forEach(port => {
@@ -1119,6 +1218,12 @@ export class FlowEditor implements AfterViewInit, OnInit {
         target: endpointsActive ? isInput : false,
         maxConnections: -1,
         uuid: endpointUuid,
+        // ---- Mode-dependent flags ----
+        // EDIT: allow detach   -> connectionsDetachable: true
+        // VIEW: block detach   -> connectionsDetachable: false
+        connectionsDetachable: endpointsActive,
+        // Prevent re-attaching a detached connection (avoids duplicates)
+        reattach: endpointsActive,
         data: {
           nodeId: node.instanceId,
           portId: port.id
@@ -1146,7 +1251,9 @@ export class FlowEditor implements AfterViewInit, OnInit {
       const rawConns = this.instance.getConnections();
       const connectionsArray = Array.isArray(rawConns) ? rawConns : Object.values(rawConns);
 
+      // Capture existing connections (deduplicated)
       const savedConnections: SavedConnectionRecord[] = [];
+      const seenConnKeys = new Set<string>();
 
       connectionsArray.forEach((conn: any) => {
         if (conn.endpoints && conn.endpoints.length === 2) {
@@ -1156,6 +1263,10 @@ export class FlowEditor implements AfterViewInit, OnInit {
           const tPortId = this.getPortIdFromEndpoint(conn.endpoints[1]);
 
           if (sNodeId && sPortId && tNodeId && tPortId) {
+            const connKey = `${sNodeId}:${sPortId}->${tNodeId}:${tPortId}`;
+            if (seenConnKeys.has(connKey)) return;
+            seenConnKeys.add(connKey);
+
             const activeConn = this.activeConnections.find(
               ac =>
                 ac.sourceInstanceId === sNodeId &&
@@ -1175,9 +1286,13 @@ export class FlowEditor implements AfterViewInit, OnInit {
         }
       });
 
+      // Delete all connections before removing endpoints to prevent orphans
+      this.instance.deleteEveryConnection();
+
       this.instance.removeAllEndpoints(el);
       this.setupNode(node);
 
+      // Reconnect deduplicated
       savedConnections.forEach(record => {
         const sUuid = `${record.sourceNodeId}-${record.sourcePortId}`;
         const tUuid = `${record.targetNodeId}-${record.targetPortId}`;
@@ -1264,6 +1379,8 @@ export class FlowEditor implements AfterViewInit, OnInit {
     this.activeFlow.nodes.push(newNode);
 
     this.cdr.detectChanges();
+    this.refreshGuidance();
+
     setTimeout(() => {
       this.setupNode(newNode);
     }, 0);
@@ -1297,6 +1414,8 @@ export class FlowEditor implements AfterViewInit, OnInit {
     if (this.selectedNode?.instanceId === this.contextMenuNode.instanceId) {
       this.selectedNode = null;
     }
+    this.refreshGuidance();
+
     setTimeout(() => {
       this.updateActiveConnections();
     }, 20);

@@ -1,12 +1,12 @@
 import {
-  Component, ElementRef, ViewChild, AfterViewInit, OnInit, ChangeDetectorRef
+  Component, ElementRef, ViewChild, Input, AfterViewInit, OnInit, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy, Output, EventEmitter
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { newInstance, BrowserJsPlumbInstance } from '@jsplumb/browser-ui';
+import { newInstance, BrowserJsPlumbInstance, AnchorOrientationHint, ArrayAnchorSpec } from '@jsplumb/browser-ui';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzPopoverModule } from 'ng-zorro-antd/popover';
-import { flowsData } from './data';
+
 @Component({
   selector: 'app-flow-list',
   standalone: true,
@@ -14,35 +14,57 @@ import { flowsData } from './data';
   templateUrl: './flow-list.html',
   styleUrl: './flow-list.css',
 })
-export class FlowList implements OnInit, AfterViewInit {
+export class FlowList implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  @Input() flow: any | null = null;
+  @Output() onView = new EventEmitter<string>();
   @ViewChild('container') container!: ElementRef;
 
-  // Unique suffix for this specific instance to prevent ID conflicts
   uniqueId = Math.random().toString(36).substring(2, 9);
-
   instance!: BrowserJsPlumbInstance;
   flowData: any = null;
 
-  zoomLevel: number = 1.0;
-  private readonly MIN_ZOOM: number = 0.3;
-  private readonly MAX_ZOOM: number = 2.5;
+  zoomLevel: number = 0.5; // Default zoom set to 50%
+  private readonly MIN_ZOOM: number = 0.2;
+  private readonly MAX_ZOOM: number = 2.0;
   private readonly ZOOM_STEP: number = 0.1;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  private isViewInitialized = false;
+
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
-    // Deep clone the data to avoid shared mutations across instances
-    this.flowData = JSON.parse(JSON.stringify(flowsData[0]));
+    this.updateFlowData();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['flow'] && !changes['flow'].isFirstChange()) {
+      this.updateFlowData();
+      if (this.isViewInitialized) {
+        this.reRenderFlow();
+      }
+    }
   }
 
   ngAfterViewInit() {
+    this.isViewInitialized = true;
+    this.initJsPlumb();
     setTimeout(() => {
-      this.initJsPlumb();
       this.renderFlow();
-    });
+    }, 50);
   }
 
-  // Helper to construct uniquely scoped DOM element IDs
+  ngOnDestroy() {
+    if (this.instance) {
+      this.instance.destroy();
+    }
+  }
+
+  private updateFlowData() {
+    if (this.flow) {
+      this.flowData = JSON.parse(JSON.stringify(this.flow));
+    }
+  }
+
   getScopedId(instanceId: string): string {
     return `${instanceId}_${this.uniqueId}`;
   }
@@ -53,11 +75,23 @@ export class FlowList implements OnInit, AfterViewInit {
     });
 
     this.instance.importDefaults({
-      connector: { type: 'Flowchart', options: { cornerRadius: 8, stub: 15 } },
-      paintStyle: { stroke: '#333333', strokeWidth: 2.5 },
-      endpoint: { type: 'Rectangle', options: { width: 5, height: 12 } },
-      endpointStyle: { fill: '#000000' }
+      connector: { type: 'Flowchart', options: { cornerRadius: 8, stub: 20 } },
+      paintStyle: { stroke: '#222222', strokeWidth: 2 },
+      connectionsDetachable: false
     });
+
+    this.instance.setZoom(this.zoomLevel);
+  }
+
+  private reRenderFlow() {
+    if (this.instance) {
+      this.instance.reset();
+      this.initJsPlumb();
+    }
+    this.cdr.detectChanges();
+    setTimeout(() => {
+      this.renderFlow();
+    }, 50);
   }
 
   private renderFlow() {
@@ -68,7 +102,7 @@ export class FlowList implements OnInit, AfterViewInit {
       this.setupNode(node);
     });
 
-    // 2. Setup Connections with Scoped UUIDs
+    // 2. Establish Connections
     if (this.flowData.connections) {
       this.flowData.connections.forEach((conn: any) => {
         const sUuid = `${conn.sourceInstanceId}-${conn.sourcePortId}_${this.uniqueId}`;
@@ -89,11 +123,12 @@ export class FlowList implements OnInit, AfterViewInit {
     const el = document.getElementById(scopedDomId);
     if (!el) return;
 
-    el.style.left = `${node.uiLayout.canvasX}px`;
-    el.style.top = `${node.uiLayout.canvasY}px`;
+    el.style.left = `${node.uiLayout?.canvasX || 0}px`;
+    el.style.top = `${node.uiLayout?.canvasY || 0}px`;
 
     this.instance.manage(el);
-    this.instance.setPosition(el, { x: node.uiLayout.canvasX, y: node.uiLayout.canvasY });
+    this.instance.setPosition(el, { x: node.uiLayout?.canvasX || 0, y: node.uiLayout?.canvasY || 0 });
+    this.instance.setDraggable(el, false);
 
     const inputs = node.ports.filter((p: any) => p.portType === 'INPUT');
     const outputs = node.ports.filter((p: any) => p.portType === 'OUTPUT');
@@ -104,26 +139,22 @@ export class FlowList implements OnInit, AfterViewInit {
       const index = typedPorts.findIndex((p: any) => p.id === port.id);
       const yPos = (index + 1) / (typedPorts.length + 1);
 
+      // Explicitly type orientation hints (-1, 0, 1) as AnchorOrientationHint
+      const xOrient: AnchorOrientationHint = isInput ? -1 : 1;
+      const yOrient: AnchorOrientationHint = 0;
+      const anchorPos: ArrayAnchorSpec = [isInput ? 0 : 1, yPos, xOrient, yOrient];
+
       this.instance.addEndpoint(el, {
-        endpoint: { type: 'Rectangle', options: { width: 5, height: 12 } },
-        paintStyle: { fill: '#000000' },
-        anchor: isInput ? [0, yPos, -1, 0] : [1, yPos, 1, 0],
-        source: !isInput,
-        target: isInput,
+        endpoint: { type: 'Rectangle', options: { width: 10, height: 22 } },
+        paintStyle: { fill: '#ffffff', stroke: '#555555', strokeWidth: 1 },
+        cssClass: isInput ? 'custom-endpoint endpoint-input' : 'custom-endpoint endpoint-output',
+        anchor: anchorPos,
+        source: false,
+        target: false,
         maxConnections: -1,
         uuid: `${node.instanceId}-${port.id}_${this.uniqueId}`
       });
     });
-  }
-
-  public getPortTopPosition(node: any, port: any): string {
-    const inputs = node.ports.filter((p: any) => p.portType === 'INPUT');
-    const outputs = node.ports.filter((p: any) => p.portType === 'OUTPUT');
-    const isInput = port.portType === 'INPUT';
-    const typedPorts = isInput ? inputs : outputs;
-    const index = typedPorts.findIndex((p: any) => p.id === port.id);
-    const yPosRatio = (index + 1) / (typedPorts.length + 1);
-    return `${yPosRatio * 100}%`;
   }
 
   public zoomIn() {
@@ -140,6 +171,9 @@ export class FlowList implements OnInit, AfterViewInit {
   }
 
   onEditClick() {
-    console.log('Edit clicked for Flow ID:', this.flowData?.FlowId);
+    const flowId = this.flowData?.id || this.flowData?.FlowId;
+    if (flowId) {
+      this.onView.emit(flowId);
+    }
   }
 }

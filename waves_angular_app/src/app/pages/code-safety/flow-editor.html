@@ -299,6 +299,59 @@
                         </div>
                     </div>
                 </div>
+                <!-- Guidance -->
+                <div class="guidance-bottom-bar" *ngIf="currentConfigViewMode != 'BLOCK'">
+                    <div class="guidance-top-content">
+                        <div class="guidance-header">
+                            <div class="bulb-icon-container">
+                                <nz-icon nzType="bulb" nzTheme="fill"></nz-icon>
+                            </div>
+                            <div class="guidance-title-desc">
+                                <h4>Build a Valid Flow</h4>
+                                <p>Minimum requirement to create Flow. Add the required blocks and connect them in
+                                    sequence</p>
+                            </div>
+                        </div>
+                        <div class="vertical-divider"></div>
+                        <div class="guidance-stepper">
+
+                            <div class="step-item">
+                                <div class="step-badge" [ngClass]="guidance.step1.state">1</div>
+                                <div class="step-title">I/O Nodes</div>
+                                <div class="step-desc">{{ guidance.step1.desc }}</div>
+                            </div>
+
+                            <div class="step-connector"></div>
+
+                            <div class="step-item">
+                                <div class="step-badge" [ngClass]="guidance.step2.state">2</div>
+                                <div class="step-title">Processing Node</div>
+                                <div class="step-desc">{{ guidance.step2.desc }}</div>
+                            </div>
+
+                            <div class="step-connector"></div>
+
+                            <div class="step-item">
+                                <div class="step-badge" [ngClass]="guidance.step3.state">3</div>
+                                <div class="step-title">Connect Nodes</div>
+                                <div class="step-desc">{{ guidance.step3.desc }}</div>
+                            </div>
+
+                            <div class="step-connector"></div>
+
+                            <div class="step-item">
+                                <div class="step-badge" [ngClass]="guidance.step4.state">4</div>
+                                <div class="step-title">Map Schema</div>
+                                <div class="step-desc">{{ guidance.step4.desc }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="guidance-info-banner">
+                        <nz-icon nzType="info-circle" nzTheme="outline" class="info-icon"></nz-icon>
+                        <span>{{ guidance.bannerMessage }}</span>
+                    </div>
+                </div>
             </div>
         </nz-splitter-panel>
         <nz-splitter-panel nzDefaultSize="25%" nzMin="300px" nzMax="45%" [nzCollapsible]="true">

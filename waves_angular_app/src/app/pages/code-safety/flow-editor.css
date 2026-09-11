@@ -1008,3 +1008,146 @@
 .node-port-base.port-readonly {
     cursor: pointer;
 }
+
+/* Fixed Bottom Guidance Bar */
+.guidance-bottom-bar {
+    width: 100%;
+    background: #ffffff;
+    padding: 8px 16px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    border-top: 1px solid #e8e8e8;
+}
+
+.guidance-top-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.guidance-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+    max-width: 220px;
+}
+
+.bulb-icon-container {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: #fffbe6;
+    color: #faad14;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.guidance-title-desc h4 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #1f1f1f;
+}
+
+.guidance-title-desc p {
+    margin: 1px 0 0;
+    font-size: 10px;
+    color: #8c8c8c;
+    line-height: 1.2;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 30px;
+    background-color: #d9d9d9;
+    margin: 0 12px;
+    flex-shrink: 0;
+}
+
+.guidance-stepper {
+    display: flex;
+    align-items: flex-start;
+    flex: 1;
+    justify-content: space-between;
+}
+
+.step-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    max-width: 100px;
+}
+
+.step-badge {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2px;
+    transition: background-color 0.3s ease;
+}
+
+.step-badge.red {
+    background-color: #ff4d4f;
+}
+
+.step-badge.yellow {
+    background-color: #faad14;
+}
+
+.step-badge.green {
+    background-color: #52c41a;
+}
+
+.step-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: #262626;
+    margin-bottom: 1px;
+}
+
+.step-desc {
+    font-size: 9px;
+    color: #8c8c8c;
+    line-height: 1.1;
+}
+
+.step-connector {
+    height: 1px;
+    background-color: #e8e8e8;
+    flex: 1;
+    margin-top: 8px;
+    min-width: 10px;
+}
+
+.guidance-info-banner {
+    background-color: #e6f4ff;
+    border-radius: 4px;
+    padding: 4px 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: #595959;
+    margin-top: 6px;
+}
+
+.info-icon {
+    color: #1677ff;
+    font-size: 12px;
+}

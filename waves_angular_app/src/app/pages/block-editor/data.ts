@@ -327,7 +327,7 @@ export const model: Model = {
             {
               "id": "FLD-1788238973965",
               "name": "OBI1",
-              "type": "integer",
+              "type": "number",
               "description": ""
             },
             {
@@ -375,6 +375,37 @@ export const model: Model = {
     }
   ]
 };
+
+
+export function getDataTypeColor(type: string): string {
+  const t = type?.toLowerCase();
+  switch (t) {
+    case 'number':
+    case 'integer':
+      return '#e6f7ff';
+    case 'decimal':
+      return '#fff0f6';
+    case 'string':
+      return '#f6ffed';
+    default:
+      return '#f5f5f5';
+  }
+}
+
+export function getDataTypeTextColor(type: string): string {
+  const t = type?.toLowerCase();
+  switch (t) {
+    case 'number':
+    case 'integer':
+      return '#1890ff';
+    case 'decimal':
+      return '#eb2f96';
+    case 'string':
+      return '#52c41a';
+    default:
+      return '#595959';
+  }
+}
 
 export function updateModel(newData: Partial<Model>): Model {
   Object.assign(model, newData);
@@ -619,7 +650,8 @@ export function removeConnectionMapping(
 export function removeAllMappingsForConnection() {
   return;
 }
-/* ================= GUIDANCE VALIDATION LOGIC FOR BLOCK FLOW ================= */
+
+// Guidance Methods fro model
 
 export interface GuidanceStepStatus {
   state: 'red' | 'yellow' | 'green';
@@ -768,14 +800,12 @@ export function validateBlockGuidance(
       ? 'Connect both Input & Output ports'
       : 'Connection is Established';
 
-  // 3. Mapping Validation: Required for connections where target is this block
   const incomingConnections = safeConnections.filter(c => c.targetInstanceId === blockData.instanceId);
   const isMapped = incomingConnections.length > 0 && incomingConnections.every(c => Array.isArray(c.mapping) && c.mapping.length > 0);
 
   const step3State: 'red' | 'green' = isMapped ? 'green' : 'red';
   const step3Desc = isMapped ? 'Schema is mapped' : 'Schema is Mapped';
 
-  // 4. Flow Validation
   const hasFlows = Array.isArray(blockData.flows) && blockData.flows.length > 0;
   const step4State: 'red' | 'green' = hasFlows ? 'green' : 'red';
   const step4Desc = hasFlows ? 'Flow created' : 'Flow is Created';
@@ -787,6 +817,5 @@ export function validateBlockGuidance(
     step4: { state: step4State, desc: step4Desc }
   };
 }
-
 
 // fix code

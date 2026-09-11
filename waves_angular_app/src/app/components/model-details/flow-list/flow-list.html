@@ -3,51 +3,36 @@
   <div class="flow-card-header">
     <div class="flow-info">
       <div class="info-row"><span class="label">Name:</span> {{ flowData?.name }}</div>
-      <div class="info-row"><span class="label">Flow ID:</span> {{ flowData?.FlowId }}</div>
+      <div class="info-row"><span class="label">Flow ID:</span> {{ flowData?.id || flowData?.FlowId }}</div>
       <div class="info-row"><span class="label">Node Count:</span> {{ flowData?.nodes?.length || 0 }}</div>
     </div>
-    <button class="edit-btn" (click)="onEditClick()">Edit</button>
+    <button class="edit-btn" (click)="onEditClick()">View</button>
   </div>
 
-  <!-- Interactive Flow Viewport Canvas -->
+  <!-- Scrollable Viewport Container -->
   <div class="flow-viewport">
     <div #container class="flow-canvas" [style.transform]="'scale(' + zoomLevel + ')'">
 
-      <!-- Pass getScopedId(node.instanceId) as id -->
-      <div *ngFor="let node of flowData?.nodes" 
-           [id]="getScopedId(node.instanceId)" 
-           class="flow-node" 
-           [style.background-color]="node.uiLayout?.color || '#1890ff'"
-           [style.width.px]="node.uiLayout?.canvasWidth"
-           [style.height.px]="node.uiLayout?.canvasHeight">
+      <div *ngFor="let node of flowData?.nodes" [id]="getScopedId(node.instanceId)" class="flow-node readonly-node"
+        [style.background-color]="node.uiLayout?.color || '#1890ff'" [style.width.px]="node.uiLayout?.canvasWidth"
+        [style.height.px]="node.uiLayout?.canvasHeight">
 
-        <!-- Visual Port Base Connector Plates -->
-        <ng-container *ngFor="let port of node.ports">
-          <div class="node-port-plate" 
-               [class.port-input]="port.portType === 'INPUT'"
-               [class.port-output]="port.portType === 'OUTPUT'"
-               [style.top]="getPortTopPosition(node, port)">
-          </div>
-        </ng-container>
+        <!-- Centered Node Content -->
+        <div class="node-content">
+          <nz-icon *ngIf="node.uiLayout?.icon" [nzType]="node.uiLayout.icon" nzTheme="outline" class="node-main-icon">
+          </nz-icon>
 
-        <!-- Node Header Title & Info Icon -->
-        <span class="node-title">{{ node.name }}</span>
+          <span class="node-title">{{ node.name }}</span>
 
-        <nz-icon 
-          nzType="info-circle" 
-          nzTheme="outline" 
-          class="node-info-icon" 
-          nz-popover
-          [nzPopoverTitle]="node.name" 
-          [nzPopoverContent]="nodePopover"
-          nzPopoverPlacement="topRight"
-          (click)="$event.stopPropagation();">
-        </nz-icon>
+          <nz-icon nzType="info-circle" nzTheme="fill" class="node-info-icon" nz-popover [nzPopoverTitle]="node.name"
+            [nzPopoverContent]="nodePopover" nzPopoverPlacement="topRight" (click)="$event.stopPropagation();">
+          </nz-icon>
+        </div>
 
-        <!-- Hover Popover Details Template -->
+        <!-- Popover Template -->
         <ng-template #nodePopover>
           <div class="popover-details">
-            <p><strong>Node ID:</strong> {{ node.nodeId }}</p>
+            <p><strong>Node ID:</strong> {{ node.id || node.nodeId }}</p>
             <p><strong>Category:</strong> {{ node.category }}</p>
             <p><strong>Type:</strong> {{ node.nodeType || node.blockType }}</p>
             <p><strong>Instance ID:</strong> {{ node.instanceId }}</p>
@@ -58,11 +43,12 @@
 
     </div>
 
-    <!-- Zoom Action Controls -->
+    <!-- Zoom Controls Floating Bar -->
     <div class="zoom-controls">
-      <button (click)="zoomIn()">+</button>
-      <span class="zoom-text">{{ (zoomLevel * 100) | number:'1.0-0' }}%</span>
       <button (click)="zoomOut()">-</button>
+      <span class="zoom-text">{{ (zoomLevel * 100) | number:'1.0-0' }}%</span>
+      <button (click)="zoomIn()">+</button>
+
     </div>
   </div>
 </div>

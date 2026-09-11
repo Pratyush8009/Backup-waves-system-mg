@@ -161,8 +161,12 @@
 
       <!-- TAB 2: Flows -->
       <div class="tab-body" *ngIf="activeTab === 2">
-        <app-flow-list style="margin-bottom: 10px;"></app-flow-list>
-        <app-flow-list></app-flow-list>
+        <div *ngFor="let flow of filteredFlows" class="flow-bar-wrapper">
+          <app-flow-list [flow]="flow" (onView)="selectFlow($event)"></app-flow-list>
+        </div>
+        <div class="not-found" *ngIf="filteredFlows?.length === 0">
+          <span>No flow found</span>
+        </div>
       </div>
 
       <!-- TAB 3: Connector -->
@@ -291,7 +295,7 @@
       <div class="tab-body" *ngIf="activeModelTab === 2">
         <div class="model-blocks-list">
           <div *ngFor="let bStatus of blocksConfigStatus" class="model-block-card">
-            
+
             <div class="model-block-card-header">
               <div class="model-block-info">
                 <div class="block-info-line">
@@ -304,7 +308,8 @@
                 </div>
               </div>
 
-              <div class="block-status-pill" [class.configured]="bStatus.isConfigured" [class.not-configured]="!bStatus.isConfigured">
+              <div class="block-status-pill" [class.configured]="bStatus.isConfigured"
+                [class.not-configured]="!bStatus.isConfigured">
                 <nz-icon [nzType]="bStatus.isConfigured ? 'link' : 'disconnect'" nzTheme="outline"></nz-icon>
                 <span>{{ bStatus.isConfigured ? 'configured' : 'Not Configured' }}</span>
               </div>
@@ -357,7 +362,7 @@
       <div class="tab-body" *ngIf="activeModelTab === 3">
         <div class="model-connections-list">
           <div *ngFor="let conn of modelConnections.connectionDetails" class="connection-card">
-            
+
             <!-- Connection Header Card -->
             <div class="connection-header">
               <div class="connection-col">
@@ -391,7 +396,7 @@
 
               <div class="mapping-rows">
                 <div *ngFor="let map of conn.mappings" class="mapping-row">
-                  
+
                   <!-- Source Field Box -->
                   <div class="mapping-field-box">
                     <span class="field-name">{{ map.sourceField?.name || 'N/A' }}</span>
